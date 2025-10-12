@@ -1,6 +1,7 @@
 # --- STAGE 1: BUILD THE APPLICATION ---
 # Use a standard OpenJDK image that includes Maven/Gradle for building
-FROM maven:3-openjdk-21 AS build
+
+FROM maven:3.9.11-eclipse-temurin-11-alpine AS build
 WORKDIR /app
 
 # Copy and download dependencies (for layer caching)
