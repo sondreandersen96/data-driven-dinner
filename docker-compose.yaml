@@ -18,8 +18,8 @@ services:
       - "traefik.http.routers.recipe-service.tls.certresolver=le"
   frontend:
     build:
-      context: .
-      dockerfile: food-web/Dockerfile
+      context: ./food-web/
+      dockerfile: Dockerfile
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.food-web.rule=Host(`food.sondreandersen.dev`)"

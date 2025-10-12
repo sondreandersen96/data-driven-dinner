@@ -13,7 +13,7 @@ echo "Application build complete"
 cd ..
 
 echo "Starting containers with Docker Compose"
-docker compose up -d
+docker compose up --build -d
 
 echo "Deployment complete! 🚀"
 
