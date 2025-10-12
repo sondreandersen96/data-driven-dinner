@@ -14,6 +14,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
 import { Route as RecipesIndexImport } from './routes/recipes/index'
 import { Route as InspirationIndexImport } from './routes/inspiration/index'
+import { Route as IngredientsIndexImport } from './routes/ingredients/index'
 import { Route as RecipesRecipeIdIndexImport } from './routes/recipes/$recipeId/index'
 
 // Create/Update Routes
@@ -36,6 +37,12 @@ const InspirationIndexRoute = InspirationIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const IngredientsIndexRoute = IngredientsIndexImport.update({
+  id: '/ingredients/',
+  path: '/ingredients/',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const RecipesRecipeIdIndexRoute = RecipesRecipeIdIndexImport.update({
   id: '/recipes/$recipeId/',
   path: '/recipes/$recipeId/',
@@ -51,6 +58,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/ingredients/': {
+      id: '/ingredients/'
+      path: '/ingredients'
+      fullPath: '/ingredients'
+      preLoaderRoute: typeof IngredientsIndexImport
       parentRoute: typeof rootRoute
     }
     '/inspiration/': {
@@ -81,6 +95,7 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ingredients': typeof IngredientsIndexRoute
   '/inspiration': typeof InspirationIndexRoute
   '/recipes': typeof RecipesIndexRoute
   '/recipes/$recipeId': typeof RecipesRecipeIdIndexRoute
@@ -88,6 +103,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ingredients': typeof IngredientsIndexRoute
   '/inspiration': typeof InspirationIndexRoute
   '/recipes': typeof RecipesIndexRoute
   '/recipes/$recipeId': typeof RecipesRecipeIdIndexRoute
@@ -96,6 +112,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/ingredients/': typeof IngredientsIndexRoute
   '/inspiration/': typeof InspirationIndexRoute
   '/recipes/': typeof RecipesIndexRoute
   '/recipes/$recipeId/': typeof RecipesRecipeIdIndexRoute
@@ -103,15 +120,27 @@ export interface FileRoutesById {
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/inspiration' | '/recipes' | '/recipes/$recipeId'
+  fullPaths:
+    | '/'
+    | '/ingredients'
+    | '/inspiration'
+    | '/recipes'
+    | '/recipes/$recipeId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/inspiration' | '/recipes' | '/recipes/$recipeId'
-  id: '__root__' | '/' | '/inspiration/' | '/recipes/' | '/recipes/$recipeId/'
+  to: '/' | '/ingredients' | '/inspiration' | '/recipes' | '/recipes/$recipeId'
+  id:
+    | '__root__'
+    | '/'
+    | '/ingredients/'
+    | '/inspiration/'
+    | '/recipes/'
+    | '/recipes/$recipeId/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  IngredientsIndexRoute: typeof IngredientsIndexRoute
   InspirationIndexRoute: typeof InspirationIndexRoute
   RecipesIndexRoute: typeof RecipesIndexRoute
   RecipesRecipeIdIndexRoute: typeof RecipesRecipeIdIndexRoute
@@ -119,6 +148,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  IngredientsIndexRoute: IngredientsIndexRoute,
   InspirationIndexRoute: InspirationIndexRoute,
   RecipesIndexRoute: RecipesIndexRoute,
   RecipesRecipeIdIndexRoute: RecipesRecipeIdIndexRoute,
@@ -135,6 +165,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/ingredients/",
         "/inspiration/",
         "/recipes/",
         "/recipes/$recipeId/"
@@ -142,6 +173,9 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/ingredients/": {
+      "filePath": "ingredients/index.tsx"
     },
     "/inspiration/": {
       "filePath": "inspiration/index.tsx"

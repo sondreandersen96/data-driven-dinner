@@ -1,0 +1,42 @@
+# --- STAGE 1: BUILD THE APPLICATION ---
+# Use a standard OpenJDK image that includes Maven/Gradle for building
+FROM maven:3-openjdk-21 AS build
+WORKDIR /app
+
+# Copy and download dependencies (for layer caching)
+COPY pom.xml .
+RUN mvn dependency:go-offline
+
+# Copy the rest of the source code
+COPY src /app/src
+
+# Package the application as a MUTABLE JAR
+# The mutable-jar package type is REQUIRED for remote dev mode
+RUN mvn clean package -DskipTests -Dquarkus.package.type=mutable-jar
+
+# --- STAGE 2: PREPARE THE DEVELOPMENT IMAGE ---
+# Use your specified OpenJDK image for the final runtime
+FROM registry.access.redhat.com/ubi8/openjdk-21:1.19
+ENV LANGUAGE='en_US:en'
+WORKDIR /deployments
+
+# 1. Copy the MUTABLE JAR components from the build stage
+COPY --chown=185 --from=build /app/target/quarkus-app/lib/ /deployments/lib/
+COPY --chown=185 --from=build /app/target/quarkus-app/*.jar /deployments/
+COPY --chown=185 --from=build /app/target/quarkus-app/app/ /deployments/app/
+COPY --chown=185 --from=build /app/target/quarkus-app/quarkus/ /deployments/quarkus/
+
+# 2. Configure for Quarkus Remote Dev Mode
+# This variable tells Quarkus to start in remote-dev mode
+ENV QUARKUS_LAUNCH_DEVMODE=true
+
+
+# Your existing environment and entrypoint
+EXPOSE 8080
+#EXPOSE 5005 # Optional: Expose the debug port
+USER 185
+ENV JAVA_OPTS_APPEND="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+ENV JAVA_APP_JAR="/deployments/quarkus-run.jar"
+
+ENTRYPOINT [ "/opt/jboss/container/java/run/run-java.sh" ]
+

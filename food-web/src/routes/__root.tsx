@@ -28,7 +28,8 @@ function RootComponent() {
         <div className={styles["leftItems"]}>
           <Link to="/">Home</Link>{' '}
           <Link to="/recipes">Oppskrifter</Link>{' '}
-          <Link to="/inspiration">Inspirasjon</Link>
+          <Link to="/inspiration">Inspirasjon</Link>{' '}
+          <Link to="/ingredients">Ingredients</Link>
         </div>
         <div className={styles["rightItems"]}>
           <button onClick={() => setNewRecipeModalOpen(true)}>Ny oppskrift</button>
