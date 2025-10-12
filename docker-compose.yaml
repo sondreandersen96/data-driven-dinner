@@ -21,7 +21,7 @@ services:
       - "traefik.http.routers.recipe-service.rule=Host(`recipe-service.sondreandersen.dev`)"
       - "traefik.http.routers.recipe-service.entrypoints=websecure"
       - "traefik.http.routers.recipe-service.tls.certresolver=le"
-
+      - "traefik.http.services.recipe-service.loadbalancer.server.port=8080"
 
   frontend:
     build:
@@ -32,6 +32,7 @@ services:
       - "traefik.http.routers.food-web.rule=Host(`food.sondreandersen.dev`)"
       - "traefik.http.routers.food-web.entrypoints=websecure"
       - "traefik.http.routers.food-web.tls.certresolver=le"
+      - "traefik.http.services.food-web.loadbalancer.server.port=80"
 
 
   throwaway-postgres:
