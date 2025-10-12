@@ -8,6 +8,10 @@ services:
       # - QUARKUS_DATASOURCE_USERNAME=username
       # - QUARKUS_DATASOURCE_PASSWORD=password
       # - QUARKUS_DATASOURCE_DB-KIND=postgresql
+      # Hostname is the service name
+      QUARKUS_DATASOURCE_JDBC_URL: jdbc:postgresql://throwaway-postgre:5432/recipe_db
+      QUARKUS_DATASOURCE_USERNAME: quarkus_user
+      QUARKUS_DATASOURCE_PASSWORD: quarkus_password
     restart: unless-stopped
     networks:
       - application
@@ -16,6 +20,8 @@ services:
       - "traefik.http.routers.recipe-service.rule=Host(`recipe-service.sondreandersen.dev`)"
       - "traefik.http.routers.recipe-service.entrypoints=websecure"
       - "traefik.http.routers.recipe-service.tls.certresolver=le"
+
+
   frontend:
     build:
       context: ./food-web/
@@ -25,6 +31,19 @@ services:
       - "traefik.http.routers.food-web.rule=Host(`food.sondreandersen.dev`)"
       - "traefik.http.routers.food-web.entrypoints=websecure"
       - "traefik.http.routers.food-web.tls.certresolver=le"
+
+
+  throwaway-postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      # These must match the values used by the Quarkus application below
+      POSTGRES_USER: quarkus_user
+      POSTGRES_PASSWORD: quarkus_password
+      POSTGRES_DB: recipe_db
+    networks:
+      - application
+
 
 networks:
   application:
