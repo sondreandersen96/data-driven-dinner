@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   backend:
     build:
@@ -28,4 +26,7 @@ services:
       - "traefik.http.routers.food-web.entrypoints=websecure"
       - "traefik.http.routers.food-web.tls.certresolver=le"
 
+networks:
+  application:
+    external: true
 
