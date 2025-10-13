@@ -1,6 +1,7 @@
 import {useNavigate} from "@tanstack/react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {RecipeForm} from "@/components/RecipeForm/RecipeForm.tsx";
+import { recipeServiceUrl } from "@/globals.ts";
 
 type Props = {
     isOpen: boolean
@@ -13,7 +14,7 @@ function NewRecipe({isOpen, closeNewRecipeModal}: Props) {
     const queryClient = useQueryClient()
     const mutation = useMutation<Recipe, Error, Recipe, unknown>({
         mutationFn: async (recipe): Promise<Recipe> => {
-            return fetch("http://localhost:8080/recipe", {
+            return fetch(`${recipeServiceUrl}/recipe`, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(recipe)

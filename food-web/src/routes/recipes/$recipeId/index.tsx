@@ -3,6 +3,7 @@ import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import renderYoutube from "@/components/EmbeddedYoutube/EmbeddedYoutube.tsx";
 import {useState} from "react";
 import {RecipeForm} from "@/components/RecipeForm/RecipeForm.tsx";
+import { recipeServiceUrl } from "@/globals.ts";
 
 export const Route = createFileRoute('/recipes/$recipeId/')({
     component: RecipeId,
@@ -17,13 +18,13 @@ function RecipeId() {
     const {isPending, error, data, isFetching} = useQuery<Recipe>({
         queryKey: ['recipe', recipeId],
         queryFn: async (): Promise<Recipe> => {
-            return fetch(`http://localhost:8080/recipe/${recipeId}`).then((res) => res.json())
+            return fetch(`${recipeServiceUrl}/recipe/${recipeId}`).then((res) => res.json())
         }
     })
 
     const mutation = useMutation<Recipe, Error, Recipe, unknown>({
         mutationFn: async (recipe): Promise<Recipe> => {
-            return fetch(`http://localhost:8080/recipe/${recipeId}`, {
+            return fetch(`${recipeServiceUrl}/recipe/${recipeId}`, {
                 method: "PUT",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(recipe)

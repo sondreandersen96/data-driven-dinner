@@ -3,12 +3,13 @@ import {useQuery} from "@tanstack/react-query";
 import RecipeCard from "@/routes/recipes/-components/RecipeCard/RecipeCard.tsx";
 // @ts-ignore
 import styles from "./RecipeList.module.css"
+import { recipeServiceUrl } from "@/globals.ts";
 
 const RecipeList: FC = () => {
     const {isPending, error, data } = useQuery<Recipe[]>({
         queryKey: ['recipes'],
         queryFn: async (): Promise<Recipe[]> => {
-            return fetch('http://localhost:8080/recipe').then((res) => res.json())
+            return fetch(`${recipeServiceUrl}/recipe`).then((res) => res.json())
         },
     })
 
