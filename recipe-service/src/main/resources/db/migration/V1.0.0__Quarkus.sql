@@ -11,7 +11,8 @@ CREATE TABLE public.recipe
 (
     id      uuid NOT NULL,
     name    character varying(255),
-    youtube character varying(255)
+    youtube character varying(255),
+    description TEXT
 );
 
 CREATE TABLE public.recipeingredient
