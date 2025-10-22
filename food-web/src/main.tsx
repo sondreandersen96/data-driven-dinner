@@ -23,12 +23,6 @@ const rootElement = document.getElementById('app')!
 
 const queryClient = new QueryClient()
 
-const keycloak = new Keycloak({
-    url: "http://keycloak-server", // TODO: update
-    realm: "my-realm",
-    clientId: "my-app"
-});
-
 if (!rootElement.innerHTML) {
     const env = import.meta.env.MODE
 
