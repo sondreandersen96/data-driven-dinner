@@ -1,2 +1,2 @@
 
-export const recipeServiceUrl = import.meta.env.PROD ? 'https://recipe-service.sondreandersen.dev' : 'http://localhost:8080'
+export const recipeServiceUrl = import.meta.env.PROD ? 'https://food.sondreandersen.dev/api' : 'http://localhost:8080'
