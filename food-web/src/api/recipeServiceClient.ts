@@ -13,7 +13,7 @@ export async function recipeServiceClient<T>(endpoint: string, options: RequestI
     if (!response.ok) {
       console.log(`Backend response not OK (${response.status})`)
 
-      if (response.status === 302) {
+      if (response.status === 499) {
         const currentPath = window.location.pathname + window.location.search;
         window.location.href = `/quarkus/oidc/login?rd=${encodeURIComponent(currentPath)}`;
         return new Promise<T>(() => {})

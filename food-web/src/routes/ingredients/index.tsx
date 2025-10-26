@@ -10,7 +10,7 @@ function RouteComponent() {
   const {isPending, error, data} = useQuery<Ingredient[]>({
     queryKey: ['ingredients'],
     queryFn: async (): Promise<Ingredient[]> => {
-      return recipeServiceClient(`/ingredient`)
+      return recipeServiceClient(`ingredient`)
     },
   })
 

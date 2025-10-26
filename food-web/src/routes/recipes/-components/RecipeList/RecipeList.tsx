@@ -9,7 +9,7 @@ const RecipeList: FC = () => {
     const {isPending, error, data } = useQuery<Recipe[]>({
         queryKey: ['recipes'],
         queryFn: async (): Promise<Recipe[]> => {
-            return recipeServiceClient(`/recipe`)
+            return recipeServiceClient(`recipe`)
         },
     })
 

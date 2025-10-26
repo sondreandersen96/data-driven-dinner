@@ -15,7 +15,7 @@ function NewRecipe({isOpen, closeNewRecipeModal}: Props) {
     const queryClient = useQueryClient()
     const mutation = useMutation<Recipe, Error, Recipe, unknown>({
         mutationFn: async (recipe): Promise<Recipe> => {
-            return recipeServiceClient('/recipe', {
+            return recipeServiceClient('recipe', {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(recipe)
