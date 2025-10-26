@@ -3,7 +3,6 @@ import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import renderYoutube from "@/components/EmbeddedYoutube/EmbeddedYoutube.tsx";
 import {useState} from "react";
 import {RecipeForm} from "@/components/RecipeForm/RecipeForm.tsx";
-import { recipeServiceUrl } from "@/globals.ts";
 import { recipeServiceClient } from "@/api/recipeServiceClient.ts";
 
 export const Route = createFileRoute('/recipes/$recipeId/')({

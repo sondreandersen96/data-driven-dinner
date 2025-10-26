@@ -1,6 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useQuery } from "@tanstack/react-query";
-import { recipeServiceUrl } from "@/globals.ts";
 import { recipeServiceClient } from "@/api/recipeServiceClient.ts";
 
 export const Route = createFileRoute('/ingredients/')({
