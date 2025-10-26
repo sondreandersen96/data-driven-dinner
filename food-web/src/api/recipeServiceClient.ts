@@ -1,9 +1,21 @@
 import { recipeServiceUrl } from "@/globals.ts";
 
 export async function recipeServiceClient<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+  const defaultHeaders = {
+    'X-Requested-With': 'JavaScript',
+  };
+
+  const mergedHeaders = {
+    ...defaultHeaders,
+    ...(options.headers instanceof Headers
+      ? Object.fromEntries(options.headers.entries())
+      : options.headers),
+  };
+
   const config: RequestInit = {
     ...options,
-    credentials: 'include'
+    credentials: 'include',
+    headers: mergedHeaders,
   }
 
   try {
