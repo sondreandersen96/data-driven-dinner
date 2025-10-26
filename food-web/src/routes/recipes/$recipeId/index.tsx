@@ -19,13 +19,13 @@ function RecipeId() {
     const {isPending, error, data, isFetching} = useQuery<Recipe>({
         queryKey: ['recipe', recipeId],
         queryFn: async (): Promise<Recipe> => {
-            return recipeServiceClient(`${recipeServiceUrl}/recipe/${recipeId}`)
+            return recipeServiceClient('/recipe/${recipeId}')
         }
     })
 
     const mutation = useMutation<Recipe, Error, Recipe, unknown>({
         mutationFn: async (recipe): Promise<Recipe> => {
-            return recipeServiceClient(`${recipeServiceUrl}/recipe/${recipeId}`, {
+            return recipeServiceClient(`/recipe/${recipeId}`, {
                 method: "PUT",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(recipe)
