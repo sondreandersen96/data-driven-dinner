@@ -8,6 +8,7 @@ export const Route = createFileRoute('/recipes/')({
 function Recipes() {
     return (
         <>
+          All recipes are here:
             <RecipeList/>
         </>
     )
