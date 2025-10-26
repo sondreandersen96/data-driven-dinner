@@ -8,8 +8,8 @@ export async function recipeServiceClient<T>(endpoint: string, options: RequestI
 
   try {
     const url = `${recipeServiceUrl}/${endpoint}`
+    console.log("API client is about to make request")
     const response = await fetch(url, config)
-
     if (!response.ok) {
       console.log(`Backend response not OK (${response.status})`)
 
