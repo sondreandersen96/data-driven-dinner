@@ -4,12 +4,13 @@ import RecipeCard from "@/routes/recipes/-components/RecipeCard/RecipeCard.tsx";
 // @ts-ignore
 import styles from "./RecipeList.module.css"
 import { recipeServiceUrl } from "@/globals.ts";
+import { recipeServiceClient } from "@/api/recipeServiceClient.ts";
 
 const RecipeList: FC = () => {
     const {isPending, error, data } = useQuery<Recipe[]>({
         queryKey: ['recipes'],
         queryFn: async (): Promise<Recipe[]> => {
-            return fetch(`${recipeServiceUrl}/recipe`).then((res) => res.json())
+            return recipeServiceClient(`${recipeServiceUrl}/recipe`)
         },
     })
 

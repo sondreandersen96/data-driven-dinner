@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useQuery } from "@tanstack/react-query";
 import { recipeServiceUrl } from "@/globals.ts";
+import { recipeServiceClient } from "@/api/recipeServiceClient.ts";
 
 export const Route = createFileRoute('/ingredients/')({
   component: RouteComponent,
@@ -10,7 +11,7 @@ function RouteComponent() {
   const {isPending, error, data} = useQuery<Ingredient[]>({
     queryKey: ['ingredients'],
     queryFn: async (): Promise<Ingredient[]> => {
-      return fetch(`${recipeServiceUrl}/ingredient`).then((res) => res.json())
+      return recipeServiceClient(`${recipeServiceUrl}/ingredient`)
     },
   })
 
