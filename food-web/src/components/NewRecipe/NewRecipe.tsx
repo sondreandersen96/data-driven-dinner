@@ -2,6 +2,7 @@ import {useNavigate} from "@tanstack/react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {RecipeForm} from "@/components/RecipeForm/RecipeForm.tsx";
 import { recipeServiceUrl } from "@/globals.ts";
+import { recipeServiceClient } from "@/api/recipeServiceClient.ts";
 
 type Props = {
     isOpen: boolean
@@ -14,11 +15,11 @@ function NewRecipe({isOpen, closeNewRecipeModal}: Props) {
     const queryClient = useQueryClient()
     const mutation = useMutation<Recipe, Error, Recipe, unknown>({
         mutationFn: async (recipe): Promise<Recipe> => {
-            return fetch(`${recipeServiceUrl}/recipe`, {
+            return recipeServiceClient(`${recipeServiceUrl}/recipe`, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(recipe)
-            }).then((res) => res.json())
+            })
         },
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: ['recipes']})

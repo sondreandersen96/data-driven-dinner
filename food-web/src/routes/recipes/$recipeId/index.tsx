@@ -4,6 +4,7 @@ import renderYoutube from "@/components/EmbeddedYoutube/EmbeddedYoutube.tsx";
 import {useState} from "react";
 import {RecipeForm} from "@/components/RecipeForm/RecipeForm.tsx";
 import { recipeServiceUrl } from "@/globals.ts";
+import { recipeServiceClient } from "@/api/recipeServiceClient.ts";
 
 export const Route = createFileRoute('/recipes/$recipeId/')({
     component: RecipeId,
@@ -18,17 +19,17 @@ function RecipeId() {
     const {isPending, error, data, isFetching} = useQuery<Recipe>({
         queryKey: ['recipe', recipeId],
         queryFn: async (): Promise<Recipe> => {
-            return fetch(`${recipeServiceUrl}/recipe/${recipeId}`).then((res) => res.json())
+            return recipeServiceClient(`${recipeServiceUrl}/recipe/${recipeId}`)
         }
     })
 
     const mutation = useMutation<Recipe, Error, Recipe, unknown>({
         mutationFn: async (recipe): Promise<Recipe> => {
-            return fetch(`${recipeServiceUrl}/recipe/${recipeId}`, {
+            return recipeServiceClient(`${recipeServiceUrl}/recipe/${recipeId}`, {
                 method: "PUT",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(recipe)
-            }).then((res) => res.json())
+            })
         },
         onSuccess: () => {
             setEditOpen(false)
