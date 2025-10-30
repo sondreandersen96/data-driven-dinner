@@ -1,6 +1,7 @@
 package no.sondre.resources
 
 import io.quarkus.security.identity.SecurityIdentity
+import jakarta.annotation.security.PermitAll
 import jakarta.inject.Inject
 import jakarta.ws.rs.GET
 import jakarta.ws.rs.Path
@@ -12,6 +13,7 @@ class IndexResource {
     lateinit var identity: SecurityIdentity
 
     @GET
+    @PermitAll
     fun index(): String {
         return "This is Recipe Service speaking (you are: ${identity.principal.name})"
     }
