@@ -1,8 +1,14 @@
 import { recipeServiceUrl } from "@/globals.ts";
+import { useKeycloak } from "@/keycloakProvider.tsx";
 
 export async function recipeServiceClient<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+  const keyCloak = useKeycloak()
+
+  console.log(`using token (${keyCloak.token}) to call recipe service`)
+
   const defaultHeaders = {
     'X-Requested-With': 'JavaScript',
+    'Authorization': `Bearer ${keyCloak.token}`
   };
 
   const mergedHeaders = {
