@@ -24,12 +24,11 @@ export async function recipeServiceClient<T>(endpoint: string, options: RequestI
     const response = await fetch(url, config)
     if (!response.ok) {
       console.log(`Backend response not OK (${response.status})`)
-
-      if (response.status === 499) {
-        const currentPath = window.location.pathname + window.location.search;
-        window.location.href = `/quarkus/oidc/login?rd=${encodeURIComponent(currentPath)}`;
-        return new Promise<T>(() => {})
-      }
+      // if (response.status === 499) {
+      //   const currentPath = window.location.pathname + window.location.search;
+      //   window.location.href = `/quarkus/oidc/login?rd=${encodeURIComponent(currentPath)}`;
+      //   return new Promise<T>(() => {})
+      // }
     }
     return await response.json()
   } catch (error) {

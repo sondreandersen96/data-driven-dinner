@@ -17,19 +17,21 @@ declare module '@tanstack/react-router' {
 }
 
 import "./index.css"
-import Keycloak from "keycloak-js";
+import { KeycloakProvider } from "@/keycloakProvider.tsx";
 
 const rootElement = document.getElementById('app')!
 
 const queryClient = new QueryClient()
 
 if (!rootElement.innerHTML) {
-    const env = import.meta.env.MODE
+    // const env = import.meta.env.MODE
 
     const root = ReactDOM.createRoot(rootElement)
     root.render(
+      <KeycloakProvider>
         <QueryClientProvider client={queryClient}>
             <RouterProvider router={router}/>
         </QueryClientProvider>
+      </KeycloakProvider>
     )
 }
