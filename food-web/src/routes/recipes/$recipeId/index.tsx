@@ -21,7 +21,7 @@ function RecipeId() {
     const {isPending, error, data, isFetching} = useQuery<Recipe>({
         queryKey: ['recipe', recipeId],
         queryFn: async (): Promise<Recipe> => {
-            return recipeServiceClient('recipe/${recipeId}', keycloak.token)
+            return recipeServiceClient(`recipe/${recipeId}`, keycloak.token)
         }
     })
 
