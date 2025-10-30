@@ -13,8 +13,16 @@ class IndexResource {
     lateinit var identity: SecurityIdentity
 
     @GET
-    @PermitAll
     fun index(): String {
         return "This is Recipe Service speaking (you are: ${identity.principal.name})"
+    }
+}
+
+@Path("/api")
+class TestResource {
+
+    @GET
+    fun api(): String {
+        return "svar fra /api"
     }
 }
