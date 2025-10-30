@@ -23,7 +23,7 @@ services:
       - "traefik.http.routers.recipe-service.entrypoints=websecure"
       - "traefik.http.routers.recipe-service.tls.certresolver=le"
       - "traefik.http.middlewares.foodapi-stripprefix.stripprefix.prefixes=/api"
-      - "traefik.http.routers.backend.middlewares=foodapi-stripprefix"
+      - "traefik.http.routers.recipe-service.middlewares=foodapi-stripprefix"
       - "traefik.http.services.recipe-service.loadbalancer.server.port=8080"
 
   frontend:
