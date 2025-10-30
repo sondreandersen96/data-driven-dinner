@@ -4,6 +4,7 @@ import renderYoutube from "@/components/EmbeddedYoutube/EmbeddedYoutube.tsx";
 import {useState} from "react";
 import {RecipeForm} from "@/components/RecipeForm/RecipeForm.tsx";
 import { recipeServiceClient } from "@/api/recipeServiceClient.ts";
+import { useKeycloak } from "@/keycloakProvider.tsx";
 
 export const Route = createFileRoute('/recipes/$recipeId/')({
     component: RecipeId,
@@ -14,17 +15,19 @@ function RecipeId() {
 
     const queryClient = useQueryClient()
 
+    const keycloak = useKeycloak()
+
     const {recipeId} = Route.useParams()
     const {isPending, error, data, isFetching} = useQuery<Recipe>({
         queryKey: ['recipe', recipeId],
         queryFn: async (): Promise<Recipe> => {
-            return recipeServiceClient('recipe/${recipeId}')
+            return recipeServiceClient('recipe/${recipeId}', keycloak.token)
         }
     })
 
     const mutation = useMutation<Recipe, Error, Recipe, unknown>({
         mutationFn: async (recipe): Promise<Recipe> => {
-            return recipeServiceClient(`recipe/${recipeId}`, {
+            return recipeServiceClient(`recipe/${recipeId}`, keycloak.token, {
                 method: "PUT",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(recipe)

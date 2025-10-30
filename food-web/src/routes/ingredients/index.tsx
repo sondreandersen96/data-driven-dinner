@@ -1,16 +1,20 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useQuery } from "@tanstack/react-query";
 import { recipeServiceClient } from "@/api/recipeServiceClient.ts";
+import { useKeycloak } from "@/keycloakProvider.tsx";
 
 export const Route = createFileRoute('/ingredients/')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
+
+  const keycloak = useKeycloak()
+
   const {isPending, error, data} = useQuery<Ingredient[]>({
     queryKey: ['ingredients'],
     queryFn: async (): Promise<Ingredient[]> => {
-      return recipeServiceClient(`ingredient`)
+      return recipeServiceClient(`ingredient`, keycloak.token)
     },
   })
 

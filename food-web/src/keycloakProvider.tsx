@@ -2,13 +2,13 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import keycloak from './keycloak';
 
-interface KeyCloakContext {
+export interface KeyCloakContextInterface {
   initialized: boolean,
   authenticated: boolean,
   token: string | undefined
 }
 
-const KeycloakContext = createContext<KeyCloakContext>({
+export const KeycloakContext = createContext<KeyCloakContextInterface>({
   initialized: false,
   authenticated: false,
   token: undefined
@@ -17,7 +17,7 @@ const KeycloakContext = createContext<KeyCloakContext>({
 export const useKeycloak = () => useContext(KeycloakContext);
 
 export const KeycloakProvider = ({children}) => {
-  const [auth, setAuth] = useState<KeyCloakContext>({
+  const [auth, setAuth] = useState<KeyCloakContextInterface>({
     initialized: false,
     authenticated: false,
     token: "",

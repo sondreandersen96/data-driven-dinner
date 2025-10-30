@@ -4,12 +4,16 @@ import RecipeCard from "@/routes/recipes/-components/RecipeCard/RecipeCard.tsx";
 // @ts-ignore
 import styles from "./RecipeList.module.css"
 import { recipeServiceClient } from "@/api/recipeServiceClient.ts";
+import { useKeycloak } from "@/keycloakProvider.tsx";
 
 const RecipeList: FC = () => {
+
+    const keycloak = useKeycloak()
+
     const {isPending, error, data } = useQuery<Recipe[]>({
         queryKey: ['recipes'],
         queryFn: async (): Promise<Recipe[]> => {
-            return recipeServiceClient(`recipe`)
+            return recipeServiceClient(`recipe`, keycloak.token)
         },
     })
 
