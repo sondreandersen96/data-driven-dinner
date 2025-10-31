@@ -17,12 +17,3 @@ class IndexResource {
         return "This is Recipe Service speaking (you are: ${identity.principal.name})"
     }
 }
-
-@Path("/api")
-class TestResource {
-
-    @GET
-    fun api(): String {
-        return "svar fra /api"
-    }
-}

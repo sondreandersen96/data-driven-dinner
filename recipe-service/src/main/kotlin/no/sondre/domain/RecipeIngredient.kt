@@ -18,7 +18,7 @@ class RecipeIngredient(
     @Id
     val ingredient: UUID
 ) {
-    fun complete(recipe: UUID?) {
+    fun populate(recipe: UUID?) {
         this.recipe = recipe
     }
 }

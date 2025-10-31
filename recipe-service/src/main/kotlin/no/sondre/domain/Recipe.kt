@@ -25,7 +25,7 @@ class Recipe(
 
     fun complete() {
         ingredients.forEach {
-            it.complete(recipe = id)
+            it.populate(recipe = id)
         }
     }
 }

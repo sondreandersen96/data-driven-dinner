@@ -20,5 +20,13 @@ CREATE TABLE public.recipeingredient
     amount     integer NOT NULL,
     ingredient uuid    NOT NULL,
     recipe     uuid    NOT NULL,
-    unit       character varying(255)
+    unit       character varying(255),
+
+    CONSTRAINT fk_ingredient
+        FOREIGN KEY (ingredient)
+            REFERENCES ingredient (id),
+
+    CONSTRAINT fk_recipe
+        FOREIGN KEY (recipe)
+            REFERENCES recipe (id)
 );
