@@ -3,13 +3,13 @@
 
 CREATE TABLE public.ingredient
 (
-    id   uuid NOT NULL,
+    id   uuid PRIMARY KEY,
     name character varying(255)
 );
 
 CREATE TABLE public.recipe
 (
-    id      uuid NOT NULL,
+    id      uuid PRIMARY KEY,
     name    character varying(255),
     youtube character varying(255),
     description TEXT
