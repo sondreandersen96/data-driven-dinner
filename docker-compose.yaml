@@ -39,16 +39,16 @@ services:
     networks:
       - application
 
-  throwaway-postgres:
-    image: postgres:16-alpine
-    restart: unless-stopped
-    environment:
-      # These must match the values used by the Quarkus application below
-      POSTGRES_USER: quarkus_user
-      POSTGRES_PASSWORD: quarkus_password
-      POSTGRES_DB: recipe_db
-    networks:
-      - application
+      #   throwaway-postgres:
+      #     image: postgres:16-alpine
+      #     restart: unless-stopped
+      #     environment:
+      #       # These must match the values used by the Quarkus application below
+      #       POSTGRES_USER: quarkus_user
+      #       POSTGRES_PASSWORD: quarkus_password
+      #       POSTGRES_DB: recipe_db
+      #     networks:
+      #       - application
 
 
 networks:
