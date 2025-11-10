@@ -1,24 +1,18 @@
 package no.sondre.domain
 
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.IdClass
 import java.util.*
 
-
-@Entity
-@IdClass(RecipeIngredientId::class)
 class RecipeIngredient(
-
     val amount: Int,
-    val unit: String, // TODO: make enum
-
-    @Id
-    var recipe: UUID? = null,
-    @Id
-    val ingredient: UUID
+    val unit: String,
+    val ingredient: Ingredient,
 ) {
-    fun populate(recipe: UUID?) {
-        this.recipe = recipe
+    var recipe: UUID = unInitializedUUID()
+
+    fun populate(recipeId: UUID) {
+        check(needsToBeInitialized()) { "Recipe is already set on recipe-ingredient" }
+        this.recipe = recipeId
     }
+
+    fun needsToBeInitialized() = recipe.needsToBeInitialized()
 }

@@ -14,6 +14,6 @@ class ExampleResourceTest {
             .`when`().get("/")
             .then()
             .statusCode(200)
-            .body(`is`("This is Recipe Service speaking"))
+            .body(`is`("This is Recipe Service speaking (you are: )"))
     }
 }

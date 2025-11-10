@@ -22,8 +22,7 @@ class RecipeService {
 
     fun new(recipe: Recipe): Recipe {
         recipe.initNew()
-        recipe.complete()
-        repo.save(recipe)
+        repo.new(recipe)
         return recipe
     }
 

@@ -9,10 +9,13 @@ import jakarta.transaction.Transactional
 import no.sondre.domain.Ingredient
 import no.sondre.domain.Recipe
 import no.sondre.domain.RecipeIngredient
-import no.sondre.domain.SQLRecipe
+import no.sondre.repository.SQLRecipe
 import no.sondre.repository.IngredientRepository
+import no.sondre.repository.RecipeIngredientId
 import no.sondre.repository.RecipeRepository
 import no.sondre.repository.SQLIngredient
+import no.sondre.resources.IngredientResource
+import no.sondre.resources.RecipeResource
 import java.util.*
 import java.util.logging.Logger
 
@@ -21,10 +24,10 @@ import java.util.logging.Logger
 class Startup {
 
     @Inject
-    private lateinit var ingredientRepository: IngredientRepository
+    private lateinit var ingredientResource: IngredientResource
 
     @Inject
-    private lateinit var recipeRepository: RecipeRepository
+    private lateinit var recipeResource: RecipeResource
 
     private val logger = Logger.getLogger("Startup logger")
 
@@ -32,22 +35,36 @@ class Startup {
     fun injectTestData(@Observes event: StartupEvent) {
         logger.info("Injecting some test data")
         val ingredients = listOf(
-            SQLIngredient(UUID.randomUUID(), "ingredient one"),
-            SQLIngredient(UUID.randomUUID(), "ingredient two")
+            Ingredient("ingredient one"),
+            Ingredient("ingredient two")
+        )
+        val recipeIngredient1 = RecipeIngredient(
+            amount = 1,
+            unit = "stones",
+            ingredient = ingredients[0]
+        )
+        val recipeIngredient2 = RecipeIngredient(
+            amount = 1,
+            unit = "stones",
+            ingredient = ingredients[1]
         )
         val recipes = listOf(
-            SQLRecipe(UUID.randomUUID(), "recipe one", youtube = "https://www.youtube.com/watch?v=JYg1UfVCfiw", ingredients = mutableListOf(), description = "beskrivelse"),
-            SQLRecipe(UUID.randomUUID(),"recipe two", ingredients = mutableListOf(), description = "beskrivelse"),
-            SQLRecipe(UUID.randomUUID(), "recipe three", ingredients = mutableListOf(), description = "beskrivelse"),
-            SQLRecipe(UUID.randomUUID(), "recipe four", ingredients = mutableListOf(), description = "beskrivelse"),
-            SQLRecipe(UUID.randomUUID(), "recipe five", ingredients = mutableListOf(), description = "beskrivelse")
+            Recipe(
+                name = "recipe one",
+                youtube = "https://www.youtube.com/watch?v=JYg1UfVCfiw",
+                ingredients = mutableListOf(),
+                description = "beskrivelse"
+            ),
+            Recipe("recipe two", ingredients = mutableListOf(recipeIngredient1), description = "beskrivelse"),
+            Recipe("recipe three", ingredients = mutableListOf(recipeIngredient2), description = "beskrivelse"),
+            Recipe(
+                "recipe four",
+                ingredients = mutableListOf(recipeIngredient1, recipeIngredient2),
+                description = "beskrivelse"
+            ),
+            Recipe("recipe five", ingredients = mutableListOf(), description = "beskrivelse")
         )
-        // Save initial recipe without ingredient (what we will have to do in the service)
-        recipeRepository.persist(recipes)
-        ingredientRepository.persist(ingredients)
-//        recipes.forEach { r ->
-//            r.addIngredient(RecipeIngredient(100, "dl", r.id, ingredient = ingredients[0].id))
-//            r.addIngredient(RecipeIngredient(100, "dl", r.id, ingredient = ingredients[1].id))
-//        }
+        ingredients.forEach { ingredientResource.save(it) }
+        recipes.forEach { recipeResource.save(it) }
     }
 }

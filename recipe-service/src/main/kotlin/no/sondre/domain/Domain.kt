@@ -9,11 +9,13 @@ fun Domain.toJsonString(objectMapper: ObjectMapper): String {
     return printer.writeValueAsString(this)
 }
 
+
 @NoArg
 abstract class Domain {
+
     var id: UUID? = null
 
-    fun initNew() {
+    open fun initNew() {
         assertNoId()
         id = UUID.randomUUID()
     }

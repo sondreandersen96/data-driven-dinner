@@ -22,6 +22,10 @@ class IngredientService {
         return repo.findByIdOrThrow(id)
     }
 
+    fun load(ids: List<UUID>): List<Ingredient> {
+        return repo.findByIdOrThrow(ids)
+    }
+
     fun save(ingredient: Ingredient): Ingredient {
         ingredient.initNew()
         return repo.save(ingredient)

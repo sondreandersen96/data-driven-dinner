@@ -44,6 +44,11 @@ class IngredientRepository : PanacheRepository<SQLIngredient> {
         return sql.toPOJO()
     }
 
+    fun findByIdOrThrow(ids: List<UUID>): List<Ingredient> {
+        val sqls = list("id", ids)
+        return sqls.map { it.toPOJO() }
+    }
+
     private fun findSQLByIdOrThrow(id: UUID): SQLIngredient {
         return find("id", id).firstResult() ?: throw NotFoundException("Ingredient with ID $id not found")
     }

@@ -1,13 +1,15 @@
 package no.sondre
 
 import io.quarkus.test.junit.QuarkusTest
-import io.restassured.RestAssured.*
+import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
 import no.sondre.domain.Ingredient
 import no.sondre.domain.Recipe
 import no.sondre.domain.RecipeIngredient
+import no.sondre.domain.unInitializedUUID
 import org.apache.http.HttpStatus
-import org.hamcrest.Matchers.*
+import org.hamcrest.Matchers.`is`
+import org.hamcrest.Matchers.notNullValue
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import kotlin.random.Random
@@ -99,28 +101,30 @@ class RecipeResourceTest {
 
         // Watch out for the commonly used Recipe object in all the tests
         ingredients.forEach {
-            recipe.addIngredient(
+            recipe._addIngredientWithoutId(
                 RecipeIngredient(
                     amount = Random.nextInt(0, 1000),
                     unit = "freedom unit ${Random.nextInt(0, 1000)}",
-                    ingredient = it.idSafe()
+                    ingredient = it,
                 )
             )
         }
 
-        val response = given()
+        val rawResponse = given()
             .contentType(ContentType.JSON)
             .body(recipe)
             .`when`()
             .post(baseUrl)
             .then()
             .statusCode(HttpStatus.SC_OK)
-        val respRecipe = response.extract().`as`(Recipe::class.java)
-        assert(respRecipe.name == recipe.name) { "name must be same as name of input object" }
+        val recipeResponse = rawResponse.extract().`as`(Recipe::class.java)
+        assert(recipeResponse.name == recipe.name) { "name must be same as name of input object" }
 
-        assert(respRecipe.loadIngredients().filter {
-            it.recipe == respRecipe.id
-        }.size == recipe.loadIngredients().size) { "all added recipeIngredients must have been given a recipe ID that corresponds with the id of the Recipe" }
+        recipeResponse.ingredients.forEach { assert(it.recipe != unInitializedUUID()) {"RecipeIngredient must have recipe reference set"} }
+
+        assert(recipeResponse.ingredients.filter {
+            it.recipe == recipeResponse.id
+        }.size == recipe.ingredients.size) { "all added recipeIngredients must have been given a recipe ID that corresponds with the id of the Recipe" }
     }
 
     @Test
@@ -136,7 +140,12 @@ class RecipeResourceTest {
         val recipe = listRecipes()[0]
         val newName = "new name"
         recipe.name = newName
-        recipe.addIngredient(RecipeIngredient(12345, "freedomUnit2", recipe.id, ingredients[0].idSafe()))
+        recipe._addIngredientWithoutId(
+            RecipeIngredient(
+                12345,
+                "freedomUnit2",
+                ingredients[0]
+            ).apply { populate(recipe.idSafe()) })
 
         val response = given()
             .contentType(ContentType.JSON)
@@ -147,7 +156,12 @@ class RecipeResourceTest {
             .statusCode(HttpStatus.SC_OK)
         val respRecipe = response.extract().`as`(Recipe::class.java)
         assertEquals(respRecipe.name, newName)
-        val newIngredient = recipe.loadIngredients().filter { it.amount == 12345 }
+        val newIngredient = recipe.ingredients.filter { it.amount == 12345 }
         assert(newIngredient.size == 1)
+    }
+
+    @Test
+    fun `404 when trying to update non-existing recipe`() {
+
     }
 }
