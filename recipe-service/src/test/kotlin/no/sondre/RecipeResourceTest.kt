@@ -19,7 +19,8 @@ class RecipeResourceTest {
     val baseUrl = "/recipe"
     private val ingredients = listOf(
         Ingredient("ingredient one"),
-        Ingredient("ingredient two")
+        Ingredient("ingredient two"),
+        Ingredient("ingredient three")
     )
 
     private final val recipe = Recipe("recipe one", ingredients = mutableListOf(), description = "beskrivelse")
@@ -100,7 +101,7 @@ class RecipeResourceTest {
         val ingredients = listIngredients()
 
         // Watch out for the commonly used Recipe object in all the tests
-        ingredients.forEach {
+        ingredients.take(2).forEach {
             recipe._addIngredientWithoutId(
                 RecipeIngredient(
                     amount = Random.nextInt(0, 1000),
@@ -120,7 +121,7 @@ class RecipeResourceTest {
         val recipeResponse = rawResponse.extract().`as`(Recipe::class.java)
         assert(recipeResponse.name == recipe.name) { "name must be same as name of input object" }
 
-        recipeResponse.ingredients.forEach { assert(it.recipe != unInitializedUUID()) {"RecipeIngredient must have recipe reference set"} }
+        recipeResponse.ingredients.forEach { assert(it.recipe != unInitializedUUID()) { "RecipeIngredient must have recipe reference set" } }
 
         assert(recipeResponse.ingredients.filter {
             it.recipe == recipeResponse.id
@@ -144,8 +145,9 @@ class RecipeResourceTest {
             RecipeIngredient(
                 12345,
                 "freedomUnit2",
-                ingredients[0]
-            ).apply { populate(recipe.idSafe()) })
+                ingredients[2]
+            )
+        )
 
         val response = given()
             .contentType(ContentType.JSON)
@@ -154,10 +156,15 @@ class RecipeResourceTest {
             .put(baseUrl + "/${recipe.id}")
             .then()
             .statusCode(HttpStatus.SC_OK)
+
         val respRecipe = response.extract().`as`(Recipe::class.java)
+
         assertEquals(respRecipe.name, newName)
-        val newIngredient = recipe.ingredients.filter { it.amount == 12345 }
+
+        val newIngredient = respRecipe.ingredients.filter { it.amount == 12345 }
         assert(newIngredient.size == 1)
+
+        assert(respRecipe.ingredients[0].ingredient.id != null)
     }
 
     @Test

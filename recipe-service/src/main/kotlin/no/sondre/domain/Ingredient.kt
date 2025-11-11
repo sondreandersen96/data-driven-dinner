@@ -2,7 +2,7 @@ package no.sondre.domain
 
 import java.util.UUID
 
-class Ingredient(
+data class Ingredient(
     var name: String,
 ) : Domain() {
     companion object {
@@ -15,5 +15,9 @@ class Ingredient(
 
     fun populate(name: String) {
         this.name = name
+    }
+
+    override fun copy(): Ingredient {
+        return this.copy()
     }
 }

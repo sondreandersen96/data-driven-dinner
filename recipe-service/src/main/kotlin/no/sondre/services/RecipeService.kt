@@ -27,6 +27,7 @@ class RecipeService {
     }
 
     fun update(new: Recipe): Recipe {
+        new.prepareUpdate()
         return repo.update(new)
     }
 }

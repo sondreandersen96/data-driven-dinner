@@ -2,7 +2,7 @@ package no.sondre.domain
 
 import java.util.*
 
-class RecipeIngredient(
+data class RecipeIngredient(
     val amount: Int,
     val unit: String,
     val ingredient: Ingredient,

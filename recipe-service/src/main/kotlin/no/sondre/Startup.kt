@@ -31,7 +31,7 @@ class Startup {
 
     private val logger = Logger.getLogger("Startup logger")
 
-    @Transactional
+    //@Transactional
     fun injectTestData(@Observes event: StartupEvent) {
         logger.info("Injecting some test data")
         val ingredients = listOf(
@@ -65,6 +65,8 @@ class Startup {
             Recipe("recipe five", ingredients = mutableListOf(), description = "beskrivelse")
         )
         ingredients.forEach { ingredientResource.save(it) }
-        recipes.forEach { recipeResource.save(it) }
+        recipes.forEach {
+            recipeResource.save(it.copy())
+        }
     }
 }

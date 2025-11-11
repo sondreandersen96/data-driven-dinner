@@ -1,6 +1,6 @@
 package no.sondre.domain
 
-class Recipe(
+data class Recipe(
     var name: String,
     var youtube: String? = null,
     val ingredients: MutableList<RecipeIngredient> = mutableListOf(),
@@ -15,8 +15,9 @@ class Recipe(
     fun prepareUpdate() {
         populateRecipeIngredients()
     }
+
     private fun populateRecipeIngredients() {
-        ingredients.forEach { it.populate(idSafe())}
+        ingredients.forEach { it.populate(idSafe()) }
     }
 
     // Properties must be changed using a function so that Hibernate proxy will work
@@ -32,5 +33,9 @@ class Recipe(
     // Should only be used for test methods
     fun _addIngredientWithoutId(i: RecipeIngredient) {
         ingredients.add(i)
+    }
+
+    override fun copy(): Recipe {
+        return this.copy(ingredients = this.ingredients.map { it.copy() }.toMutableList())
     }
 }

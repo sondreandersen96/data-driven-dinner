@@ -6,7 +6,6 @@ import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
 import jakarta.inject.Inject
 import no.sondre.domain.Ingredient
-import no.sondre.domain.toJsonString
 import org.apache.http.HttpStatus
 import org.hamcrest.Matchers.*
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -32,7 +31,7 @@ class IngredientResourceTest {
 //        ingredientMap["name"] = "Test Ingredient: ${Random.nextInt(0, 100_000)}"
         val ingredient = Ingredient(name = "Test ingredient")
 //        val json = mapper.writer().withDefaultPrettyPrinter().writeValueAsString(ingredient)
-        val json = ingredient.toJsonString(mapper)
+        val json = ingredient.toJsonString()
         val response = given()
             .contentType(ContentType.JSON)
 //            .body(ingredientMap)
@@ -70,7 +69,7 @@ class IngredientResourceTest {
         val ingredient = Ingredient(name = "strawberry")
         ingredient.withId(UUID.randomUUID())
         given().contentType(ContentType.JSON)
-            .body(ingredient.toJsonString(mapper))
+            .body(ingredient.toJsonString())
             .`when`()
             .put(baseUrl + "/" + UUID.randomUUID())
             .then()
@@ -94,7 +93,7 @@ class IngredientResourceTest {
         val ingredient = saveIngredient(Ingredient(name = "original name"))
         ingredient.name = "new name"
         given().contentType(ContentType.JSON)
-            .body(ingredient.toJsonString(mapper))
+            .body(ingredient.toJsonString())
             .`when`()
             .put(baseUrl + "/" + ingredient.id)
             .then().statusCode(HttpStatus.SC_OK)
@@ -112,7 +111,7 @@ class IngredientResourceTest {
     private fun saveIngredient(i: Ingredient): Ingredient {
         return given()
             .contentType(ContentType.JSON)
-            .body(i.toJsonString(mapper))
+            .body(i.toJsonString())
             .`when`()
             .post("/ingredient")
             .then()

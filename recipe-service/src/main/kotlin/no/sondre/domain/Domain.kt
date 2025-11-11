@@ -3,12 +3,7 @@ package no.sondre.domain
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.ws.rs.InternalServerErrorException
 import java.util.*
-
-fun Domain.toJsonString(objectMapper: ObjectMapper): String {
-    val printer = objectMapper.writer().withDefaultPrettyPrinter()
-    return printer.writeValueAsString(this)
-}
-
+import kotlin.jvm.java
 
 @NoArg
 abstract class Domain {
@@ -43,4 +38,15 @@ abstract class Domain {
     fun withId(id: UUID) {
         if (!hasId) this.id = id
     }
+
+    companion object {
+        private val objectMapper = ObjectMapper()
+    }
+
+    fun toJsonString(): String {
+        val printer = objectMapper.writer().withDefaultPrettyPrinter()
+        return printer.writeValueAsString(this)
+    }
+
+    abstract fun copy(): Domain
 }
