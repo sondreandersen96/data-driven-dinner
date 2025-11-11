@@ -9,6 +9,13 @@ class Recipe(
 
     override fun initNew() {
         super.initNew()
+        populateRecipeIngredients()
+    }
+
+    fun prepareUpdate() {
+        populateRecipeIngredients()
+    }
+    private fun populateRecipeIngredients() {
         ingredients.forEach { it.populate(idSafe())}
     }
 
