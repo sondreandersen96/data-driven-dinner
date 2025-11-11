@@ -8,7 +8,7 @@ import jakarta.persistence.Table
 import jakarta.transaction.Transactional
 import jakarta.ws.rs.NotFoundException
 import no.sondre.domain.Ingredient
-import java.util.UUID
+import java.util.*
 
 @Entity
 @Table(name="ingredient")
@@ -37,7 +37,6 @@ class SQLIngredient(
 
 @ApplicationScoped
 @Transactional
-// TODO: vurder å bruke komposisjon i stedet for arv her. Dvs. at vi heller injecter PanacheRepo. Det vil gjøre dette interfacet mye simplere for servicen. Siden den slipper å få masse metoder som returnerer SQL versjon av objektetet
 class IngredientRepository : PanacheRepository<SQLIngredient> {
     fun findByIdOrThrow(id: UUID): Ingredient {
         val sql = findSQLByIdOrThrow(id)
