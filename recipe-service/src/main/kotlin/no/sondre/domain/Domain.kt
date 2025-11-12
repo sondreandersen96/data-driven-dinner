@@ -1,9 +1,9 @@
 package no.sondre.domain
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import jakarta.ws.rs.BadRequestException
 import jakarta.ws.rs.InternalServerErrorException
 import java.util.*
-import kotlin.jvm.java
 
 @NoArg
 abstract class Domain {
@@ -26,6 +26,12 @@ abstract class Domain {
     fun assertId() {
         if (!hasId) {
             throw InternalServerErrorException("No id set on object")
+        }
+    }
+
+    fun assertId(id: UUID) {
+        if (id != this.idSafe()) {
+            throw BadRequestException("Object with id: ${this.idSafe()} cannot update resource with id: $id")
         }
     }
 

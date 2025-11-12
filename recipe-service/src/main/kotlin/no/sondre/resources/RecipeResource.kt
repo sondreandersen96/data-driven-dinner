@@ -31,9 +31,7 @@ class RecipeResource {
     @PUT
     @Path("{id}")
     fun update(@PathParam("id") id: UUID, recipe: Recipe): Recipe {
-        if (id != recipe.idSafe()) {
-            throw BadRequestException("Object with id: ${recipe.id} cannot update resource with id: $id")
-        }
+        recipe.assertId(id)
         return service.update(recipe)
     }
 }

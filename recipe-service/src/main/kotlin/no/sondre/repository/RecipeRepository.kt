@@ -96,8 +96,8 @@ class RecipeRepository : PanacheRepository<SQLRecipe> {
     }
 
     fun update(new: Recipe): Recipe {
-        updateRecipeIngredients(new.idSafe(), new.ingredients.fromPOJOs())
         val current = findSQLByIdOrThrow(new.idSafe())
+        updateRecipeIngredients(new.idSafe(), new.ingredients.fromPOJOs())
         current.update(new)
         return current.toPOJO(recipeIngredientRepository)
     }
