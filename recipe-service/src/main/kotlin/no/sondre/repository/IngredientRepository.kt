@@ -38,17 +38,17 @@ class SQLIngredient(
 @ApplicationScoped
 @Transactional
 class IngredientRepository : PanacheRepository<SQLIngredient> {
-    fun findByIdOrThrow(id: UUID): Ingredient {
-        val sql = findSQLByIdOrThrow(id)
+    fun findById(id: UUID): Ingredient {
+        val sql = findSQLById(id)
         return sql.toPOJO()
     }
 
-    fun findByIdOrThrow(ids: List<UUID>): List<Ingredient> {
-        val sqls = list("id", ids)
+    fun findById(ids: List<UUID>): List<Ingredient> {
+        val sqls = list("id in ?1", ids)
         return sqls.map { it.toPOJO() }
     }
 
-    private fun findSQLByIdOrThrow(id: UUID): SQLIngredient {
+    private fun findSQLById(id: UUID): SQLIngredient {
         return find("id", id).firstResult() ?: throw NotFoundException("Ingredient with ID $id not found")
     }
 
@@ -63,7 +63,7 @@ class IngredientRepository : PanacheRepository<SQLIngredient> {
     }
 
     fun update(new: Ingredient): Ingredient {
-        val current = findSQLByIdOrThrow(new.idSafe())
+        val current = findSQLById(new.idSafe())
         current.update(new)
         return current.toPOJO()
     }

@@ -17,7 +17,7 @@ class RecipeService {
     }
 
     fun load(id: UUID): Recipe {
-        return repo.findByIdOrThrow(id)
+        return repo.findById(id)
     }
 
     fun new(recipe: Recipe): Recipe {

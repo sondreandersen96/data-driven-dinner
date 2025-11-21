@@ -36,8 +36,14 @@ class SQLRecipe(
         throw InternalServerErrorException("use custom method instead")
     }
 
-    fun toPOJO(recipeIngredientRepo: RecipeIngredientRepository): Recipe {
+    fun toPOJO(recipeIngredientRepo: RecipeIngredientRepository, ingredientService: IngredientService): Recipe {
         val recipeIngredients = recipeIngredientRepo.load(id).map { it.toPOJO() }.toMutableList()
+        val ingredientIds = recipeIngredients.map { it.ingredient.idSafe() }
+        val ingredients = ingredientService.load(ingredientIds)
+        recipeIngredients.forEach { ri ->
+            val ingredient = ingredients.find { it.idSafe() == ri.ingredient.idSafe() }                     ?: throw InternalServerErrorException("Could not find ingredient")
+            ri.populate(ingredient)
+        }
         val pojo = Recipe(name, youtube, recipeIngredients, description)
         pojo.withId(id)
         return pojo
@@ -66,25 +72,15 @@ class RecipeRepository : PanacheRepository<SQLRecipe> {
     private lateinit var recipeIngredientRepository: RecipeIngredientRepository
 
     fun all(): List<Recipe> {
-        return listAll().map { it.toPOJO(recipeIngredientRepository) }
+        return listAll().map { it.toPOJO(recipeIngredientRepository, ingredientService) }
     }
 
-    private fun findSQLByIdOrThrow(id: UUID): SQLRecipe {
+    private fun findSQLById(id: UUID): SQLRecipe {
         return find("id", id).firstResult() ?: throw NotFoundException("Recipe with ID $id not found")
     }
 
-    fun findByIdOrThrow(id: UUID): Recipe {
-        val r = findSQLByIdOrThrow(id).toPOJO(recipeIngredientRepository)
-        val ingredientIds = r.ingredients.map { it.ingredient.idSafe() }
-        val ingredients = ingredientService.load(ingredientIds)
-        r.ingredients.forEach { recipeIngredient ->
-            {
-                val ingredient = ingredients.find { it.idSafe() == recipeIngredient.ingredient.idSafe() }
-                    ?: throw InternalServerErrorException("Could not find ingredient")
-                recipeIngredient.ingredient.populate(ingredient.name)
-            }
-        }
-        return r
+    fun findById(id: UUID): Recipe {
+        return findSQLById(id).toPOJO(recipeIngredientRepository, ingredientService)
     }
 
     fun new(recipe: Recipe) {
@@ -96,10 +92,10 @@ class RecipeRepository : PanacheRepository<SQLRecipe> {
     }
 
     fun update(new: Recipe): Recipe {
-        val current = findSQLByIdOrThrow(new.idSafe())
+        val current = findSQLById(new.idSafe())
         updateRecipeIngredients(new.idSafe(), new.ingredients.fromPOJOs())
         current.update(new)
-        return current.toPOJO(recipeIngredientRepository)
+        return current.toPOJO(recipeIngredientRepository, ingredientService)
     }
 
     private fun updateRecipeIngredients(recipeId: UUID, new: List<SQLRecipeIngredient>) {

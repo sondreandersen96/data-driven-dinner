@@ -3,19 +3,31 @@ package no.sondre
 import io.quarkus.test.junit.QuarkusTest
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
+import jakarta.inject.Inject
 import no.sondre.domain.Ingredient
 import no.sondre.domain.Recipe
 import no.sondre.domain.RecipeIngredient
 import no.sondre.domain.unInitializedUUID
+import no.sondre.repository.IngredientRepository
+import no.sondre.repository.RecipeRepository
 import org.apache.http.HttpStatus
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.notNullValue
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.random.Random
 
 @QuarkusTest
 class RecipeResourceTest {
+
+    @Inject
+    lateinit var recipeRepository: RecipeRepository
+    @Inject
+    lateinit var recipeIngredientRepository: IngredientRepository
+    @Inject
+    lateinit var ingredientRepository: IngredientRepository
+
     val baseUrl = "/recipe"
     private val ingredients = listOf(
         Ingredient("ingredient one"),
@@ -24,6 +36,13 @@ class RecipeResourceTest {
     )
 
     private final val recipe = Recipe("recipe one", ingredients = mutableListOf(), description = "beskrivelse")
+
+    @BeforeEach
+    fun setup() {
+        recipeRepository.deleteAll()
+        recipeIngredientRepository.deleteAll()
+        ingredientRepository.deleteAll()
+    }
 
     fun assureIngredientsExists() {
         val savedIngredients = given().contentType(ContentType.JSON)
@@ -101,12 +120,12 @@ class RecipeResourceTest {
         val ingredients = listIngredients()
 
         // Watch out for the commonly used Recipe object in all the tests
-        ingredients.take(2).forEach {
+        ingredients.take(2).forEachIndexed { index, ingredient ->
             recipe._addIngredientWithoutId(
                 RecipeIngredient(
-                    amount = Random.nextInt(0, 1000),
+                    amount = index + 10,
                     unit = "freedom unit ${Random.nextInt(0, 1000)}",
-                    ingredient = it,
+                    ingredient = ingredient,
                 )
             )
         }
@@ -129,10 +148,19 @@ class RecipeResourceTest {
     }
 
     @Test
-    fun `can list all recipes`() {
+    fun `can list all recipes that does NOT have ingredients`() {
         `can save recipe without ingredients`()
         val responseRecipes = listRecipes()
         assert(responseRecipes.isNotEmpty()) { "There should be a least one saved recipe" }
+    }
+
+    @Test fun `can list all recipes that DOES have ingredients`() {
+       `can save recipe with ingredients`()
+        val responseRecipes = listRecipes()
+        assert(responseRecipes.isNotEmpty()) { "Response should not be empty" }
+        val firstResponseRecipe = responseRecipes.first()
+        val responseRecipeIngredients = firstResponseRecipe.ingredients.sortedBy { it.amount }
+        assert(responseRecipeIngredients.first().amount == 10)
     }
 
     @Test
