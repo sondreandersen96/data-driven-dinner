@@ -1,4 +1,4 @@
 interface Ingredient {
-    id: string,
+    id: string | null,
     name: string
 }

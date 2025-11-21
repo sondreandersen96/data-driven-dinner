@@ -12,7 +12,7 @@ function HomeComponent() {
   console.log("authenticated: ", authenticated)
 
 
-  const {isPending, error, data} = useQuery<string>({
+  const {isPending, data} = useQuery<string>({
     queryKey: ['ingredients'],
     queryFn: async (): Promise<string> => {
       return recipeServiceClient(``, token)

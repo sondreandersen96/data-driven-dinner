@@ -37,8 +37,8 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
   if (!isOpen) return null
 
   return (
-    <div className={styles["modal-overlay"]}>
-      <div className={styles["modal-content"]}>
+    <div className={"modal-overlay"}>
+      <div className={"modal-content"}>
         <h2>{recipe ? "Edit Recipe" : "Add New Recipe"}</h2>
         <form.Field
           name="name"
