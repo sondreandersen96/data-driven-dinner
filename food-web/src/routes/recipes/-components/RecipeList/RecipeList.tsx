@@ -20,7 +20,7 @@ const RecipeList: FC = () => {
     if (isPending) return 'Loading'
     if (error) return 'An error has occured: ' + error.message
     return (
-        <div className={styles['recipe-list']}>
+        <div className={'cards-container'}>
             {data.map((r) => (
                 <div key={r.id}>
                     <RecipeCard recipe={r}/>

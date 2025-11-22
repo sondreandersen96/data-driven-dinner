@@ -14,13 +14,12 @@ const RecipeCard: FC<Props> = ({recipe}) => {
 
     return (
         <Link
-            className={styles['recipe-card']}
+            className={'card'}
             to={`/recipes/${recipe.id}`}
         >
             <img className={styles['recipe-card-image']} src={image}/>
             <div>{recipe.name}</div>
         </Link>
-
     )
 }
 

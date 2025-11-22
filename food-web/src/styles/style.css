@@ -29,3 +29,72 @@ button {
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
+
+.card {
+    display: grid;
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    outline: 0.5px solid gray;
+    background-color: var(--cream);
+}
+
+.card:hover {
+    background-color: var(--cream-darker);
+    transform: translate(0px, -3px)
+}
+
+.card:active {
+    background-color: darkgray;
+    color: black;
+}
+
+.cards-container {
+    display: grid;
+    justify-content: center;
+    align-content: flex-start;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    padding: 16px;
+    background-color: white;
+}
+
+.text-micro {
+    font-weight: 400;
+    font-size: 0.75rem;
+    line-height: 1.6;
+}
+
+.text-1 {
+    font-weight: 400;
+    font-size: 1.5rem;
+    line-height: 1.6;
+}
+
+.text-2 {
+    font-weight: 400;
+    font-size: 1.125rem;
+    line-height: 1.6;
+}
+.text-2-strong {
+    font-weight: 600;
+    font-size: 1.125rem;
+    line-height: 1.6;
+}
+.text-2-light {
+    font-weight: 300;
+    font-size: 1.125rem;
+    line-height: 1.6;
+}
+.text-3 {
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+.text-3-strong {
+    font-weight: 600;
+    font-size: 1rem;
+    line-height: 1.6;
+}

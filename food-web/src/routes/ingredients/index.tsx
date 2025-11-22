@@ -4,6 +4,7 @@ import { recipeServiceClient } from "@/api/recipeServiceClient.ts";
 import { useKeycloak } from "@/keycloakProvider.tsx";
 import { IngredientForm } from "@/components/IngredientForm/IngredientForm.tsx";
 import { useState } from "react";
+import { IngredientCard } from './-components/IngredientCard';
 
 export const Route = createFileRoute('/ingredients/')({
   component: RouteComponent,
@@ -49,12 +50,12 @@ function RouteComponent() {
       />
       <button onClick={() => setIngredientModalOpen(true)}>New ingredient</button>
       <h1>Ingredients</h1>
-      {data.map((i) => (
-          <div>
-            {i.name}
-          </div>
-        )
-      )}
+      <div className={"cards-container"}>
+        {data.map((i) => (
+            <IngredientCard key={i.id} ingredient={i}/>
+          )
+        )}
+      </div>
     </div>
   )
 }
