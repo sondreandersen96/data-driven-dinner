@@ -199,4 +199,17 @@ class RecipeResourceTest {
     fun `404 when trying to update non-existing recipe`() {
 
     }
+
+    @Test
+    fun `can delete recipe and corresponding recipe ingredients`() {
+        `can save recipe with ingredients`()
+        val recipe = listRecipes()[0]
+        assert(recipe.ingredients.isNotEmpty()) { "Recipe we are about to delete should have recipe ingredients to make sure we can delete them as well" }
+        given()
+            .contentType(ContentType.JSON)
+            .`when`()
+            .delete(baseUrl + "/${recipe.id}")
+            .then()
+            .statusCode(HttpStatus.SC_NO_CONTENT)
+    }
 }

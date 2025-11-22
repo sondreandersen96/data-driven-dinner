@@ -34,4 +34,10 @@ class RecipeResource {
         recipe.assertId(id)
         return service.update(recipe)
     }
+
+    @DELETE
+    @Path("{id}")
+    fun delete(@PathParam("id") id: UUID) {
+        service.delete(id)
+    }
 }

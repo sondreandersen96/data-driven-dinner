@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional
 import jakarta.ws.rs.InternalServerErrorException
 import jakarta.ws.rs.NotFoundException
 import no.sondre.domain.Recipe
+import no.sondre.domain.RecipeIngredient
 import no.sondre.services.IngredientService
 import java.util.*
 
@@ -119,5 +120,14 @@ class RecipeRepository : PanacheRepository<SQLRecipe> {
             val d = old.find { it.compositeKey() == deleteKey }!!
             recipeIngredientRepository.delete(d)
         }
+    }
+
+    fun delete(recipe: Recipe) {
+        deleteRecipeIngredients(recipe.ingredients)
+        delete(SQLRecipe.fromPOJO(recipe))
+    }
+
+    private fun deleteRecipeIngredients(ri: List<RecipeIngredient>) {
+        ri.forEach { recipeIngredientRepository.delete(it) }
     }
 }

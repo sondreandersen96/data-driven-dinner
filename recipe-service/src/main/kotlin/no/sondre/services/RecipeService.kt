@@ -30,4 +30,9 @@ class RecipeService {
         new.prepareUpdate()
         return repo.update(new)
     }
+
+    fun delete(id: UUID) {
+        val recipe = load(id)
+        repo.delete(recipe)
+    }
 }

@@ -88,6 +88,14 @@ class RecipeIngredientRepository : PanacheRepository<SQLRecipeIngredient> {
             delete(sql)
         }
     }
+
+    fun delete(recipeIngredient: RecipeIngredient) {
+        delete(
+            "recipe = ?1 and ingredient = ?2",
+            recipeIngredient.recipe,
+            recipeIngredient.ingredient.id as Any
+        )
+    }
 }
 
 fun List<RecipeIngredient>.fromPOJOs(): MutableList<SQLRecipeIngredient> {
