@@ -56,6 +56,11 @@ class IngredientRepository : PanacheRepository<SQLIngredient> {
         return listAll().map { it.toPOJO() }
     }
 
+    fun all(nameQuery: String): List<Ingredient> {
+        val searchInput = "%$nameQuery%"
+        return list("name like ?1", searchInput).map { it.toPOJO() }
+    }
+
     fun save(ingredient: Ingredient): Ingredient {
         val sql = SQLIngredient.fromPOJO(ingredient)
         persist(sql)

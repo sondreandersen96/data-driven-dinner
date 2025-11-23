@@ -18,23 +18,12 @@ import java.util.*
 class IngredientResourceTest {
     val baseUrl = "/ingredient"
 
-    @Inject
-    lateinit var mapper: ObjectMapper
-    //    @BeforeEach
-//    fun mockIngredientRepository() {
-//        Mockito.`when`(repo.listAll()).thenReturn(ingredients)
-//    }
-
     @Test
     fun `can save new ingredient`() {
-//        val ingredientMap = mutableMapOf<String, String>()
-//        ingredientMap["name"] = "Test Ingredient: ${Random.nextInt(0, 100_000)}"
         val ingredient = Ingredient(name = "Test ingredient")
-//        val json = mapper.writer().withDefaultPrettyPrinter().writeValueAsString(ingredient)
         val json = ingredient.toJsonString()
         val response = given()
             .contentType(ContentType.JSON)
-//            .body(ingredientMap)
             .body(json)
             .`when`()
             .post(baseUrl)
@@ -44,7 +33,6 @@ class IngredientResourceTest {
                 "id", notNullValue(),
             )
         val respIngredient = response.extract().`as`(Ingredient::class.java)
-//        assertEquals(respIngredient.name, ingredientMap["name"])
         assertEquals(respIngredient.name, ingredient.name)
     }
 
@@ -106,6 +94,22 @@ class IngredientResourceTest {
             .extract()
             .`as`(Ingredient::class.java)
         assertEquals(ingredient.name, updatedIngredient.name)
+    }
+
+    @Test
+    fun `can search for name of ingredient`() {
+        val ingredient = Ingredient("æøæøæ et komplisert navn")
+        saveIngredient(ingredient)
+        val nameQuery = "æøæøæ et kompli"
+        val searchResult = given()
+            .contentType(ContentType.JSON)
+            .`when`()
+            .get(baseUrl + "?nameQuery=$nameQuery")
+            .then()
+            .statusCode(HttpStatus.SC_OK)
+            .extract()
+            .`as`(Array<Ingredient>::class.java)
+        assertEquals(searchResult.first().name, ingredient.name)
     }
 
     private fun saveIngredient(i: Ingredient): Ingredient {

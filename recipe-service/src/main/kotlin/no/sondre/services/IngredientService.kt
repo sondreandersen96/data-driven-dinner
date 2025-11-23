@@ -14,7 +14,8 @@ class IngredientService {
     @Inject
     private lateinit var repo: IngredientRepository
 
-    fun list(): List<Ingredient> {
+    fun list(nameQuery: String?): List<Ingredient> {
+        if (nameQuery != null) return repo.all(nameQuery)
         return repo.all()
     }
 
