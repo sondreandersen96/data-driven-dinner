@@ -1,8 +1,6 @@
 import { recipeServiceUrl } from "@/globals.ts";
 
-
-export async function recipeServiceClient<T>(endpoint: string, token: string | undefined, options: RequestInit = {}): Promise<T> {
-
+export async function recipeServiceClientConfig(token: string | undefined, options: RequestInit = {}): Promise<RequestInit> {
   const defaultHeaders = {
     'X-Requested-With': 'JavaScript',
     'Authorization': `Bearer ${token}`
@@ -20,11 +18,17 @@ export async function recipeServiceClient<T>(endpoint: string, token: string | u
     credentials: 'include',
     headers: mergedHeaders,
   }
+  return config
+}
 
+const recipeServiceUrlFactory = (endpoint: string): string => {
+  return `${recipeServiceUrl}/${endpoint}`
+}
+
+export async function recipeServiceClient<T>(endpoint: string, token: string | undefined, options: RequestInit = {}): Promise<T> {
+  const config = await recipeServiceClientConfig(token, options)
   try {
-    const url = `${recipeServiceUrl}/${endpoint}`
-    console.log("API client is about to make request")
-    const response = await fetch(url, config)
+    const response = await fetch(recipeServiceUrlFactory(endpoint), config)
     if (!response.ok) {
       console.log(`Backend response not OK (${response.status})`)
       // if (response.status === 499) {
@@ -34,6 +38,20 @@ export async function recipeServiceClient<T>(endpoint: string, token: string | u
       // }
     }
     return await response.json()
+  } catch (error) {
+    console.log("API request failed: ", error)
+    throw error
+  }
+}
+
+export async function recipeServiceClientNoContent(endpoint: string, token: string | undefined, options: RequestInit = {}) {
+  const config = await recipeServiceClientConfig(token, options)
+  try {
+    const response = await fetch(recipeServiceUrlFactory(endpoint), config)
+    const isNoContent = response.status === 204
+    if (!isNoContent) {
+      console.log(`Backend response not NO CONTENT(${response.status})`)
+    }
   } catch (error) {
     console.log("API request failed: ", error)
     throw error
