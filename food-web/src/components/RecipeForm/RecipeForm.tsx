@@ -31,6 +31,7 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
         },
       )
       closeNewRecipeModal()
+      recipe = null
     }
   })
 
