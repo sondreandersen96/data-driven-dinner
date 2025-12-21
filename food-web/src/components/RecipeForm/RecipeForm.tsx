@@ -202,13 +202,18 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
                       onChange={(e) => setAmount(e.target.value === "" ? "" : Number(e.target.value))}
                       className={styles.amountInput}
                     />
-                    <input
-                      type="text"
-                      placeholder="Enhet (g, dl, stk...)"
+                    <select
                       value={unit}
                       onChange={(e) => setUnit(e.target.value)}
                       className={styles.unitInput}
-                    />
+                    >
+                      <option value="">Velg enhet</option>
+                      <option value="g">gram</option>
+                      <option value="dl">dl</option>
+                      <option value="l">l</option>
+                      <option value="ts">ts</option>
+                      <option value="ss">ss</option>
+                    </select>
                     <button
                       type="button"
                       disabled={amount === "" || !unit}
