@@ -26,10 +26,9 @@ function RootComponent() {
 
       <div className={styles["header-row-container"]}>
         <div className={styles["leftItems"]}>
-          <Link to="/">Home</Link>{' '}
-          <Link to="/recipes">Oppskrifter</Link>{' '}
+          <Link to="/">Oppskrifter</Link>{' '}
           <Link to="/inspiration">Inspirasjon</Link>{' '}
-          <Link to="/ingredients">Ingredients</Link>
+          <Link to="/ingredients">Ingredienser</Link>
         </div>
         <div className={styles["rightItems"]}>
           <button onClick={() => setNewRecipeModalOpen(true)}>Ny oppskrift</button>
