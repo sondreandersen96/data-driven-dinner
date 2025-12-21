@@ -5,24 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6dbc5505-19ad-48e2-86a1-c6da5f137368" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/food-web/src/routes/ingredients/-components/IngredientList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/data-driven-dinner.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/kotlinc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/ktfmt.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/food-web/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/food-web/src/routes/ingredients/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/routes/ingredients/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/resources/IngredientResource.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/resources/IngredientResource.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recipe-service/src/test/kotlin/no/sondre/IngredientResourceTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/test/kotlin/no/sondre/IngredientResourceTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/food-web/src/components/RecipeForm/RecipeForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/components/RecipeForm/RecipeForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/food-web/src/domain/Recipe.ts" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/domain/Recipe.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,6 +22,7 @@
 }</component>
   <component name="ProjectId" id="37ABkRWmHCDnn8IAaybickh4SjF" />
   <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
@@ -117,7 +103,7 @@
       <updated>1766336140188</updated>
       <workItem from="1766336147960" duration="452000" />
       <workItem from="1766336619138" duration="3864000" />
-      <workItem from="1766346920952" duration="3399000" />
+      <workItem from="1766346920952" duration="5865000" />
     </task>
     <servers />
   </component>
