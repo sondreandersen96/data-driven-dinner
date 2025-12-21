@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { UseMutationResult, useQuery } from "@tanstack/react-query";
+import { UseMutationResult } from "@tanstack/react-query";
 import { useForm } from "@tanstack/react-form";
-import { recipeServiceClient } from "@/api/recipeServiceClient.ts";
-import { useKeycloak } from "@/keycloakProvider.tsx";
+import { useIngredientSearch } from "@/api/ingredientApi";
 // @ts-ignore
 import styles from "./RecipeForm.module.css";
 
@@ -14,21 +13,13 @@ type Props = {
 }
 
 export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Props) {
-  const keycloak = useKeycloak();
   const [ingredientSearch, setIngredientSearch] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedIngredient, setSelectedIngredient] = useState<Ingredient | null>(null);
   const [amount, setAmount] = useState<number | "">("");
   const [unit, setUnit] = useState("");
 
-  const { data: searchResults = [] } = useQuery<Ingredient[]>({
-    queryKey: ['ingredients', ingredientSearch],
-    queryFn: async (): Promise<Ingredient[]> => {
-      const encodedQuery = ingredientSearch === "" ? "" : encodeURI(ingredientSearch);
-      return recipeServiceClient(`ingredient?nameQuery=${encodedQuery}`, keycloak.token);
-    },
-    enabled: showDropdown,
-  });
+  const { data: searchResults = [] } = useIngredientSearch(ingredientSearch, showDropdown);
 
   const form = useForm({
     defaultValues: {
