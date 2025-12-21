@@ -23,7 +23,7 @@ class IngredientResource {
     lateinit var service: IngredientService
 
     @GET
-    fun list(@QueryParam("nameQuary") nameQuery: String?): List<Ingredient> {
+    fun list(@QueryParam("nameQuery") nameQuery: String?): List<Ingredient> {
         return service.list(nameQuery)
     }
 

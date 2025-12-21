@@ -104,7 +104,7 @@ class IngredientResourceTest {
         val searchResult = given()
             .contentType(ContentType.JSON)
             .`when`()
-            .get(baseUrl + "?nameQuery=$nameQuery")
+            .get("$baseUrl?nameQuery=$nameQuery")
             .then()
             .statusCode(HttpStatus.SC_OK)
             .extract()
