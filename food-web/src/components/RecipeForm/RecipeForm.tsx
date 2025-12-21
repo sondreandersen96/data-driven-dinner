@@ -3,7 +3,6 @@ import { UseMutationResult } from "@tanstack/react-query";
 import { useForm } from "@tanstack/react-form";
 import { useIngredientSearch, useCreateIngredient } from "@/api/ingredientApi";
 import { IngredientForm } from "@/components/IngredientForm/IngredientForm";
-// @ts-ignore
 import styles from "./RecipeForm.module.css";
 
 type Props = {
@@ -117,17 +116,11 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
               <label>Ingredienser</label>
 
               {field.state.value.length > 0 && (
-                <ul style={{ listStyle: "none", padding: 0, margin: "8px 0" }}>
+                <ul className={styles.ingredientList}>
                   {field.state.value.map((recipeIngredient, index) => (
                     <li
                       key={recipeIngredient.ingredient.id ?? index}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "8px",
-                        padding: "4px 0",
-                        borderBottom: "1px solid #eee"
-                      }}
+                      className={styles.ingredientListItem}
                     >
                       <span>
                         {recipeIngredient.amount} {recipeIngredient.unit} {recipeIngredient.ingredient.name}
@@ -139,7 +132,7 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
                             field.state.value.filter((_, i) => i !== index)
                           );
                         }}
-                        style={{ background: "none", border: "none", cursor: "pointer", color: "red" }}
+                        className={styles.removeButton}
                       >
                         ×
                       </button>
@@ -148,8 +141,7 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
                 </ul>
               )}
 
-              {/* Add new ingredient section */}
-              <div style={{ position: "relative", marginTop: "8px" }}>
+              <div className={styles.ingredientSearchContainer}>
                 {!selectedIngredient ? (
                   <>
                     <input
@@ -160,20 +152,7 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
                       onFocus={() => setShowDropdown(true)}
                     />
                     {showDropdown && (
-                      <div
-                        style={{
-                          position: "absolute",
-                          top: "100%",
-                          left: 0,
-                          right: 0,
-                          maxHeight: "200px",
-                          overflowY: "auto",
-                          background: "white",
-                          border: "1px solid #ccc",
-                          borderRadius: "4px",
-                          zIndex: 10
-                        }}
-                      >
+                      <div className={styles.dropdown}>
                         {searchResults
                           .filter((ingredient) => !field.state.value.some((ri) => ri.ingredient.id === ingredient.id))
                           .map((ingredient) => (
@@ -190,12 +169,12 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
                             </div>
                           ))}
                         {searchResults.filter((ingredient) => !field.state.value.some((ri) => ri.ingredient.id === ingredient.id)).length === 0 && (
-                          <div style={{ padding: "8px", color: "#888" }}>
+                          <div className={styles.noResults}>
                             Ingen ingredienser funnet
                             <button
                               type="button"
                               onClick={() => setIngredientModalOpen(true)}
-                              style={{ marginLeft: "8px" }}
+                              className={styles.createNewButton}
                             >
                               Opprett ny
                             </button>
@@ -207,28 +186,28 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
                       <button
                         type="button"
                         onClick={() => setShowDropdown(false)}
-                        style={{ marginTop: "4px" }}
+                        className={styles.closeDropdownButton}
                       >
                         Lukk
                       </button>
                     )}
                   </>
                 ) : (
-                  <div style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" }}>
+                  <div className={styles.selectedIngredientRow}>
                     <span><strong>{selectedIngredient.name}</strong></span>
                     <input
                       type="number"
                       placeholder="Mengde"
                       value={amount}
                       onChange={(e) => setAmount(e.target.value === "" ? "" : Number(e.target.value))}
-                      style={{ width: "80px" }}
+                      className={styles.amountInput}
                     />
                     <input
                       type="text"
                       placeholder="Enhet (g, dl, stk...)"
                       value={unit}
                       onChange={(e) => setUnit(e.target.value)}
-                      style={{ width: "120px" }}
+                      className={styles.unitInput}
                     />
                     <button
                       type="button"

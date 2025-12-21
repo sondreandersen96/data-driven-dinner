@@ -1,3 +1,42 @@
+.ingredientList {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0;
+}
+
+.ingredientListItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.removeButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: red;
+}
+
+.ingredientSearchContainer {
+  position: relative;
+  margin-top: 8px;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  z-index: 10;
+}
+
 .dropdownItem {
   padding: 8px;
   cursor: pointer;
@@ -7,4 +46,32 @@
 
 .dropdownItem:hover {
   background: #f0f0f0;
+}
+
+.noResults {
+  padding: 8px;
+  color: #888;
+}
+
+.createNewButton {
+  margin-left: 8px;
+}
+
+.closeDropdownButton {
+  margin-top: 4px;
+}
+
+.selectedIngredientRow {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.amountInput {
+  width: 80px;
+}
+
+.unitInput {
+  width: 120px;
 }
