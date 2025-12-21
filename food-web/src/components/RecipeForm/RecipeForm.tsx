@@ -21,6 +21,27 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
 
   const { data: searchResults = [] } = useIngredientSearch(ingredientSearch, showDropdown);
 
+  const resetIngredientInput = () => {
+    setSelectedIngredient(null);
+    setAmount("");
+    setUnit("");
+  };
+
+  const addIngredient = (
+    currentIngredients: RecipeIngredient[],
+    handleChange: (value: RecipeIngredient[]) => void
+  ) => {
+    if (amount !== "" && unit && selectedIngredient) {
+      const newIngredient: RecipeIngredient = {
+        amount: Number(amount),
+        unit,
+        ingredient: selectedIngredient
+      };
+      handleChange([...currentIngredients, newIngredient]);
+      resetIngredientInput();
+    }
+  };
+
   const form = useForm({
     defaultValues: {
       id: recipe?.id ?? null,
@@ -42,9 +63,7 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
       )
       setIngredientSearch("");
       setShowDropdown(false);
-      setSelectedIngredient(null);
-      setAmount("");
-      setUnit("");
+      resetIngredientInput();
       closeNewRecipeModal()
       recipe = null
     }
@@ -151,18 +170,12 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
                           .map((ingredient) => (
                             <div
                               key={ingredient.id}
-                              style={{
-                                padding: "8px",
-                                cursor: "pointer",
-                                borderBottom: "1px solid #eee"
-                              }}
+                              className={styles.dropdownItem}
                               onClick={() => {
                                 setSelectedIngredient(ingredient);
                                 setIngredientSearch("");
                                 setShowDropdown(false);
                               }}
-                              onMouseEnter={(e) => (e.currentTarget.style.background = "#f0f0f0")}
-                              onMouseLeave={(e) => (e.currentTarget.style.background = "white")}
                             >
                               {ingredient.name}
                             </div>
@@ -202,29 +215,13 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
                     <button
                       type="button"
                       disabled={amount === "" || !unit}
-                      onClick={() => {
-                        if (amount !== "" && unit && selectedIngredient) {
-                          const newIngredient: RecipeIngredient = {
-                            amount: Number(amount),
-                            unit,
-                            ingredient: selectedIngredient
-                          };
-                          field.handleChange([...field.state.value, newIngredient]);
-                          setSelectedIngredient(null);
-                          setAmount("");
-                          setUnit("");
-                        }
-                      }}
+                      onClick={() => addIngredient(field.state.value, field.handleChange)}
                     >
                       Legg til
                     </button>
                     <button
                       type="button"
-                      onClick={() => {
-                        setSelectedIngredient(null);
-                        setAmount("");
-                        setUnit("");
-                      }}
+                      onClick={resetIngredientInput}
                     >
                       Avbryt
                     </button>
