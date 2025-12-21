@@ -60,8 +60,21 @@ function RecipeId() {
             <DeleteRecipePopup isOpen={deleteOpen} recipeId={data.id!} close={() => setDeleteOpen(false)} />
             <h1>{data.name}</h1>
             {data.youtube != null && data.youtube != undefined && data.youtube != "" && renderYoutube(data.youtube)}
-            <h3>Beskrivelse</h3>
 
+            {data.ingredients.length > 0 && (
+                <>
+                    <h3>Ingredienser</h3>
+                    <ul>
+                        {data.ingredients.map((ri, index) => (
+                            <li key={ri.ingredient.id ?? index}>
+                                {ri.amount} {ri.unit} {ri.ingredient.name}
+                            </li>
+                        ))}
+                    </ul>
+                </>
+            )}
+
+            <h3>Beskrivelse</h3>
             <p style={{ whiteSpace: 'pre-wrap' }}>{data.description}</p>
             <br/>
             <button onClick={handleEdit}>Edit</button>
