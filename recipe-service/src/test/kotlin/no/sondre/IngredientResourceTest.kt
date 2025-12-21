@@ -100,7 +100,7 @@ class IngredientResourceTest {
     fun `can search for name of ingredient`() {
         val ingredient = Ingredient("æøæøæ et komplisert navn")
         saveIngredient(ingredient)
-        val nameQuery = "æøæøæ et kompli"
+        val nameQuery = "æøÆøæ et kompli"
         val searchResult = given()
             .contentType(ContentType.JSON)
             .`when`()

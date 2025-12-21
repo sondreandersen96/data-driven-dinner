@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { UseMutationResult } from "@tanstack/react-query";
 import { useForm } from "@tanstack/react-form";
-import { useIngredientSearch } from "@/api/ingredientApi";
+import { useIngredientSearch, useCreateIngredient } from "@/api/ingredientApi";
+import { IngredientForm } from "@/components/IngredientForm/IngredientForm";
 // @ts-ignore
 import styles from "./RecipeForm.module.css";
 
@@ -18,8 +19,10 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
   const [selectedIngredient, setSelectedIngredient] = useState<Ingredient | null>(null);
   const [amount, setAmount] = useState<number | "">("");
   const [unit, setUnit] = useState("");
+  const [ingredientModalOpen, setIngredientModalOpen] = useState(false);
 
   const { data: searchResults = [] } = useIngredientSearch(ingredientSearch, showDropdown);
+  const ingredientMutation = useCreateIngredient(() => setIngredientModalOpen(false));
 
   const resetIngredientInput = () => {
     setSelectedIngredient(null);
@@ -73,6 +76,12 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
 
   return (
     <div className={"modal-overlay"}>
+      <IngredientForm
+        isOpen={ingredientModalOpen}
+        ingredient={null}
+        mutation={ingredientMutation}
+        closeModal={() => setIngredientModalOpen(false)}
+      />
       <div className={"modal-content"}>
         <h2>{recipe ? "Edit Recipe" : "Add New Recipe"}</h2>
         <form.Field
@@ -181,7 +190,16 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
                             </div>
                           ))}
                         {searchResults.filter((ingredient) => !field.state.value.some((ri) => ri.ingredient.id === ingredient.id)).length === 0 && (
-                          <div style={{ padding: "8px", color: "#888" }}>Ingen ingredienser funnet</div>
+                          <div style={{ padding: "8px", color: "#888" }}>
+                            Ingen ingredienser funnet
+                            <button
+                              type="button"
+                              onClick={() => setIngredientModalOpen(true)}
+                              style={{ marginLeft: "8px" }}
+                            >
+                              Opprett ny
+                            </button>
+                          </div>
                         )}
                       </div>
                     )}

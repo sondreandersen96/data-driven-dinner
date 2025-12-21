@@ -35,8 +35,22 @@ class Startup {
     fun injectTestData(@Observes event: StartupEvent) {
         logger.info("Injecting some test data")
         val ingredients = listOf(
-            Ingredient("ingredient one"),
-            Ingredient("ingredient two")
+            Ingredient("Brokkoli"),
+            Ingredient("Brokkolini"),
+            Ingredient("Tomat"),
+            Ingredient("Agurk"),
+            Ingredient("Hvitløk"),
+            Ingredient("Gul løk"),
+            Ingredient("Rød løk"),
+            Ingredient("Paprika"),
+            Ingredient("Søt paprika"),
+            Ingredient("Chilli (fersk)"),
+            Ingredient("Kjøttdeig"),
+            Ingredient("Kyllingfilet"),
+            Ingredient("Ingefær"),
+            Ingredient("Persille"),
+            Ingredient("Salt"),
+            Ingredient("Pepper"),
         )
         val recipeIngredient1 = RecipeIngredient(
             amount = 1,

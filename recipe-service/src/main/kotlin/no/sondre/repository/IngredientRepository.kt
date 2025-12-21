@@ -57,8 +57,8 @@ class IngredientRepository : PanacheRepository<SQLIngredient> {
     }
 
     fun all(nameQuery: String): List<Ingredient> {
-        val searchInput = "%$nameQuery%"
-        return list("name like ?1", searchInput).map { it.toPOJO() }
+        val searchInput = "%${nameQuery.lowercase()}%"
+        return list("LOWER(name) LIKE ?1", searchInput).map { it.toPOJO() }
     }
 
     fun save(ingredient: Ingredient): Ingredient {

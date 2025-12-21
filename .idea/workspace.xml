@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6dbc5505-19ad-48e2-86a1-c6da5f137368" name="Changes" comment="" />
+    <list default="true" id="6dbc5505-19ad-48e2-86a1-c6da5f137368" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/food-web/src/api/ingredientApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/api/ingredientApi.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/food-web/src/components/RecipeForm/RecipeForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/components/RecipeForm/RecipeForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/food-web/src/routes/ingredients/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/routes/ingredients/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/Startup.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/Startup.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/repository/IngredientRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/repository/IngredientRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe-service/src/test/kotlin/no/sondre/IngredientResourceTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/test/kotlin/no/sondre/IngredientResourceTest.kt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -24,6 +32,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "JUnit.IngredientResourceTest.can search for name of ingredient.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "Quarkus.recipe-service.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -42,7 +51,23 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Quarkus.recipe-service">
+    <configuration name="IngredientResourceTest.can search for name of ingredient" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="recipe-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="no.sondre.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="no.sondre" />
+      <option name="MAIN_CLASS_NAME" value="no.sondre.IngredientResourceTest" />
+      <option name="METHOD_NAME" value="can search for name of ingredient" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="recipe-service" type="QuarkusRunConfigurationType" factoryName="Quarkus" nameIsGenerated="true">
       <module name="recipe-service" />
       <QsMavenRunConfiguration>
@@ -81,6 +106,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.IngredientResourceTest.can search for name of ingredient" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -99,7 +129,7 @@
       <updated>1766336140188</updated>
       <workItem from="1766336147960" duration="452000" />
       <workItem from="1766336619138" duration="3864000" />
-      <workItem from="1766346920952" duration="7825000" />
+      <workItem from="1766346920952" duration="9395000" />
     </task>
     <servers />
   </component>

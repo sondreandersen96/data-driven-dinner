@@ -1,10 +1,8 @@
 import {createFileRoute} from '@tanstack/react-router'
-import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {recipeServiceClient} from "@/api/recipeServiceClient.ts";
-import {useKeycloak} from "@/keycloakProvider.tsx";
 import {IngredientForm} from "@/components/IngredientForm/IngredientForm.tsx";
 import {useState} from "react";
 import {IngredientList} from './-components/IngredientList';
+import {useCreateIngredient} from "@/api/ingredientApi";
 
 export const Route = createFileRoute('/ingredients/')({
     component: RouteComponent,
@@ -13,25 +11,8 @@ export const Route = createFileRoute('/ingredients/')({
 function RouteComponent() {
     const [ingredientModalOpen, setIngredientModalOpen] = useState(false)
     const [search, setSearch] = useState("")
-    const keycloak = useKeycloak()
-    const queryClient = useQueryClient()
 
-    const mutation = useMutation<Ingredient, Error, Ingredient, unknown>({
-        mutationFn: async (ingredient): Promise<Ingredient> => {
-            return recipeServiceClient('ingredient', keycloak.token, {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(ingredient)
-            })
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries()
-            setIngredientModalOpen(false)
-        },
-        onError: () => {
-            console.log("Something went wrong when trying to save Ingredient")
-        }
-    })
+    const mutation = useCreateIngredient(() => setIngredientModalOpen(false))
 
 
     return (
