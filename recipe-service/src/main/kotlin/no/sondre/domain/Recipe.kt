@@ -8,7 +8,9 @@ data class Recipe(
     var portions: Int
 ) : Domain() {
 
-    private val STANDARD_PORTION_SIZE = 4
+    companion object {
+        val STANDARD_PORTION_SIZE = 4
+    }
 
     override fun initNew() {
         super.initNew()
@@ -20,7 +22,7 @@ data class Recipe(
         adjustPortion(STANDARD_PORTION_SIZE)
     }
 
-    private fun adjustPortion(new: Int) {
+    fun adjustPortion(new: Int) {
         val adjustmentFactor = new / portions
         ingredients.forEach {
             it.amount *= adjustmentFactor

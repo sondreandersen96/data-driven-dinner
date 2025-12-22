@@ -19,8 +19,8 @@ class RecipeResource {
 
     @GET
     @Path("{id}")
-    fun load(@PathParam("id") id: UUID): Recipe {
-        return service.load(id)
+    fun load(@PathParam("id") id: UUID, @QueryParam("portions") portions: Int?): Recipe {
+        return service.load(id, portions)
     }
 
     @POST

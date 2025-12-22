@@ -5,15 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6dbc5505-19ad-48e2-86a1-c6da5f137368" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/recipe-service/src/main/resources/db/migration/V1.0.1__Adding_portions_to_recipes.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/food-web/src/components/RecipeForm/RecipeForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/components/RecipeForm/RecipeForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/food-web/src/domain/Recipe.ts" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/domain/Recipe.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/Startup.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/Startup.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/food-web/src/routes/recipes/$recipeId/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/routes/recipes/$recipeId/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/domain/Recipe.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/domain/Recipe.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/domain/RecipeIngredient.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/domain/RecipeIngredient.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/repository/RecipeRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/repository/RecipeRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recipe-service/src/test/kotlin/no/sondre/RecipeResourceTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/test/kotlin/no/sondre/RecipeResourceTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/resources/RecipeResource.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/resources/RecipeResource.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/services/RecipeService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/services/RecipeService.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -148,7 +144,7 @@
       <updated>1766336140188</updated>
       <workItem from="1766336147960" duration="452000" />
       <workItem from="1766336619138" duration="3864000" />
-      <workItem from="1766346920952" duration="15863000" />
+      <workItem from="1766346920952" duration="17750000" />
     </task>
     <servers />
   </component>

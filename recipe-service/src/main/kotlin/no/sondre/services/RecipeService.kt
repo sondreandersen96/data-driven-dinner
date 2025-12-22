@@ -16,8 +16,10 @@ class RecipeService {
         return repo.all()
     }
 
-    fun load(id: UUID): Recipe {
-        return repo.findById(id)
+    fun load(id: UUID, portions: Int? = Recipe.STANDARD_PORTION_SIZE): Recipe {
+        val recipe = repo.findById(id)
+        portions?.let { recipe.adjustPortion(portions) }
+        return recipe
     }
 
     fun new(recipe: Recipe): Recipe {

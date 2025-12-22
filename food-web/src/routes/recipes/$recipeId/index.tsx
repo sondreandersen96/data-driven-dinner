@@ -8,21 +8,41 @@ import { useKeycloak } from "@/keycloakProvider.tsx";
 import { DeleteRecipePopup } from "@/routes/recipes/-components/DeleteRecipePopup/DeleteRecipePopup.tsx";
 
 export const Route = createFileRoute('/recipes/$recipeId/')({
-    component: RecipeId,
+    component: RecipeIdPage,
 })
 
-function RecipeId() {
+function RecipeIdPage() {
+    const [portions, setPortions] = useState<number>(4)
+    const {recipeId} = Route.useParams()
+
+    return (
+        <div>
+            <div>
+                <label>Porsjoner: </label>
+                <input
+                    type="number"
+                    min="1"
+                    value={portions ?? ""}
+                    onChange={(e) => setPortions(e.target.value === "" ? null : Number(e.target.value))}
+                    style={{ width: "60px" }}
+                />
+            </div>
+            <RecipeContent recipeId={recipeId} portions={portions} />
+        </div>
+    )
+}
+
+function RecipeContent({ recipeId, portions }: { recipeId: string, portions: number | null }) {
     const [editOpen, setEditOpen] = useState(false)
     const [deleteOpen, setDeleteOpen] = useState(false)
     const queryClient = useQueryClient()
-
     const keycloak = useKeycloak()
 
-    const {recipeId} = Route.useParams()
     const {isPending, error, data, isFetching} = useQuery<Recipe>({
-        queryKey: ['recipe', recipeId],
+        queryKey: ['recipe', recipeId, portions],
         queryFn: async (): Promise<Recipe> => {
-            return recipeServiceClient(`recipe/${recipeId}`, keycloak.token)
+            const url = portions ? `recipe/${recipeId}?portions=${portions}` : `recipe/${recipeId}`
+            return recipeServiceClient(url, keycloak.token)
         }
     })
 
@@ -37,7 +57,6 @@ function RecipeId() {
         onSuccess: () => {
             setEditOpen(false)
             queryClient.invalidateQueries({queryKey: ['recipe']})
-            // navigate({to: `/recipes/${recipeId}`})
         },
         onError: () => {
             console.log("Something went wrong...")
@@ -45,7 +64,6 @@ function RecipeId() {
     })
 
     const handleEdit = () => {
-        console.log("editing")
         setEditOpen(true)
     }
 
@@ -56,7 +74,7 @@ function RecipeId() {
     if (isPending || isFetching) return <div>Loading...</div>
     if (error) return <div>Ups! Something has gone wrong here...</div>
     return (
-        <div>
+        <>
             <DeleteRecipePopup isOpen={deleteOpen} recipeId={data.id!} close={() => setDeleteOpen(false)} />
             <h1>{data.name}</h1>
             {data.youtube != null && data.youtube != undefined && data.youtube != "" && renderYoutube(data.youtube)}
@@ -80,6 +98,6 @@ function RecipeId() {
             <button onClick={handleEdit}>Edit</button>
             <button onClick={handleDelete}>Delete</button>
             <RecipeForm recipe={data} mutation={mutation} isOpen={editOpen} closeNewRecipeModal={() => setEditOpen(false)}/>
-        </div>
+        </>
     )
 }
