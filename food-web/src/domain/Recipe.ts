@@ -4,4 +4,5 @@ interface Recipe {
   youtube: string | null
   ingredients: RecipeIngredient[]
   description: string
+  portions: number | null
 }

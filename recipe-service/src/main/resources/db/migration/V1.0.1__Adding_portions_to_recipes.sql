@@ -1,0 +1,1 @@
+ALTER TABLE public.recipe ADD portions TEXT;

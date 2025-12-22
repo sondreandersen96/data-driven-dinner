@@ -50,7 +50,8 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
       name: recipe?.name ?? "",
       youtube: recipe?.youtube ?? "",
       description: recipe?.description ?? "",
-      ingredients: recipe?.ingredients ?? [] as RecipeIngredient[]
+      ingredients: recipe?.ingredients ?? [] as RecipeIngredient[],
+      portions: recipe?.portions ?? null as number | null
     },
     onSubmit: ({value}) => {
       console.log(value.name, value.youtube)
@@ -60,7 +61,8 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
           name: value.name,
           youtube: value.youtube,
           ingredients: value.ingredients,
-          description: value.description
+          description: value.description,
+          portions: value.portions
         },
       )
       setIngredientSearch("");
@@ -105,6 +107,20 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
                 type="text"
                 value={field.state.value}
                 onChange={(e) => field.handleChange(e.target.value)}
+              />
+            </div>
+          )}
+        />
+        <form.Field
+          name="portions"
+          children={(field) => (
+            <div>
+              <label>Porsjoner</label>
+              <input
+                type="number"
+                min="1"
+                value={field.state.value ?? ""}
+                onChange={(e) => field.handleChange(e.target.value === "" ? null : Number(e.target.value))}
               />
             </div>
           )}

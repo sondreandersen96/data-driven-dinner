@@ -4,15 +4,32 @@ data class Recipe(
     var name: String,
     var youtube: String? = null,
     val ingredients: MutableList<RecipeIngredient> = mutableListOf(),
-    val description: String
+    val description: String,
+    var portions: Int
 ) : Domain() {
+
+    private val STANDARD_PORTION_SIZE = 4
 
     override fun initNew() {
         super.initNew()
         populateRecipeIngredients()
+        standardizePortion()
+    }
+
+    private fun standardizePortion() {
+        adjustPortion(STANDARD_PORTION_SIZE)
+    }
+
+    private fun adjustPortion(new: Int) {
+        val adjustmentFactor = new / portions
+        ingredients.forEach {
+            it.amount *= adjustmentFactor
+        }
+        portions = new
     }
 
     fun prepareUpdate() {
+        adjustPortion(STANDARD_PORTION_SIZE)
         populateRecipeIngredients()
     }
 
@@ -20,12 +37,10 @@ data class Recipe(
         ingredients.forEach { it.populate(idSafe()) }
     }
 
-
     fun addIngredient(i: RecipeIngredient) {
         i.populate(idSafe())
         ingredients.add(i)
     }
-
 
     // Should only be used for test methods
     fun _addIngredientWithoutId(i: RecipeIngredient) {

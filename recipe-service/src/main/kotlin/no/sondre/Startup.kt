@@ -67,16 +67,18 @@ class Startup {
                 name = "recipe one",
                 youtube = "https://www.youtube.com/watch?v=JYg1UfVCfiw",
                 ingredients = mutableListOf(),
-                description = "beskrivelse"
+                description = "beskrivelse",
+                portions = 4,
             ),
-            Recipe("recipe two", ingredients = mutableListOf(recipeIngredient1), description = "beskrivelse"),
-            Recipe("recipe three", ingredients = mutableListOf(recipeIngredient2), description = "beskrivelse"),
+            Recipe("recipe two", ingredients = mutableListOf(recipeIngredient1), description = "beskrivelse", portions = 4),
+            Recipe("recipe three", ingredients = mutableListOf(recipeIngredient2), description = "beskrivelse", portions = 4),
             Recipe(
                 "recipe four",
                 ingredients = mutableListOf(recipeIngredient1, recipeIngredient2),
-                description = "beskrivelse"
+                description = "beskrivelse",
+                portions = 4,
             ),
-            Recipe("recipe five", ingredients = mutableListOf(), description = "beskrivelse")
+            Recipe("recipe five", ingredients = mutableListOf(), description = "beskrivelse", portions = 4)
         )
         ingredients.forEach { ingredientResource.save(it) }
         recipes.forEach {

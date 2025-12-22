@@ -3,7 +3,7 @@ package no.sondre.domain
 import java.util.*
 
 data class RecipeIngredient(
-    val amount: Int,
+    var amount: Int,
     val unit: String,
     var ingredient: Ingredient,
 ) {

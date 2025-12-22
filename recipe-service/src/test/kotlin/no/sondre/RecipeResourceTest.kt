@@ -35,7 +35,7 @@ class RecipeResourceTest {
         Ingredient("ingredient three")
     )
 
-    private final val recipe = Recipe("recipe one", ingredients = mutableListOf(), description = "beskrivelse")
+    private final val recipe = Recipe("recipe one", ingredients = mutableListOf(), description = "beskrivelse", portions = 4)
 
     @BeforeEach
     fun setup() {

@@ -5,10 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6dbc5505-19ad-48e2-86a1-c6da5f137368" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/recipe-service/src/main/resources/db/migration/V1.0.1__Adding_portions_to_recipes.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/food-web/src/routes/__root.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/routes/__root.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/food-web/src/routes/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/routes/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/food-web/src/routes/recipes/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/routes/recipes/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/food-web/src/components/RecipeForm/RecipeForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/components/RecipeForm/RecipeForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/food-web/src/domain/Recipe.ts" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/domain/Recipe.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/Startup.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/Startup.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/domain/Recipe.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/domain/Recipe.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/domain/RecipeIngredient.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/domain/RecipeIngredient.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/repository/RecipeRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/repository/RecipeRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe-service/src/test/kotlin/no/sondre/RecipeResourceTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/test/kotlin/no/sondre/RecipeResourceTest.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,6 +35,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "JUnit.IngredientResourceTest.can search for name of ingredient.executor": "Run",
+    "JUnit.RecipeResourceTest.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "Quarkus.recipe-service.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -61,6 +67,21 @@
       <option name="MAIN_CLASS_NAME" value="no.sondre.IngredientResourceTest" />
       <option name="METHOD_NAME" value="can search for name of ingredient" />
       <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RecipeResourceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="recipe-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="no.sondre.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="no.sondre" />
+      <option name="MAIN_CLASS_NAME" value="no.sondre.RecipeResourceTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -105,6 +126,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.RecipeResourceTest" />
         <item itemvalue="JUnit.IngredientResourceTest.can search for name of ingredient" />
       </list>
     </recent_temporary>
@@ -126,7 +148,7 @@
       <updated>1766336140188</updated>
       <workItem from="1766336147960" duration="452000" />
       <workItem from="1766336619138" duration="3864000" />
-      <workItem from="1766346920952" duration="10767000" />
+      <workItem from="1766346920952" duration="15863000" />
     </task>
     <servers />
   </component>

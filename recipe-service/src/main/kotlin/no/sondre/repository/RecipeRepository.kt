@@ -21,6 +21,7 @@ class SQLRecipe(
     var name: String,
     var description: String,
     var youtube: String? = null,
+    var portions: Int
 ) : SQLModel<Recipe> {
     companion object : SQLModelCreator<Recipe, SQLRecipe> {
         override fun fromPOJO(pojo: Recipe): SQLRecipe {
@@ -28,7 +29,8 @@ class SQLRecipe(
                 id = pojo.idSafe(),
                 name = pojo.name,
                 youtube = pojo.youtube,
-                description = pojo.description
+                description = pojo.description,
+                portions = pojo.portions
             )
         }
     }
@@ -45,7 +47,7 @@ class SQLRecipe(
             val ingredient = ingredients.find { it.idSafe() == ri.ingredient.idSafe() }                     ?: throw InternalServerErrorException("Could not find ingredient")
             ri.populate(ingredient)
         }
-        val pojo = Recipe(name, youtube, recipeIngredients, description)
+        val pojo = Recipe(name, youtube, recipeIngredients, description, portions)
         pojo.withId(id)
         return pojo
     }
