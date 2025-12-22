@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query";
 import { recipeServiceClient } from "./recipeServiceClient";
 import { useKeycloak } from "@/keycloakProvider";
 
@@ -12,6 +12,7 @@ export function useIngredientSearch(search: string, enabled: boolean = true) {
       return recipeServiceClient(`ingredient?nameQuery=${encodedQuery}`, keycloak.token);
     },
     enabled,
+    placeholderData: keepPreviousData,
   });
 }
 

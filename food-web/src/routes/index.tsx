@@ -58,7 +58,6 @@ function Recipes() {
       </section>
 
       <div className={styles.contentWrapper}>
-        <h2 className={styles.sectionTitle}>Oppskrifter</h2>
         <RecipeList searchQuery={searchQuery} isAiSearch={isAiMode} />
       </div>
     </>

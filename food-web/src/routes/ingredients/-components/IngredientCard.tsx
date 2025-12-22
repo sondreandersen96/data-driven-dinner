@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { recipeServiceClient } from "@/api/recipeServiceClient.ts";
 import { useKeycloak } from "@/keycloakProvider.tsx";
 // @ts-ignore
-import styles from "../index.module.css";
+import styles from "./IngredientCard.module.css";
 
 interface Props {
   ingredient: Ingredient

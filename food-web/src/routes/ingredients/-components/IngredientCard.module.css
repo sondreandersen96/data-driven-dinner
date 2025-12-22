@@ -1,0 +1,41 @@
+/* Ingredient Card */
+.ingredientCard {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.2s;
+}
+
+.ingredientCard:hover {
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.ingredientName {
+    font-weight: 500;
+    color: var(--text);
+    font-size: 1rem;
+}
+
+.editButton {
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: 'Sora', sans-serif;
+    font-size: 0.85rem;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.editButton:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+

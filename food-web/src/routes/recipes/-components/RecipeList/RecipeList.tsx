@@ -1,8 +1,9 @@
 import {FC} from "react";
-import {useQuery} from "@tanstack/react-query";
+import {useQuery, keepPreviousData} from "@tanstack/react-query";
 import RecipeCard from "@/routes/recipes/-components/RecipeCard/RecipeCard.tsx";
 import { recipeServiceClient } from "@/api/recipeServiceClient.ts";
 import { useKeycloak } from "@/keycloakProvider.tsx";
+import styles from './RecipeList.module.css';
 
 interface Props {
     searchQuery?: string;
@@ -14,7 +15,7 @@ const RecipeList: FC<Props> = ({ searchQuery = '', isAiSearch = false }) => {
     const keycloak = useKeycloak()
     const encodedQuery = searchQuery.trim() ? encodeURI(searchQuery) : '';
 
-    const {isPending, error, data } = useQuery<Recipe[]>({
+    const {isPending, error, data, isFetching } = useQuery<Recipe[]>({
         queryKey: ['recipes', searchQuery, isAiSearch],
         queryFn: async (): Promise<Recipe[]> => {
             let url = 'recipe';
@@ -25,6 +26,7 @@ const RecipeList: FC<Props> = ({ searchQuery = '', isAiSearch = false }) => {
             }
             return recipeServiceClient(url, keycloak.token)
         },
+        placeholderData: keepPreviousData,
     })
 
     if (isPending) return <div>Loading...</div>
@@ -37,7 +39,7 @@ const RecipeList: FC<Props> = ({ searchQuery = '', isAiSearch = false }) => {
                     <RecipeCard key={r.id} recipe={r}/>
                 ))
             ) : (
-                <div>Ingen oppskrifter funnet</div>
+                (data.length === 0) ? <div className={styles.empty}>Ingen ingredienser funnet</div> : <></>
             )}
         </div>
     )

@@ -1,0 +1,8 @@
+.empty {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-light);
+    background: var(--card);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+}

@@ -26,21 +26,21 @@ function RootComponent() {
             activeProps={{ className: `${styles.navLink} ${styles.navLinkActive}` }}
             activeOptions={{ exact: true }}
           >
-            Oppskrifter
+            🍔&nbsp; Oppskrifter
           </Link>
           <Link
             to="/inspiration"
             className={styles.navLink}
             activeProps={{ className: `${styles.navLink} ${styles.navLinkActive}` }}
           >
-            Inspirasjon
+            💡&nbsp; Inspirasjon
           </Link>
           <Link
             to="/ingredients"
             className={styles.navLink}
             activeProps={{ className: `${styles.navLink} ${styles.navLinkActive}` }}
           >
-            Ingredienser
+            🥦&nbsp; Ingredienser
           </Link>
         </nav>
         <button

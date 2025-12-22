@@ -1,7 +1,7 @@
 import {IngredientCard} from "./IngredientCard";
 import {useIngredientSearch} from "@/api/ingredientApi";
 // @ts-ignore
-import styles from "../index.module.css";
+import styles from "./IngredientList.module.css";
 
 interface Props {
     search: string
