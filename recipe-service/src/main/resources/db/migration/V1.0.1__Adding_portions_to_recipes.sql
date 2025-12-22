@@ -1,1 +1,1 @@
-ALTER TABLE public.recipe ADD portions TEXT;
+ALTER TABLE public.recipe ADD portions INT DEFAULT 4;
