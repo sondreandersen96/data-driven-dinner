@@ -6,33 +6,35 @@ import {RecipeForm} from "@/components/RecipeForm/RecipeForm.tsx";
 import { recipeServiceClient } from "@/api/recipeServiceClient.ts";
 import { useKeycloak } from "@/keycloakProvider.tsx";
 import { DeleteRecipePopup } from "@/routes/recipes/-components/DeleteRecipePopup/DeleteRecipePopup.tsx";
+// @ts-ignore
+import styles from "./index.module.css";
 
 export const Route = createFileRoute('/recipes/$recipeId/')({
     component: RecipeIdPage,
 })
 
 function RecipeIdPage() {
-    const [portions, setPortions] = useState<number>(4)
+    const [portions, setPortions] = useState<number | null>(null)
     const {recipeId} = Route.useParams()
 
     return (
-        <div>
-            <div>
-                <label>Porsjoner: </label>
-                <input
-                    type="number"
-                    min="1"
-                    value={portions ?? ""}
-                    onChange={(e) => setPortions(e.target.value === "" ? null : Number(e.target.value))}
-                    style={{ width: "60px" }}
-                />
-            </div>
-            <RecipeContent recipeId={recipeId} portions={portions} />
+        <div className={styles.container}>
+            <RecipeContent
+                recipeId={recipeId}
+                portions={portions}
+                setPortions={setPortions}
+            />
         </div>
     )
 }
 
-function RecipeContent({ recipeId, portions }: { recipeId: string, portions: number | null }) {
+interface RecipeContentProps {
+    recipeId: string;
+    portions: number | null;
+    setPortions: (value: number | null) => void;
+}
+
+function RecipeContent({ recipeId, portions, setPortions }: RecipeContentProps) {
     const [editOpen, setEditOpen] = useState(false)
     const [deleteOpen, setDeleteOpen] = useState(false)
     const queryClient = useQueryClient()
@@ -63,41 +65,118 @@ function RecipeContent({ recipeId, portions }: { recipeId: string, portions: num
         }
     })
 
-    const handleEdit = () => {
-        setEditOpen(true)
+    if (isPending || isFetching) {
+        return <div className={styles.loading}>Laster oppskrift...</div>
     }
 
-    const handleDelete = () => {
-        setDeleteOpen(true)
+    if (error) {
+        return <div className={styles.loading}>Ops! Noe gikk galt...</div>
     }
 
-    if (isPending || isFetching) return <div>Loading...</div>
-    if (error) return <div>Ups! Something has gone wrong here...</div>
+    const currentPortions = portions ?? data.portions ?? 4;
+
     return (
         <>
             <DeleteRecipePopup isOpen={deleteOpen} recipeId={data.id!} close={() => setDeleteOpen(false)} />
-            <h1>{data.name}</h1>
-            {data.youtube != null && data.youtube != undefined && data.youtube != "" && renderYoutube(data.youtube)}
 
-            {data.ingredients.length > 0 && (
-                <>
-                    <h3>Ingredienser</h3>
-                    <ul>
-                        {data.ingredients.map((ri, index) => (
-                            <li key={ri.ingredient.id ?? index}>
-                                {ri.amount} {ri.unit} {ri.ingredient.name}
-                            </li>
-                        ))}
-                    </ul>
-                </>
+            {/* Header */}
+            <div className={styles.header}>
+                <h1 className={styles.title}>{data.name}</h1>
+                <div className={styles.meta}>
+                    {data.portions && (
+                        <span className={styles.metaItem}>
+                            {data.portions} porsjoner
+                        </span>
+                    )}
+                    {data.ingredients.length > 0 && (
+                        <span className={styles.metaItem}>
+                            {data.ingredients.length} ingredienser
+                        </span>
+                    )}
+                </div>
+            </div>
+
+            {/* Video */}
+            {data.youtube && data.youtube.trim() !== "" && (
+                <div className={styles.videoSection}>
+                    {renderYoutube(data.youtube)}
+                </div>
             )}
 
-            <h3>Beskrivelse</h3>
-            <p style={{ whiteSpace: 'pre-wrap' }}>{data.description}</p>
-            <br/>
-            <button onClick={handleEdit}>Edit</button>
-            <button onClick={handleDelete}>Delete</button>
-            <RecipeForm recipe={data} mutation={mutation} isOpen={editOpen} closeNewRecipeModal={() => setEditOpen(false)}/>
+            {/* Content Grid */}
+            <div className={styles.contentGrid}>
+                {/* Ingredients */}
+                {data.ingredients.length > 0 && (
+                    <div className={styles.ingredientsCard}>
+                        <h2 className={styles.sectionTitle}>Ingredienser</h2>
+
+                        {data.portions && (
+                            <div className={styles.portionsSelector}>
+                                <span className={styles.portionsLabel}>Porsjoner</span>
+                                <div className={styles.portionsControls}>
+                                    <button
+                                        className={styles.portionsBtn}
+                                        onClick={() => setPortions(Math.max(1, currentPortions - 1))}
+                                    >
+                                        -
+                                    </button>
+                                    <input
+                                        type="number"
+                                        className={styles.portionsValue}
+                                        value={currentPortions}
+                                        min="1"
+                                        onChange={(e) => setPortions(
+                                            e.target.value === "" ? null : Math.max(1, Number(e.target.value))
+                                        )}
+                                    />
+                                    <button
+                                        className={styles.portionsBtn}
+                                        onClick={() => setPortions(currentPortions + 1)}
+                                    >
+                                        +
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        <ul className={styles.ingredientList}>
+                            {data.ingredients.map((ri, index) => (
+                                <li key={ri.ingredient.id ?? index} className={styles.ingredientItem}>
+                                    <span className={styles.ingredientAmount}>
+                                        {ri.amount} {ri.unit}
+                                    </span>
+                                    <span className={styles.ingredientName}>
+                                        {ri.ingredient.name}
+                                    </span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+
+                {/* Description */}
+                <div className={styles.descriptionSection}>
+                    <h2 className={styles.sectionTitle}>Fremgangsmåte</h2>
+                    <p className={styles.description}>{data.description}</p>
+                </div>
+            </div>
+
+            {/* Actions */}
+            <div className={styles.actions}>
+                <button className={styles.btnEdit} onClick={() => setEditOpen(true)}>
+                    Rediger
+                </button>
+                <button className={styles.btnDelete} onClick={() => setDeleteOpen(true)}>
+                    Slett
+                </button>
+            </div>
+
+            <RecipeForm
+                recipe={data}
+                mutation={mutation}
+                isOpen={editOpen}
+                closeNewRecipeModal={() => setEditOpen(false)}
+            />
         </>
     )
 }

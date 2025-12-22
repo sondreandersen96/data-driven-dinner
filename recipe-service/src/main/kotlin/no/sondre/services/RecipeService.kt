@@ -12,8 +12,8 @@ class RecipeService {
     @Inject
     private lateinit var repo: RecipeRepository
 
-    fun list(): List<Recipe> {
-        return repo.all()
+    fun list(query: String = ""): List<Recipe> {
+        return repo.all(query)
     }
 
     fun load(id: UUID, portions: Int? = Recipe.STANDARD_PORTION_SIZE): Recipe {

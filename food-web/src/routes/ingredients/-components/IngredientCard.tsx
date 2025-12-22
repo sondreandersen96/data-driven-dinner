@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { recipeServiceClient } from "@/api/recipeServiceClient.ts";
 import { useKeycloak } from "@/keycloakProvider.tsx";
+// @ts-ignore
+import styles from "../index.module.css";
 
 interface Props {
   ingredient: Ingredient
@@ -30,14 +32,23 @@ export const IngredientCard = ({ingredient}: Props) => {
       console.log("Something went wrong")
     }
   })
+
   return (
     <>
-      <IngredientForm isOpen={editModalOpen} ingredient={ingredient} mutation={mutation}
-                      closeModal={() => setEditModalOpen(false)}/>
-      <div className={"card"}>
-        <h2 className={"text-2"}>{ingredient.name}</h2>
-        <p className={"text-micro"}>{ingredient.id}</p>
-        <button onClick={() => setEditModalOpen(true)}>Edit</button>
+      <IngredientForm
+        isOpen={editModalOpen}
+        ingredient={ingredient}
+        mutation={mutation}
+        closeModal={() => setEditModalOpen(false)}
+      />
+      <div className={styles.ingredientCard}>
+        <span className={styles.ingredientName}>{ingredient.name}</span>
+        <button
+          className={styles.editButton}
+          onClick={() => setEditModalOpen(true)}
+        >
+          Rediger
+        </button>
       </div>
     </>
   )

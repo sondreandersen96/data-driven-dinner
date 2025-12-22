@@ -1,5 +1,13 @@
 :root {
+    --primary: #2D6A4F;
+    --secondary: #52B788;
+    --accent: #F4A261;
+    --background: #F8F9FA;
+    --card: #FFFFFF;
+    --text: #212529;
+    --text-light: #6C757D;
+    --border: #E9ECEF;
+    /* Legacy colors */
     --cream: #FFFDF2;
     --cream-darker: #dedbc8;
-    --text: #000000
 }

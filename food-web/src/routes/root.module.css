@@ -1,15 +1,122 @@
-.header-row-container {
+/* Floating Navigation Header */
+.header {
+    background: transparent;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 1.5rem 2rem;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
 }
 
-.logoContainer {
-    text-align: center;
-    width: 100%;
+.navPill {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50px;
+    padding: 0.5rem 0.75rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    animation: slideDown 0.6s ease-out;
 }
 
-.logo {
-    width: 100px;
-    height: auto;
-    border-radius: 10px;
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.navLink {
+    padding: 0.625rem 1.25rem;
+    border-radius: 25px;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.navLink:hover {
+    background: rgba(45, 106, 79, 0.1);
+    color: var(--primary);
+}
+
+.navLinkActive {
+    background: var(--primary);
+    color: white !important;
+}
+
+.addRecipeButton {
+    background: var(--accent);
+    color: white;
+    padding: 0.625rem 1.5rem;
+    border-radius: 50px;
+    border: none;
+    font-family: 'Sora', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(244, 162, 97, 0.3);
+    animation: slideDown 0.6s ease-out 0.1s both;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.addRecipeButton:hover {
+    background: #e8935a;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(244, 162, 97, 0.4);
+}
+
+.addRecipeButton:active {
+    transform: translateY(0);
+}
+
+/* Main content area - add padding for fixed header */
+.main {
+    padding-top: 6rem;
+    min-height: 100vh;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .navPill {
+        flex-wrap: wrap;
+        justify-content: center;
+        max-width: 90%;
+    }
+
+    .navLink {
+        font-size: 0.85rem;
+        padding: 0.5rem 1rem;
+    }
+
+    .addRecipeButton {
+        font-size: 0.85rem;
+        padding: 0.5rem 1.25rem;
+    }
+
+    .main {
+        padding-top: 9rem;
+    }
 }

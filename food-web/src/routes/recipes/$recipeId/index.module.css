@@ -1,0 +1,271 @@
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+}
+
+/* Header Section */
+.header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.title {
+    font-family: 'Lora', serif;
+    font-size: 2.75rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.meta {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    color: var(--text-light);
+    font-size: 0.95rem;
+}
+
+.metaItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Video Section */
+.videoSection {
+    margin-bottom: 3rem;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Content Grid */
+.contentGrid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+}
+
+/* Ingredients Card */
+.ingredientsCard {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 2rem;
+    border: 1px solid var(--border);
+    height: fit-content;
+    position: sticky;
+    top: 7rem;
+}
+
+.sectionTitle {
+    font-family: 'Lora', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Portions Selector */
+.portionsSelector {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--background);
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+}
+
+.portionsLabel {
+    font-weight: 500;
+    color: var(--text);
+    font-size: 0.95rem;
+}
+
+.portionsControls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+}
+
+.portionsBtn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--text);
+    font-size: 1.25rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.portionsBtn:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+.portionsValue {
+    width: 50px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--text);
+    padding: 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: white;
+}
+
+.portionsValue:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+/* Ingredient List */
+.ingredientList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.ingredientItem {
+    display: flex;
+    align-items: center;
+    padding: 0.875rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.95rem;
+}
+
+.ingredientItem:last-child {
+    border-bottom: none;
+}
+
+.ingredientAmount {
+    font-weight: 600;
+    color: var(--primary);
+    min-width: 80px;
+}
+
+.ingredientName {
+    color: var(--text);
+}
+
+/* Description Section */
+.descriptionSection {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 2rem;
+    border: 1px solid var(--border);
+}
+
+.description {
+    white-space: pre-wrap;
+    line-height: 1.8;
+    color: var(--text);
+    font-size: 1rem;
+}
+
+/* Action Buttons */
+.actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 3rem;
+}
+
+.btnEdit {
+    padding: 0.75rem 1.5rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Sora', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btnEdit:hover {
+    background: var(--secondary);
+    transform: translateY(-1px);
+}
+
+.btnDelete {
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+    border-radius: 8px;
+    font-family: 'Sora', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btnDelete:hover {
+    background: #dc3545;
+    color: white;
+}
+
+/* Loading State */
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    color: var(--text-light);
+    font-size: 1.1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1rem 3rem;
+    }
+
+    .title {
+        font-size: 2rem;
+    }
+
+    .contentGrid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .ingredientsCard {
+        position: static;
+    }
+
+    .meta {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+
+    .btnEdit,
+    .btnDelete {
+        width: 100%;
+        justify-content: center;
+    }
+}

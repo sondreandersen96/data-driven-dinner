@@ -1,0 +1,1675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Design Concept 3 - Clean & Simple</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2D6A4F;
+            --secondary: #52B788;
+            --accent: #F4A261;
+            --background: #F8F9FA;
+            --card: #FFFFFF;
+            --text: #212529;
+            --text-light: #6C757D;
+            --border: #E9ECEF;
+        }
+
+        body {
+            font-family: 'Sora', sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Apple-style Floating Navigation */
+        header {
+            background: transparent;
+            border: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-pill {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50px;
+            padding: 0.5rem 0.75rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .nav-pill a {
+            padding: 0.625rem 1.25rem;
+            border-radius: 25px;
+            text-decoration: none;
+            color: var(--text);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .nav-pill a:hover {
+            background: rgba(45, 106, 79, 0.1);
+            color: var(--primary);
+        }
+
+        .nav-pill a.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Separate Add Recipe Button */
+        .btn-add-recipe-floating {
+            background: var(--accent);
+            color: white;
+            padding: 0.625rem 1.5rem;
+            border-radius: 50px;
+            border: none;
+            font-family: 'Sora', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(244, 162, 97, 0.3);
+            animation: slideDown 0.6s ease-out 0.1s both;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-add-recipe-floating:hover {
+            background: #e8935a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(244, 162, 97, 0.4);
+        }
+
+        .btn-add-recipe-floating:active {
+            transform: translateY(0);
+        }
+
+        .header-content {
+            display: none;
+        }
+
+        .logo {
+            display: none;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 0;
+            list-style: none;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Hero Section */
+        .hero {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 8rem 2rem 3rem;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(45, 106, 79, 0.1);
+            color: var(--primary);
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-family: 'Lora', serif;
+            font-size: 3.5rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero-description {
+            font-size: 1.125rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            font-weight: 300;
+        }
+
+        /* Search Bar */
+        .search-container {
+            max-width: 650px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* AI Toggle Switch */
+        .search-mode-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .toggle-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-light);
+            transition: color 0.3s;
+        }
+
+        .toggle-label.active {
+            color: var(--primary);
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 56px;
+            height: 30px;
+            background: var(--border);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.ai-mode {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .toggle-switch.ai-mode .toggle-slider {
+            transform: translateX(26px);
+        }
+
+        /* Search Wrapper with AI Gradient */
+        .search-wrapper {
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border-radius: 12px;
+            transition: all 0.4s ease;
+        }
+
+        .search-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 14px;
+            padding: 2px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #667eea 75%, #764ba2 100%);
+            background-size: 200% 200%;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .search-wrapper.ai-mode::before {
+            opacity: 1;
+        }
+
+        .search-wrapper.ai-mode {
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.25);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1.25rem 1.75rem;
+            padding-right: 140px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-family: 'Sora', sans-serif;
+            font-size: 1rem;
+            background: white;
+            transition: all 0.2s;
+            position: relative;
+            z-index: 1;
+        }
+
+        .search-wrapper.ai-mode .search-input {
+            border-color: transparent;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 4px 20px rgba(45, 106, 79, 0.15);
+        }
+
+        .search-wrapper.ai-mode .search-input:focus {
+            border-color: transparent;
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .search-input.ai-mode::placeholder {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .search-button {
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 0.75rem 1.75rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            z-index: 2;
+        }
+
+        .search-button:hover {
+            background: var(--secondary);
+        }
+
+        .search-wrapper.ai-mode .search-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .search-wrapper.ai-mode .search-button:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            transform: translateY(-50%) scale(1.05);
+        }
+
+        /* AI Sparkle Icon */
+        .ai-icon {
+            display: none;
+            position: absolute;
+            left: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            animation: sparkle 2s ease-in-out infinite;
+            z-index: 2;
+        }
+
+        @keyframes sparkle {
+            0%, 100% {
+                opacity: 0.6;
+                transform: translateY(-50%) scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(-50%) scale(1.1);
+            }
+        }
+
+        .search-wrapper.ai-mode .ai-icon {
+            display: block;
+        }
+
+        .search-wrapper.ai-mode .search-input {
+            padding-left: 3.5rem;
+        }
+
+        /* Quick Filters */
+        .quick-filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-tag {
+            padding: 0.5rem 1.25rem;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 0.875rem;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-tag:hover {
+            border-color: var(--primary);
+            background: rgba(45, 106, 79, 0.05);
+        }
+
+        /* Main Content */
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-family: 'Lora', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 2.5rem;
+        }
+
+        /* Recipe Cards */
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 5rem;
+        }
+
+        .recipe-card {
+            background: var(--card);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+            border-color: var(--primary);
+        }
+
+        .recipe-image {
+            width: 100%;
+            height: 240px;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+            position: relative;
+        }
+
+        .recipe-time {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .recipe-body {
+            padding: 1.75rem;
+        }
+
+        .recipe-tags-top {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tag-badge {
+            padding: 0.25rem 0.75rem;
+            background: rgba(45, 106, 79, 0.1);
+            color: var(--primary);
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .recipe-title {
+            font-family: 'Lora', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+        }
+
+        .recipe-excerpt {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.25rem;
+        }
+
+        .recipe-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1.25rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .recipe-meta {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .recipe-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-weight: 500;
+            color: var(--accent);
+        }
+
+        /* Categories Section */
+        .categories-section {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            border: 1px solid var(--border);
+            margin-bottom: 5rem;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .category-card {
+            padding: 2rem 1.5rem;
+            background: var(--background);
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .category-card:hover {
+            background: white;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .category-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .category-name {
+            font-weight: 500;
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        .category-count {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 0.25rem;
+        }
+
+        /* Stats Banner */
+        .stats-banner {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 20px;
+            padding: 4rem 3rem;
+            margin-bottom: 5rem;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .stat-item {
+            color: white;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--card);
+            border-top: 1px solid var(--border);
+            padding: 4rem 2rem 2rem;
+            margin-top: 6rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand {
+            font-family: 'Lora', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .footer-text {
+            color: var(--text-light);
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        .footer-section h4 {
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Modal/Popup Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideUp 0.4s ease;
+        }
+
+        .modal-header {
+            padding: 2rem 2rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-family: 'Lora', serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: var(--background);
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: var(--primary);
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.75rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-label .required {
+            color: var(--accent);
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Sora', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-help {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+        }
+
+        /* Image Upload Area */
+        .image-upload {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--background);
+        }
+
+        .image-upload:hover {
+            border-color: var(--primary);
+            background: rgba(45, 106, 79, 0.05);
+        }
+
+        .image-upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .image-upload-text {
+            color: var(--text);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .image-upload-hint {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .image-upload input[type="file"] {
+            display: none;
+        }
+
+        /* Tags Input */
+        .tags-input-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            min-height: 48px;
+            cursor: text;
+        }
+
+        .tag-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0.75rem;
+            background: rgba(45, 106, 79, 0.1);
+            color: var(--primary);
+            border-radius: 16px;
+            font-size: 0.85rem;
+        }
+
+        .tag-remove {
+            cursor: pointer;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+
+        .tag-remove:hover {
+            color: var(--accent);
+        }
+
+        .tag-input {
+            border: none;
+            outline: none;
+            flex: 1;
+            min-width: 120px;
+            font-family: 'Sora', sans-serif;
+            font-size: 0.95rem;
+        }
+
+        /* Ingredients List */
+        .ingredient-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .ingredient-item {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .ingredient-item input {
+            flex: 1;
+        }
+
+        .btn-remove-ingredient {
+            padding: 0.5rem;
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: all 0.2s;
+        }
+
+        .btn-remove-ingredient:hover {
+            background: #fee;
+            border-color: #f88;
+            color: #c33;
+        }
+
+        .btn-add-ingredient {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Sora', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text);
+            transition: all 0.2s;
+            margin-top: 0.5rem;
+        }
+
+        .btn-add-ingredient:hover {
+            background: rgba(45, 106, 79, 0.05);
+            border-color: var(--primary);
+        }
+
+        /* Modal Footer */
+        .modal-footer {
+            padding: 1.5rem 2rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .btn-cancel {
+            padding: 0.75rem 1.75rem;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Sora', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-cancel:hover {
+            background: var(--background);
+        }
+
+        .btn-submit {
+            padding: 0.75rem 2rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Sora', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-submit:hover {
+            background: var(--secondary);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(45, 106, 79, 0.3);
+        }
+
+        /* Add Recipe Button in Header */
+        .btn-add-recipe {
+            padding: 0.625rem 1.5rem;
+            background: var(--accent);
+            color: white;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            font-family: 'Sora', sans-serif;
+            font-size: 0.95rem;
+        }
+
+        .btn-add-recipe:hover {
+            background: #e8935a;
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .hero {
+                padding: 9rem 2rem 3rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .recipe-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-pill {
+                flex-wrap: wrap;
+                justify-content: center;
+                max-width: 90%;
+            }
+
+            .nav-pill a {
+                font-size: 0.85rem;
+                padding: 0.5rem 1rem;
+            }
+
+            .btn-add-recipe-floating {
+                font-size: 0.85rem;
+                padding: 0.5rem 1.25rem;
+            }
+
+            .modal-content {
+                margin: 1rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-footer {
+                flex-direction: column;
+            }
+
+            .btn-cancel,
+            .btn-submit {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="nav-pill">
+            <a href="#" class="active">🏠 Hjem</a>
+            <a href="#">📖 Alle oppskrifter</a>
+            <a href="#">🏷️ Kategorier</a>
+        </nav>
+        <button class="btn-add-recipe-floating" onclick="openModal()">
+            ➕ Ny oppskrift
+        </button>
+    </header>
+
+    <section class="hero">
+        <div class="hero-badge">👨‍👩‍👧‍👦 Familiens oppskrifter</div>
+        <h1>Våre favoritter<br>samlet på ett sted</h1>
+        <p class="hero-description">
+            Finn raskt de oppskriftene familien elsker. Legg til nye favoritter eller søk etter noe spesifikt.
+        </p>
+
+        <div class="search-container">
+            <div class="search-mode-toggle">
+                <span class="toggle-label active" id="normalLabel">Søk</span>
+                <div class="toggle-switch" id="aiToggle" onclick="toggleAIMode()">
+                    <div class="toggle-slider"></div>
+                </div>
+                <span class="toggle-label" id="aiLabel">Spør AI ✨</span>
+            </div>
+            <div class="search-wrapper" id="searchWrapper">
+                <span class="ai-icon">✨</span>
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    id="searchInput"
+                    placeholder="Søk etter oppskrifter eller ingredienser...">
+                <button class="search-button" id="searchButton">Søk</button>
+            </div>
+            <div class="quick-filters">
+                <span class="filter-tag">🥗 Vegetar</span>
+                <span class="filter-tag">⚡ Rask</span>
+                <span class="filter-tag">🎉 Fest</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="content-wrapper">
+        <h2 class="section-title">Oppskrifter</h2>
+        
+        <div class="recipe-grid">
+            <div class="recipe-card">
+                <div class="recipe-image">
+                    <div class="recipe-time">⏱️ 30 min</div>
+                </div>
+                <div class="recipe-body">
+                    <div class="recipe-tags-top">
+                        <span class="tag-badge">Italiensk</span>
+                        <span class="tag-badge">Middag</span>
+                    </div>
+                    <h3 class="recipe-title">Kremet carbonara med basilikum</h3>
+                    <p class="recipe-excerpt">
+                        Klassisk italiensk pastarett med egg, bacon og parmesan. 
+                        Enkel å lage og alltid en favoritt.
+                    </p>
+                    <div class="recipe-footer">
+                        <div class="recipe-meta">
+                            <span class="meta-item">👥 4 porsjoner</span>
+                            <span class="meta-item">📊 Medium</span>
+                        </div>
+                        <div class="recipe-rating">
+                            ⭐ 4.8
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-card">
+                <div class="recipe-image">
+                    <div class="recipe-time">⏱️ 45 min</div>
+                </div>
+                <div class="recipe-body">
+                    <div class="recipe-tags-top">
+                        <span class="tag-badge">Norsk</span>
+                        <span class="tag-badge">Tradisjonell</span>
+                    </div>
+                    <h3 class="recipe-title">Hjemmelaget kjøttboller i brun saus</h3>
+                    <p class="recipe-excerpt">
+                        Saftige kjøttboller med kremet brun saus. 
+                        Comfort food på sitt beste, perfekt til hele familien.
+                    </p>
+                    <div class="recipe-footer">
+                        <div class="recipe-meta">
+                            <span class="meta-item">👥 6 porsjoner</span>
+                            <span class="meta-item">📊 Lett</span>
+                        </div>
+                        <div class="recipe-rating">
+                            ⭐ 4.9
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-card">
+                <div class="recipe-image">
+                    <div class="recipe-time">⏱️ 20 min</div>
+                </div>
+                <div class="recipe-body">
+                    <div class="recipe-tags-top">
+                        <span class="tag-badge">Asiatisk</span>
+                        <span class="tag-badge">Rask</span>
+                    </div>
+                    <h3 class="recipe-title">Pad thai med reker og peanøtter</h3>
+                    <p class="recipe-excerpt">
+                        Autentisk thailandsk gatemat-favoritt med sprø grønnsaker 
+                        og søt-sur tamarindsaus.
+                    </p>
+                    <div class="recipe-footer">
+                        <div class="recipe-meta">
+                            <span class="meta-item">👥 2 porsjoner</span>
+                            <span class="meta-item">📊 Medium</span>
+                        </div>
+                        <div class="recipe-rating">
+                            ⭐ 4.7
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-card">
+                <div class="recipe-image">
+                    <div class="recipe-time">⏱️ 1 time</div>
+                </div>
+                <div class="recipe-body">
+                    <div class="recipe-tags-top">
+                        <span class="tag-badge">Dessert</span>
+                        <span class="tag-badge">Fest</span>
+                    </div>
+                    <h3 class="recipe-title">Sjokoladekake med saltkrem</h3>
+                    <p class="recipe-excerpt">
+                        Dekadent sjokoladekake med silkemyk ganache og lett 
+                        saltet krem. Imponerer på enhver fest.
+                    </p>
+                    <div class="recipe-footer">
+                        <div class="recipe-meta">
+                            <span class="meta-item">👥 8 porsjoner</span>
+                            <span class="meta-item">📊 Avansert</span>
+                        </div>
+                        <div class="recipe-rating">
+                            ⭐ 5.0
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-card">
+                <div class="recipe-image">
+                    <div class="recipe-time">⏱️ 15 min</div>
+                </div>
+                <div class="recipe-body">
+                    <div class="recipe-tags-top">
+                        <span class="tag-badge">Frokost</span>
+                        <span class="tag-badge">Sunn</span>
+                    </div>
+                    <h3 class="recipe-title">Avokadotoast med posjert egg</h3>
+                    <p class="recipe-excerpt">
+                        Næringsrik og fargerik frokost med kremet avokado, 
+                        perfekt posjert egg og sprøstekt brød.
+                    </p>
+                    <div class="recipe-footer">
+                        <div class="recipe-meta">
+                            <span class="meta-item">👥 2 porsjoner</span>
+                            <span class="meta-item">📊 Lett</span>
+                        </div>
+                        <div class="recipe-rating">
+                            ⭐ 4.6
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-card">
+                <div class="recipe-image">
+                    <div class="recipe-time">⏱️ 35 min</div>
+                </div>
+                <div class="recipe-body">
+                    <div class="recipe-tags-top">
+                        <span class="tag-badge">Vegetar</span>
+                        <span class="tag-badge">Indisk</span>
+                    </div>
+                    <h3 class="recipe-title">Kremet curry med kikerter</h3>
+                    <p class="recipe-excerpt">
+                        Aromatisk indisk curry med kokosmelk, tomater og 
+                        masse smakfulle krydder. Vegansk og deilig.
+                    </p>
+                    <div class="recipe-footer">
+                        <div class="recipe-meta">
+                            <span class="meta-item">👥 4 porsjoner</span>
+                            <span class="meta-item">📊 Medium</span>
+                        </div>
+                        <div class="recipe-rating">
+                            ⭐ 4.8
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="categories-section">
+            <h2 class="section-title">Kategorier</h2>
+            <div class="categories-grid">
+                <div class="category-card">
+                    <div class="category-icon">🍝</div>
+                    <div class="category-name">Pasta</div>
+                    <div class="category-count">234 oppskrifter</div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">🥗</div>
+                    <div class="category-name">Salater</div>
+                    <div class="category-count">156 oppskrifter</div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">🍰</div>
+                    <div class="category-name">Desserter</div>
+                    <div class="category-count">198 oppskrifter</div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">🥘</div>
+                    <div class="category-name">Gryter</div>
+                    <div class="category-count">145 oppskrifter</div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">🌮</div>
+                    <div class="category-name">Meksikansk</div>
+                    <div class="category-count">89 oppskrifter</div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">🍜</div>
+                    <div class="category-name">Asiatisk</div>
+                    <div class="category-count">267 oppskrifter</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div>
+                <div class="footer-brand">Smakspalett</div>
+                <p class="footer-text">
+                    Vårt lille familiearkiv for alle de gode oppskriftene vi elsker.
+                </p>
+            </div>
+            <div class="footer-section">
+                <h4>Navigasjon</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Alle oppskrifter</a></li>
+                    <li><a href="#">Kategorier</a></li>
+                    <li><a href="#">Legg til ny</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Filtrer</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Vegetar</a></li>
+                    <li><a href="#">Rask matlaging</a></li>
+                    <li><a href="#">Festmat</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Info</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Om denne siden</a></li>
+                    <li><a href="#">Kontakt</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 Familiens Oppskrifter</p>
+        </div>
+    </footer>
+    <!-- Add Recipe Modal -->
+    <div class="modal-overlay" id="recipeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Legg til ny oppskrift</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="recipeForm" onsubmit="handleSubmit(event)">
+                <div class="modal-body">
+                    <!-- Recipe Name -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            Oppskriftsnavn <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            class="form-input" 
+                            placeholder="F.eks. Kremet carbonara med basilikum"
+                            required
+                        >
+                    </div>
+
+                    <!-- Description -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            Kort beskrivelse <span class="required">*</span>
+                        </label>
+                        <textarea 
+                            class="form-textarea" 
+                            placeholder="Beskriv retten kort og fristende..."
+                            required
+                        ></textarea>
+                        <div class="form-help">En kort beskrivelse som fanger oppmerksomheten</div>
+                    </div>
+
+                    <!-- Time and Servings -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Tilberedningstid <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                class="form-input" 
+                                placeholder="F.eks. 30 min"
+                                required
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                Antall porsjoner <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="number" 
+                                class="form-input" 
+                                placeholder="4"
+                                min="1"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Category and Difficulty -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Kategori <span class="required">*</span>
+                            </label>
+                            <select class="form-select" required>
+                                <option value="">Velg kategori</option>
+                                <option value="pasta">Pasta</option>
+                                <option value="salat">Salater</option>
+                                <option value="dessert">Desserter</option>
+                                <option value="gryte">Gryter</option>
+                                <option value="meksikansk">Meksikansk</option>
+                                <option value="asiatisk">Asiatisk</option>
+                                <option value="fisk">Fisk & Skalldyr</option>
+                                <option value="kjott">Kjøtt</option>
+                                <option value="vegetar">Vegetarisk</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                Vanskelighetsgrad <span class="required">*</span>
+                            </label>
+                            <select class="form-select" required>
+                                <option value="">Velg nivå</option>
+                                <option value="lett">Lett</option>
+                                <option value="medium">Medium</option>
+                                <option value="avansert">Avansert</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Ingredients -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            Ingredienser <span class="required">*</span>
+                        </label>
+                        <div class="ingredient-list" id="ingredientList">
+                            <div class="ingredient-item">
+                                <input 
+                                    type="text" 
+                                    class="form-input" 
+                                    placeholder="F.eks. 400g spaghetti"
+                                    required
+                                >
+                                <button type="button" class="btn-remove-ingredient" onclick="removeIngredient(this)">✕</button>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-add-ingredient" onclick="addIngredient()">
+                            + Legg til ingrediens
+                        </button>
+                    </div>
+
+                    <!-- Instructions -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            Fremgangsmåte <span class="required">*</span>
+                        </label>
+                        <textarea 
+                            class="form-textarea" 
+                            placeholder="Beskriv trinn-for-trinn hvordan retten lages..."
+                            rows="6"
+                            required
+                        ></textarea>
+                    </div>
+
+                    <!-- Tags -->
+                    <div class="form-group">
+                        <label class="form-label">Tags</label>
+                        <div class="tags-input-wrapper" onclick="focusTagInput()">
+                            <div id="tagsContainer"></div>
+                            <input 
+                                type="text" 
+                                class="tag-input" 
+                                id="tagInput"
+                                placeholder="Skriv og trykk Enter"
+                                onkeydown="handleTagInput(event)"
+                            >
+                        </div>
+                        <div class="form-help">F.eks. rask, sunn, italiensk, middag</div>
+                    </div>
+
+                    <!-- Image Upload -->
+                    <div class="form-group">
+                        <label class="form-label">Bilde av retten</label>
+                        <label class="image-upload" for="imageUpload">
+                            <div class="image-upload-icon">📷</div>
+                            <div class="image-upload-text">Klikk for å laste opp bilde</div>
+                            <div class="image-upload-hint">PNG, JPG eller WEBP (maks 5MB)</div>
+                            <input type="file" id="imageUpload" accept="image/*">
+                        </label>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" onclick="closeModal()">Avbryt</button>
+                    <button type="submit" class="btn-submit">Publiser oppskrift</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // AI Search Toggle
+        let isAIMode = false;
+
+        function toggleAIMode() {
+            isAIMode = !isAIMode;
+            const toggle = document.getElementById('aiToggle');
+            const searchWrapper = document.getElementById('searchWrapper');
+            const searchInput = document.getElementById('searchInput');
+            const searchButton = document.getElementById('searchButton');
+            const normalLabel = document.getElementById('normalLabel');
+            const aiLabel = document.getElementById('aiLabel');
+
+            if (isAIMode) {
+                toggle.classList.add('ai-mode');
+                searchWrapper.classList.add('ai-mode');
+                searchInput.classList.add('ai-mode');
+                searchInput.placeholder = 'Spør meg om oppskrifter, ingredienser eller matlaging...';
+                searchButton.textContent = 'Spør AI';
+                normalLabel.classList.remove('active');
+                aiLabel.classList.add('active');
+            } else {
+                toggle.classList.remove('ai-mode');
+                searchWrapper.classList.remove('ai-mode');
+                searchInput.classList.remove('ai-mode');
+                searchInput.placeholder = 'Søk etter oppskrifter eller ingredienser...';
+                searchButton.textContent = 'Søk';
+                normalLabel.classList.add('active');
+                aiLabel.classList.remove('active');
+            }
+        }
+
+        // Modal functions
+        function openModal() {
+            document.getElementById('recipeModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('recipeModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('recipeModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('recipeModal').classList.contains('active')) {
+                closeModal();
+            }
+        });
+
+        // Ingredient management
+        function addIngredient() {
+            const list = document.getElementById('ingredientList');
+            const newItem = document.createElement('div');
+            newItem.className = 'ingredient-item';
+            newItem.innerHTML = `
+                <input 
+                    type="text" 
+                    class="form-input" 
+                    placeholder="F.eks. 200g bacon"
+                >
+                <button type="button" class="btn-remove-ingredient" onclick="removeIngredient(this)">✕</button>
+            `;
+            list.appendChild(newItem);
+        }
+
+        function removeIngredient(button) {
+            const list = document.getElementById('ingredientList');
+            if (list.children.length > 1) {
+                button.parentElement.remove();
+            }
+        }
+
+        // Tags management
+        const tags = [];
+
+        function handleTagInput(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const input = event.target;
+                const value = input.value.trim();
+                
+                if (value && !tags.includes(value)) {
+                    tags.push(value);
+                    renderTags();
+                    input.value = '';
+                }
+            }
+        }
+
+        function removeTag(tag) {
+            const index = tags.indexOf(tag);
+            if (index > -1) {
+                tags.splice(index, 1);
+                renderTags();
+            }
+        }
+
+        function renderTags() {
+            const container = document.getElementById('tagsContainer');
+            container.innerHTML = tags.map(tag => `
+                <div class="tag-item">
+                    ${tag}
+                    <span class="tag-remove" onclick="removeTag('${tag}')">×</span>
+                </div>
+            `).join('');
+        }
+
+        function focusTagInput() {
+            document.getElementById('tagInput').focus();
+        }
+
+        // Form submission
+        function handleSubmit(event) {
+            event.preventDefault();
+            
+            // Get all ingredient values
+            const ingredients = Array.from(document.querySelectorAll('.ingredient-item input'))
+                .map(input => input.value)
+                .filter(value => value.trim() !== '');
+            
+            // Here you would typically send the data to your backend
+            console.log('Form submitted with:', {
+                ingredients,
+                tags
+            });
+            
+            alert('Oppskriften din er publisert! 🎉');
+            closeModal();
+            
+            // Reset form
+            document.getElementById('recipeForm').reset();
+            tags.length = 0;
+            renderTags();
+            
+            // Reset to single ingredient field
+            const list = document.getElementById('ingredientList');
+            list.innerHTML = `
+                <div class="ingredient-item">
+                    <input 
+                        type="text" 
+                        class="form-input" 
+                        placeholder="F.eks. 400g spaghetti"
+                        required
+                    >
+                    <button type="button" class="btn-remove-ingredient" onclick="removeIngredient(this)">✕</button>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

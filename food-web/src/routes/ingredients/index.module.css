@@ -1,0 +1,166 @@
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.title {
+    font-family: 'Lora', serif;
+    font-size: 2.75rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 1rem;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    font-weight: 300;
+}
+
+/* Search Section */
+.searchSection {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+.searchWrapper {
+    flex: 1;
+    position: relative;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-family: 'Sora', sans-serif;
+    font-size: 1rem;
+    background: white;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.searchInput:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(45, 106, 79, 0.1);
+}
+
+.addButton {
+    padding: 1rem 1.75rem;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Sora', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 12px rgba(244, 162, 97, 0.3);
+}
+
+.addButton:hover {
+    background: #e8935a;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(244, 162, 97, 0.4);
+}
+
+/* Ingredient Grid */
+.ingredientGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+/* Ingredient Card */
+.ingredientCard {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.2s;
+}
+
+.ingredientCard:hover {
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.ingredientName {
+    font-weight: 500;
+    color: var(--text);
+    font-size: 1rem;
+}
+
+.editButton {
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: 'Sora', sans-serif;
+    font-size: 0.85rem;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.editButton:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+/* States */
+.loading {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-light);
+}
+
+.empty {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-light);
+    background: var(--card);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1rem 3rem;
+    }
+
+    .title {
+        font-size: 2rem;
+    }
+
+    .searchSection {
+        flex-direction: column;
+    }
+
+    .addButton {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .ingredientGrid {
+        grid-template-columns: 1fr;
+    }
+}

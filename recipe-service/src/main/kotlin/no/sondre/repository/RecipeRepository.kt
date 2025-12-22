@@ -7,6 +7,7 @@ import jakarta.persistence.*
 import jakarta.transaction.Transactional
 import jakarta.ws.rs.InternalServerErrorException
 import jakarta.ws.rs.NotFoundException
+import no.sondre.domain.Ingredient
 import no.sondre.domain.Recipe
 import no.sondre.domain.RecipeIngredient
 import no.sondre.services.IngredientService
@@ -44,7 +45,8 @@ class SQLRecipe(
         val ingredientIds = recipeIngredients.map { it.ingredient.idSafe() }
         val ingredients = ingredientService.load(ingredientIds)
         recipeIngredients.forEach { ri ->
-            val ingredient = ingredients.find { it.idSafe() == ri.ingredient.idSafe() }                     ?: throw InternalServerErrorException("Could not find ingredient")
+            val ingredient = ingredients.find { it.idSafe() == ri.ingredient.idSafe() }
+                ?: throw InternalServerErrorException("Could not find ingredient")
             ri.populate(ingredient)
         }
         val pojo = Recipe(name, youtube, recipeIngredients, description, portions)
@@ -74,8 +76,14 @@ class RecipeRepository : PanacheRepository<SQLRecipe> {
     @Inject
     private lateinit var recipeIngredientRepository: RecipeIngredientRepository
 
-    fun all(): List<Recipe> {
-        return listAll().map { it.toPOJO(recipeIngredientRepository, ingredientService) }
+    fun all(query: String): List<Recipe> {
+        val results = if (query.isBlank()) {
+            listAll()
+        } else {
+            val searchInput = "%${query.lowercase()}%"
+            list("LOWER(name) LIKE ?1", searchInput)
+        }.map { it.toPOJO(recipeIngredientRepository, ingredientService) }
+        return results
     }
 
     private fun findSQLById(id: UUID): SQLRecipe {

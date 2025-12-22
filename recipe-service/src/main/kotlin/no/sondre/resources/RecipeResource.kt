@@ -13,8 +13,8 @@ class RecipeResource {
     lateinit var service: RecipeService
 
     @GET
-    fun list(): List<Recipe> {
-        return service.list()
+    fun list(@QueryParam("query") query: String?): List<Recipe> {
+        return service.list(query ?: "")
     }
 
     @GET

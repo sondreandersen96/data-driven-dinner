@@ -1,0 +1,229 @@
+.hero {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 2rem 3rem;
+    text-align: center;
+}
+
+.heroTitle {
+    font-family: 'Lora', serif;
+    font-size: 3.5rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.heroDescription {
+    font-size: 1.125rem;
+    color: var(--text-light);
+    max-width: 600px;
+    margin: 0 auto 2.5rem;
+    font-weight: 300;
+}
+
+/* Search Bar */
+.searchContainer {
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+/* AI Toggle Switch */
+.searchModeToggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.toggleLabel {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-light);
+    transition: color 0.3s;
+}
+
+.toggleLabelActive {
+    color: var(--primary);
+}
+
+.toggleSwitch {
+    position: relative;
+    width: 56px;
+    height: 30px;
+    background: var(--border);
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.toggleSwitchAi {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.toggleSlider {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 24px;
+    height: 24px;
+    background: white;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggleSwitchAi .toggleSlider {
+    transform: translateX(26px);
+}
+
+/* Search Wrapper */
+.searchWrapper {
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    transition: all 0.4s ease;
+}
+
+.searchWrapper::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 14px;
+    padding: 2px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #667eea 75%, #764ba2 100%);
+    background-size: 200% 200%;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    animation: gradientShift 3s ease infinite;
+    pointer-events: none;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.searchWrapperAi::before {
+    opacity: 1;
+}
+
+.searchWrapperAi {
+    box-shadow: 0 8px 30px rgba(102, 126, 234, 0.25);
+}
+
+/* AI Icon */
+.aiIcon {
+    position: absolute;
+    left: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    animation: sparkle 2s ease-in-out infinite;
+    z-index: 2;
+}
+
+@keyframes sparkle {
+    0%, 100% {
+        opacity: 0.6;
+        transform: translateY(-50%) scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(-50%) scale(1.1);
+    }
+}
+
+.searchInput {
+    width: 100%;
+    padding: 1.25rem 1.75rem;
+    padding-right: 120px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-family: 'Sora', sans-serif;
+    font-size: 1rem;
+    background: white;
+    transition: all 0.2s;
+    position: relative;
+    z-index: 1;
+}
+
+.searchInputAi {
+    padding-left: 3.5rem;
+    border-color: transparent;
+}
+
+.searchInput:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 4px 20px rgba(45, 106, 79, 0.15);
+}
+
+.searchInputAi:focus {
+    border-color: transparent;
+    box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
+}
+
+.searchButton {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0.75rem 1.75rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Sora', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    z-index: 2;
+}
+
+.searchButton:hover {
+    background: var(--secondary);
+}
+
+.searchButtonAi {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.searchButtonAi:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    transform: translateY(-50%) scale(1.05);
+}
+
+.contentWrapper {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+.sectionTitle {
+    font-family: 'Lora', serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+    .heroTitle {
+        font-size: 2.5rem;
+    }
+
+    .hero {
+        padding: 1rem 1rem 2rem;
+    }
+
+    .contentWrapper {
+        padding: 0 1rem;
+    }
+}
