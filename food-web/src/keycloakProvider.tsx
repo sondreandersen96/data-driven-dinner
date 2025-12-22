@@ -28,6 +28,8 @@ export const KeycloakProvider = ({children}) => {
   // if (env == 'development')
 
   useEffect(() => {
+    let refreshInterval: ReturnType<typeof setInterval> | undefined;
+
     keycloak.init({
       onLoad: 'login-required',
       pkceMethod: 'S256',
@@ -37,26 +39,30 @@ export const KeycloakProvider = ({children}) => {
         authenticated: authenticated,
         token: keycloak.token,
       });
-      console.log("Running keycloak useEffect...")
-      // // Optional: Set up token refresh interval
-      // if (authenticated) {
-      //   setInterval(() => {
-      //     keycloak.updateToken(70).then(refreshed => {
-      //       if (refreshed) {
-      //         console.log('Token successfully refreshed');
-      //         setAuth(prev => ({ ...prev, token: keycloak.token }));
-      //       } else {
-      //         console.log('Token not refreshed, still valid');
-      //       }
-      //     }).catch(() => {
-      //       console.error('Failed to refresh token. User may need to re-login.');
-      //     });
-      //   }, 60000); // Check every minute (adjust based on token lifespan)
-      // }
+
+      if (authenticated) {
+        // Refresh token when it's about to expire (30 seconds before)
+        refreshInterval = setInterval(() => {
+          keycloak.updateToken(30).then(refreshed => {
+            if (refreshed) {
+              setAuth(prev => ({ ...prev, token: keycloak.token }));
+            }
+          }).catch(() => {
+            console.error('Failed to refresh token, logging in again');
+            keycloak.login();
+          });
+        }, 10000); // Check every 10 seconds
+      }
     }).catch(error => {
       console.error('Keycloak initialization failed:', error);
       setAuth({initialized: true, authenticated: false, token: undefined});
     });
+
+    return () => {
+      if (refreshInterval) {
+        clearInterval(refreshInterval);
+      }
+    };
   }, []);
 
   // Provide keycloak instance methods for convenience
