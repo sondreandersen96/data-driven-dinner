@@ -71,3 +71,4 @@ Keycloak authentication is required on app load. Configuration in `src/keycloak.
 - CSS Modules imports use `//@ts-ignore` comments due to TypeScript limitations
 - TypeScript strict mode with `noUnusedLocals` and `noUnusedParameters` enabled
 - Path alias: `@/*` maps to `src/*`
+- CSS should almost always be located in localized module.css files or in the global styles folder if the CSS is reused across components.
