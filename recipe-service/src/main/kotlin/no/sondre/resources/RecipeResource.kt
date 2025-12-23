@@ -1,5 +1,7 @@
 package no.sondre.resources
 
+import io.quarkus.logging.Log
+import io.quarkus.security.identity.SecurityIdentity
 import jakarta.inject.Inject
 import jakarta.ws.rs.*
 import no.sondre.services.RecipeService
@@ -10,10 +12,14 @@ import java.util.*
 class RecipeResource {
 
     @Inject
+    lateinit var securityIdentity: SecurityIdentity
+
+    @Inject
     lateinit var service: RecipeService
 
     @GET
     fun list(@QueryParam("query") query: String?): List<Recipe> {
+        Log.info("User making request: ${securityIdentity.principal}")
         return service.list(query ?: "")
     }
 
