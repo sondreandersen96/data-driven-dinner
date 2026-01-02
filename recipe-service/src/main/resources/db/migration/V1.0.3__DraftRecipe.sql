@@ -1,0 +1,1 @@
+ALTER TABLE public.recipe ADD draft BOOLEAN DEFAULT false;

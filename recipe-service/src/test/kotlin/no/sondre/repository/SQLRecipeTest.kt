@@ -2,9 +2,7 @@ package no.sondre.repository
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import no.sondre.domain.Ingredient
-import no.sondre.domain.Recipe
 import no.sondre.domain.RecipeIngredient
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 class SQLRecipeTest {
@@ -21,7 +19,7 @@ class SQLRecipeTest {
         val ingredient = Ingredient("Agurk")
         ingredient.initNew()
 
-        val serialized = SQLRecipe.serialize(
+        val serialized = SQLRecipe.serializeIngredientsSections(
             mutableMapOf(
                 "main" to listOf(RecipeIngredient(
                     amount = 1.0,

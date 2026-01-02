@@ -5,9 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6dbc5505-19ad-48e2-86a1-c6da5f137368" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/recipe-service/src/main/resources/db/migration/V1.0.3__DraftRecipe.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/food-web/src/components/RecipeForm/RecipeForm.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/components/RecipeForm/RecipeForm.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/food-web/src/components/RecipeForm/RecipeForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/components/RecipeForm/RecipeForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/domain/Recipe.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/domain/Recipe.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/repository/RecipeRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/repository/RecipeRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe-service/src/test/kotlin/no/sondre/repository/SQLRecipeTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/test/kotlin/no/sondre/repository/SQLRecipeTest.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -250,41 +253,8 @@
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/repository/RecipeRepository.kt</url>
-          <line>116</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/repository/RecipeRepository.kt</url>
-          <line>121</line>
-          <properties>
-            <option name="lambda-ordinal" value="-1" />
-          </properties>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/repository/RecipeRepository.kt</url>
-          <line>83</line>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/repository/RecipeRepository.kt</url>
-          <line>75</line>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/repository/RecipeRepository.kt</url>
-          <line>91</line>
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/repository/RecipeRepository.kt</url>
-          <line>90</line>
-          <option name="timeStamp" value="12" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/recipe-service/src/test/kotlin/no/sondre/repository/SQLRecipeTest.kt</url>
-          <line>36</line>
+          <line>34</line>
           <option name="timeStamp" value="14" />
         </line-breakpoint>
       </breakpoints>

@@ -29,7 +29,8 @@ class SQLRecipe(
     var portions: Int,
     @Column(name = "\"ingredientsSection\"", columnDefinition = "JSONB")
     @JdbcTypeCode(SqlTypes.JSON)
-    var ingredientsSection: String // actually {sectionName: [recipeIngredient...],...} # Where recipeIngredient only have ingredient pointer
+    var ingredientsSection: String, // actually {sectionName: [recipeIngredient...],...} # Where recipeIngredient only have ingredient pointer
+    var draft: Boolean
 ) : SQLModel<Recipe> {
 
     companion object : SQLModelCreator<Recipe, SQLRecipe> {
@@ -41,11 +42,12 @@ class SQLRecipe(
                 youtube = pojo.youtube,
                 description = pojo.description,
                 portions = pojo.portions,
-                ingredientsSection = serialize(pojo.ingredientsSections)
+                ingredientsSection = serializeIngredientsSections(pojo.ingredientsSections),
+                draft = pojo.draft
             )
         }
 
-        fun serialize(ingredientsSections: MutableMap<String, List<RecipeIngredient>>): String {
+        fun serializeIngredientsSections(ingredientsSections: MutableMap<String, List<RecipeIngredient>>): String {
             val map = ingredientsSections.mapValues { (_, ingredients) ->
                 ingredients.map { re ->
                     mapOf(
@@ -86,7 +88,8 @@ class SQLRecipe(
             youtube,
             deserializeIngredientsSections(ingredientsSection, ingredientRepository),
             description,
-            portions
+            portions,
+            draft
         )
         pojo.withId(id)
         return pojo
@@ -100,9 +103,9 @@ class SQLRecipe(
         name = new.name
         youtube = new.youtube
         description = new.description
-        ingredientsSection = serialize(new.ingredientsSections)
+        ingredientsSection = serializeIngredientsSections(new.ingredientsSections)
+        draft = new.draft
     }
-
 }
 
 

@@ -5,7 +5,8 @@ data class Recipe(
     var youtube: String? = null,
     val ingredientsSections: MutableMap<String, List<RecipeIngredient>> = mutableMapOf(),
     val description: String,
-    var portions: Int
+    var portions: Int,
+    var draft: Boolean = false
 ) : Domain() {
 
     companion object {
