@@ -56,7 +56,7 @@ function RootComponent() {
       </main>
 
       <NewRecipe isOpen={newRecipeModalOpen} closeNewRecipeModal={closeNewRecipeModal} />
-      <TanStackRouterDevtools position="bottom-right" />
+      {import.meta.env.DEV && <TanStackRouterDevtools position="bottom-right" />}
     </>
   )
 }

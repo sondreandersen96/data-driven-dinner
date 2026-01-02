@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6dbc5505-19ad-48e2-86a1-c6da5f137368" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/food-web/src/components/EmbeddedYoutube/EmbeddedYoutube.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/components/EmbeddedYoutube/EmbeddedYoutube.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/food-web/src/domain/Recipe.ts" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/domain/Recipe.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/food-web/src/routes/recipes/-components/RecipeCard/RecipeCard.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/routes/recipes/-components/RecipeCard/RecipeCard.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/food-web/src/routes/recipes/-components/RecipeCard/RecipeCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/routes/recipes/-components/RecipeCard/RecipeCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/domain/Recipe.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/domain/Recipe.kt" afterDir="false" />
-    </list>
+    <list default="true" id="6dbc5505-19ad-48e2-86a1-c6da5f137368" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
