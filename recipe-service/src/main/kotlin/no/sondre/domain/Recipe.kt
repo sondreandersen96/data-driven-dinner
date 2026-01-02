@@ -3,7 +3,7 @@ package no.sondre.domain
 data class Recipe(
     var name: String,
     var youtube: String? = null,
-    val ingredients: MutableList<RecipeIngredient> = mutableListOf(),
+    val ingredientsSections: MutableMap<String, List<RecipeIngredient>> = mutableMapOf(),
     val description: String,
     var portions: Int
 ) : Domain() {
@@ -14,7 +14,6 @@ data class Recipe(
 
     override fun initNew() {
         super.initNew()
-        populateRecipeIngredients()
         standardizePortion()
     }
 
@@ -23,33 +22,22 @@ data class Recipe(
     }
 
     fun adjustPortion(new: Int) {
-        val adjustmentFactor = new / portions
-        ingredients.forEach {
-            it.amount *= adjustmentFactor
+        val adjustmentFactor = new / portions.toDouble()
+        ingredientsSections.forEach {
+            it.value.forEach { re -> re.amount *= adjustmentFactor }
         }
         portions = new
     }
 
     fun prepareUpdate() {
         adjustPortion(STANDARD_PORTION_SIZE)
-        populateRecipeIngredients()
     }
 
-    private fun populateRecipeIngredients() {
-        ingredients.forEach { it.populate(idSafe()) }
-    }
-
-    fun addIngredient(i: RecipeIngredient) {
-        i.populate(idSafe())
-        ingredients.add(i)
-    }
-
-    // Should only be used for test methods
-    fun _addIngredientWithoutId(i: RecipeIngredient) {
-        ingredients.add(i)
+    fun allRecipeIngredients(): List<RecipeIngredient> {
+        return ingredientsSections.flatMap { it.value }
     }
 
     override fun copy(): Recipe {
-        return this.copy(ingredients = this.ingredients.map { it.copy() }.toMutableList())
+        return this.copy(ingredientsSections = this.ingredientsSections.toMutableMap())
     }
 }

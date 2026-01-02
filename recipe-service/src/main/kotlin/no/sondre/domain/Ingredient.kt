@@ -13,10 +13,6 @@ data class Ingredient(
         }
     }
 
-    fun populate(name: String) {
-        this.name = name
-    }
-
     override fun copy(): Ingredient {
         return this.copy()
     }

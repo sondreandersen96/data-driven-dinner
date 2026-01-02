@@ -1,16 +1,20 @@
 package no.sondre.repository
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheRepository
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.inject.Inject
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
+import jakarta.persistence.Table
 import jakarta.transaction.Transactional
-import jakarta.ws.rs.InternalServerErrorException
 import jakarta.ws.rs.NotFoundException
-import no.sondre.domain.Ingredient
 import no.sondre.domain.Recipe
 import no.sondre.domain.RecipeIngredient
-import no.sondre.services.IngredientService
+import org.hibernate.annotations.JdbcTypeCode
+import org.hibernate.type.SqlTypes
 import java.util.*
 
 
@@ -22,34 +26,68 @@ class SQLRecipe(
     var name: String,
     var description: String,
     var youtube: String? = null,
-    var portions: Int
+    var portions: Int,
+    @Column(name = "\"ingredientsSection\"", columnDefinition = "JSONB")
+    @JdbcTypeCode(SqlTypes.JSON)
+    var ingredientsSection: String // actually {sectionName: [recipeIngredient...],...} # Where recipeIngredient only have ingredient pointer
 ) : SQLModel<Recipe> {
+
     companion object : SQLModelCreator<Recipe, SQLRecipe> {
+        private val om = jacksonObjectMapper()
         override fun fromPOJO(pojo: Recipe): SQLRecipe {
             return SQLRecipe(
                 id = pojo.idSafe(),
                 name = pojo.name,
                 youtube = pojo.youtube,
                 description = pojo.description,
-                portions = pojo.portions
+                portions = pojo.portions,
+                ingredientsSection = serialize(pojo.ingredientsSections)
             )
         }
+
+        fun serialize(ingredientsSections: MutableMap<String, List<RecipeIngredient>>): String {
+            val map = ingredientsSections.mapValues { (_, ingredients) ->
+                ingredients.map { re ->
+                    mapOf(
+                        "amount" to re.amount,
+                        "unit" to re.unit,
+                        "ingredient" to re.ingredient.idSafe()
+                    )
+                }
+            }
+            return om.writeValueAsString(map)
+        }
+    }
+
+    fun deserializeIngredientsSections(
+        json: String,
+        ingredientRepository: IngredientRepository
+    ): MutableMap<String, List<RecipeIngredient>> {
+        val map = om.readValue(json, jacksonTypeRef<Map<String, List<Map<String, String>>>>())
+        val populatedMap: Map<String, List<RecipeIngredient>> = map.mapValues { (_, ingredients) ->
+            ingredients.map { ingredientData ->
+                RecipeIngredient(
+                    ingredient = ingredientRepository.findById(UUID.fromString(ingredientData["ingredient"])),
+                    amount = ingredientData["amount"]!!.toDouble(),
+                    unit = ingredientData["unit"]!!
+                )
+            }
+        }
+        return populatedMap.toMutableMap()
     }
 
     override fun toPOJO(): Recipe {
-        throw InternalServerErrorException("use custom method instead")
+        throw Exception("Use custom toPOJO instead")
     }
 
-    fun toPOJO(recipeIngredientRepo: RecipeIngredientRepository, ingredientService: IngredientService): Recipe {
-        val recipeIngredients = recipeIngredientRepo.load(id).map { it.toPOJO() }.toMutableList()
-        val ingredientIds = recipeIngredients.map { it.ingredient.idSafe() }
-        val ingredients = ingredientService.load(ingredientIds)
-        recipeIngredients.forEach { ri ->
-            val ingredient = ingredients.find { it.idSafe() == ri.ingredient.idSafe() }
-                ?: throw InternalServerErrorException("Could not find ingredient")
-            ri.populate(ingredient)
-        }
-        val pojo = Recipe(name, youtube, recipeIngredients, description, portions)
+   fun toPOJO(ingredientRepository: IngredientRepository): Recipe {
+        val pojo = Recipe(
+            name,
+            youtube,
+            deserializeIngredientsSections(ingredientsSection, ingredientRepository),
+            description,
+            portions
+        )
         pojo.withId(id)
         return pojo
     }
@@ -62,7 +100,9 @@ class SQLRecipe(
         name = new.name
         youtube = new.youtube
         description = new.description
+        ingredientsSection = serialize(new.ingredientsSections)
     }
+
 }
 
 
@@ -71,10 +111,7 @@ class SQLRecipe(
 class RecipeRepository : PanacheRepository<SQLRecipe> {
 
     @Inject
-    private lateinit var ingredientService: IngredientService
-
-    @Inject
-    private lateinit var recipeIngredientRepository: RecipeIngredientRepository
+    private lateinit var ingredientRepository: IngredientRepository
 
     fun all(query: String): List<Recipe> {
         val results = if (query.isBlank()) {
@@ -82,7 +119,7 @@ class RecipeRepository : PanacheRepository<SQLRecipe> {
         } else {
             val searchInput = "%${query.lowercase()}%"
             list("LOWER(name) LIKE ?1", searchInput)
-        }.map { it.toPOJO(recipeIngredientRepository, ingredientService) }
+        }.map { it.toPOJO(ingredientRepository) }
         return results
     }
 
@@ -91,53 +128,20 @@ class RecipeRepository : PanacheRepository<SQLRecipe> {
     }
 
     fun findById(id: UUID): Recipe {
-        return findSQLById(id).toPOJO(recipeIngredientRepository, ingredientService)
+        return findSQLById(id).toPOJO(ingredientRepository)
     }
 
     fun new(recipe: Recipe) {
-        val recipeIngredients = recipe.ingredients
-        recipeIngredients.forEach {
-            recipeIngredientRepository.persist(SQLRecipeIngredient.fromPOJO(it))
-        }
         persist(SQLRecipe.fromPOJO(recipe))
     }
 
     fun update(new: Recipe): Recipe {
         val current = findSQLById(new.idSafe())
-        updateRecipeIngredients(new.idSafe(), new.ingredients.fromPOJOs())
         current.update(new)
-        return current.toPOJO(recipeIngredientRepository, ingredientService)
-    }
-
-    private fun updateRecipeIngredients(recipeId: UUID, new: List<SQLRecipeIngredient>) {
-        val old = recipeIngredientRepository.load(recipeId)
-        val oldKeys = old.map { it.compositeKey() }
-        val newKeys = new.map { it.compositeKey() }
-        val areNew = newKeys - oldKeys
-        val shouldBeDeleted = oldKeys - newKeys
-        val shouldBeUpdated = newKeys.intersect(oldKeys)
-
-        shouldBeUpdated.forEach { oldKey ->
-            val c = old.find { it.compositeKey() == oldKey }!!
-            val n = new.find { it.compositeKey() == oldKey }!!
-            c.update(n.toPOJO())
-        }
-        areNew.forEach { newKey ->
-            val n = new.find { it.compositeKey() == newKey }!!
-            recipeIngredientRepository.persist(n)
-        }
-        shouldBeDeleted.forEach { deleteKey ->
-            val d = old.find { it.compositeKey() == deleteKey }!!
-            recipeIngredientRepository.delete(d)
-        }
+        return current.toPOJO(ingredientRepository)
     }
 
     fun delete(recipe: Recipe) {
-        deleteRecipeIngredients(recipe.ingredients)
         delete(SQLRecipe.fromPOJO(recipe))
-    }
-
-    private fun deleteRecipeIngredients(ri: List<RecipeIngredient>) {
-        ri.forEach { recipeIngredientRepository.delete(it) }
     }
 }

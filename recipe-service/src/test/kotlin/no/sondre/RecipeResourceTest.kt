@@ -23,8 +23,10 @@ class RecipeResourceTest {
 
     @Inject
     lateinit var recipeRepository: RecipeRepository
+
     @Inject
     lateinit var recipeIngredientRepository: IngredientRepository
+
     @Inject
     lateinit var ingredientRepository: IngredientRepository
 
@@ -35,7 +37,13 @@ class RecipeResourceTest {
         Ingredient("ingredient three")
     )
 
-    private final val recipe = Recipe("recipe one", ingredients = mutableListOf(), description = "beskrivelse", portions = 4)
+    private final val recipe =
+        Recipe(
+            "recipe one",
+            ingredientsSections = mutableMapOf("main" to listOf()),
+            description = "beskrivelse",
+            portions = 4
+        )
 
     @BeforeEach
     fun setup() {
@@ -119,11 +127,10 @@ class RecipeResourceTest {
         assureIngredientsExists()
         val ingredients = listIngredients()
 
-        // Watch out for the commonly used Recipe object in all the tests
         ingredients.take(2).forEachIndexed { index, ingredient ->
-            recipe._addIngredientWithoutId(
+            recipe.ingredientsSections["course + $index"] = listOf(
                 RecipeIngredient(
-                    amount = index + 10,
+                    amount = index + 10.0,
                     unit = "freedom unit ${Random.nextInt(0, 1000)}",
                     ingredient = ingredient,
                 )
@@ -139,12 +146,7 @@ class RecipeResourceTest {
             .statusCode(HttpStatus.SC_OK)
         val recipeResponse = rawResponse.extract().`as`(Recipe::class.java)
         assert(recipeResponse.name == recipe.name) { "name must be same as name of input object" }
-
-        recipeResponse.ingredients.forEach { assert(it.recipe != unInitializedUUID()) { "RecipeIngredient must have recipe reference set" } }
-
-        assert(recipeResponse.ingredients.filter {
-            it.recipe == recipeResponse.id
-        }.size == recipe.ingredients.size) { "all added recipeIngredients must have been given a recipe ID that corresponds with the id of the Recipe" }
+        assert(recipeResponse.ingredientsSections.size == recipe.ingredientsSections.size) { "all saved ingredients must be retrieved" }
     }
 
     @Test
@@ -154,13 +156,14 @@ class RecipeResourceTest {
         assert(responseRecipes.isNotEmpty()) { "There should be a least one saved recipe" }
     }
 
-    @Test fun `can list all recipes that DOES have ingredients`() {
-       `can save recipe with ingredients`()
+    @Test
+    fun `can list all recipes that DOES have ingredients`() {
+        `can save recipe with ingredients`()
         val responseRecipes = listRecipes()
         assert(responseRecipes.isNotEmpty()) { "Response should not be empty" }
         val firstResponseRecipe = responseRecipes.first()
-        val responseRecipeIngredients = firstResponseRecipe.ingredients.sortedBy { it.amount }
-        assert(responseRecipeIngredients.first().amount == 10)
+        val responseRecipeIngredients = firstResponseRecipe.allRecipeIngredients().sortedBy { it.amount }
+        assert(responseRecipeIngredients.first().amount == 10.0)
     }
 
     @Test
@@ -169,12 +172,13 @@ class RecipeResourceTest {
         val recipe = listRecipes()[0]
         val newName = "new name"
         recipe.name = newName
-        recipe._addIngredientWithoutId(
-            RecipeIngredient(
-                12345,
-                "freedomUnit2",
-                ingredients[2]
-            )
+        recipe.ingredientsSections["main course"] = listOf(
+            (
+                    RecipeIngredient(
+                        12345.9,
+                        "freedomUnit2",
+                        ingredients[2]
+                    ))
         )
 
         val response = given()
@@ -189,10 +193,8 @@ class RecipeResourceTest {
 
         assertEquals(respRecipe.name, newName)
 
-        val newIngredient = respRecipe.ingredients.filter { it.amount == 12345 }
+        val newIngredient = respRecipe.allRecipeIngredients().filter { it.amount == 12345.9 }
         assert(newIngredient.size == 1)
-
-        assert(respRecipe.ingredients[0].ingredient.id != null)
     }
 
     @Test
@@ -204,7 +206,7 @@ class RecipeResourceTest {
     fun `can delete recipe and corresponding recipe ingredients`() {
         `can save recipe with ingredients`()
         val recipe = listRecipes()[0]
-        assert(recipe.ingredients.isNotEmpty()) { "Recipe we are about to delete should have recipe ingredients to make sure we can delete them as well" }
+        assert(recipe.ingredientsSections.isNotEmpty()) { "Recipe we are about to delete should have recipe ingredients to make sure we can delete them as well" }
         given()
             .contentType(ContentType.JSON)
             .`when`()

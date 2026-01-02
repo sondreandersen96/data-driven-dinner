@@ -1,0 +1,1 @@
+ALTER TABLE public.recipe ADD "ingredientsSection" JSONB DEFAULT '{}';

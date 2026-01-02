@@ -5,8 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6dbc5505-19ad-48e2-86a1-c6da5f137368" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/recipe-service/src/main/kotlin/scripts/Matvaretabellenparser.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/recipe-service/src/main/resources/db/migration/V1.0.2__IngredientSection.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/recipe-service/src/test/kotlin/no/sondre/repository/SQLRecipeTest.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/Startup.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/Startup.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/domain/Ingredient.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/domain/Ingredient.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/domain/Recipe.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/domain/Recipe.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/domain/RecipeIngredient.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/domain/RecipeIngredient.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/repository/RecipeIngredientRepository.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/repository/RecipeRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/repository/RecipeRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe-service/src/test/kotlin/no/sondre/RecipeResourceTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/test/kotlin/no/sondre/RecipeResourceTest.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,6 +29,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Kotlin Class" />
+        <option value="Kotlin JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -35,7 +48,11 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "JUnit.IngredientResourceTest.can search for name of ingredient.executor": "Run",
+    "JUnit.RecipeResourceTest.can list all recipes that does NOT have ingredients.executor": "Debug",
+    "JUnit.RecipeResourceTest.can save recipe with ingredients.executor": "Run",
     "JUnit.RecipeResourceTest.executor": "Run",
+    "JUnit.SQLRecipeTest.serializeIngredientsSections.executor": "Run",
+    "JUnit.sondre in recipe-service.executor": "Run",
     "Kotlin.MatvaretabellenparserKt (1).executor": "Run",
     "Kotlin.MatvaretabellenparserKt.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
@@ -44,6 +61,9 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/sondreandersen/code/data-driven-dinner",
@@ -60,24 +80,14 @@
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/food-web/.claude" />
     </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="no.sondre.repository" />
+    </key>
   </component>
-  <component name="RunManager" selected="Kotlin.MatvaretabellenparserKt (1)">
-    <configuration name="IngredientResourceTest.can search for name of ingredient" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="recipe-service" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="no.sondre.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="no.sondre" />
-      <option name="MAIN_CLASS_NAME" value="no.sondre.IngredientResourceTest" />
-      <option name="METHOD_NAME" value="can search for name of ingredient" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="JUnit.sondre in recipe-service">
     <configuration name="RecipeResourceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="recipe-service" />
       <extension name="coverage">
@@ -93,16 +103,58 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MatvaretabellenparserKt (1)" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="MatvaretabellenparserKt" />
+    <configuration name="RecipeResourceTest.can list all recipes that does NOT have ingredients" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="recipe-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="no.sondre.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="no.sondre" />
+      <option name="MAIN_CLASS_NAME" value="no.sondre.RecipeResourceTest" />
+      <option name="METHOD_NAME" value="can list all recipes that does NOT have ingredients" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MatvaretabellenparserKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="scripts.MatvaretabellenparserKt" />
+    <configuration name="RecipeResourceTest.can save recipe with ingredients" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="recipe-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="no.sondre.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="no.sondre" />
+      <option name="MAIN_CLASS_NAME" value="no.sondre.RecipeResourceTest" />
+      <option name="METHOD_NAME" value="can save recipe with ingredients" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SQLRecipeTest.serializeIngredientsSections" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="recipe-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="no.sondre.repository.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="no.sondre.repository" />
+      <option name="MAIN_CLASS_NAME" value="no.sondre.repository.SQLRecipeTest" />
+      <option name="METHOD_NAME" value="serializeIngredientsSections" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="sondre in recipe-service" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="recipe-service" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/recipe-service/src/test/kotlin/no/sondre" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -147,10 +199,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Kotlin.MatvaretabellenparserKt (1)" />
-        <item itemvalue="Kotlin.MatvaretabellenparserKt" />
+        <item itemvalue="JUnit.sondre in recipe-service" />
+        <item itemvalue="JUnit.SQLRecipeTest.serializeIngredientsSections" />
+        <item itemvalue="JUnit.RecipeResourceTest.can list all recipes that does NOT have ingredients" />
+        <item itemvalue="JUnit.RecipeResourceTest.can save recipe with ingredients" />
         <item itemvalue="JUnit.RecipeResourceTest" />
-        <item itemvalue="JUnit.IngredientResourceTest.can search for name of ingredient" />
       </list>
     </recent_temporary>
   </component>
@@ -188,6 +241,60 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/recipe-service/src/test/kotlin/no/sondre/RecipeResourceTest.kt</url>
+          <line>95</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/resources/RecipeResource.kt</url>
+          <line>22</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/services/RecipeService.kt</url>
+          <line>15</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/repository/RecipeRepository.kt</url>
+          <line>116</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/repository/RecipeRepository.kt</url>
+          <line>121</line>
+          <properties>
+            <option name="lambda-ordinal" value="-1" />
+          </properties>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/repository/RecipeRepository.kt</url>
+          <line>83</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/repository/RecipeRepository.kt</url>
+          <line>75</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/repository/RecipeRepository.kt</url>
+          <line>91</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/repository/RecipeRepository.kt</url>
+          <line>90</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
