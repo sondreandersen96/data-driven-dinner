@@ -18,9 +18,8 @@ class RecipeResource {
     lateinit var service: RecipeService
 
     @GET
-    fun list(@QueryParam("query") query: String?): List<Recipe> {
-        Log.info("User making request: ${securityIdentity.principal}")
-        return service.list(query ?: "")
+    fun list(@QueryParam("query") query: String?, @QueryParam("draft") draft: Boolean?): List<Recipe> {
+        return service.list(query ?: "", draft ?: false)
     }
 
     @GET

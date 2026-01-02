@@ -4,7 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6dbc5505-19ad-48e2-86a1-c6da5f137368" name="Changes" comment="" />
+    <list default="true" id="6dbc5505-19ad-48e2-86a1-c6da5f137368" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/food-web/src/components/RecipeForm/RecipeForm.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/components/RecipeForm/RecipeForm.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/food-web/src/components/RecipeForm/RecipeForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/components/RecipeForm/RecipeForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/food-web/src/domain/Recipe.ts" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/domain/Recipe.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/food-web/src/routes/index.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/routes/index.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/food-web/src/routes/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/routes/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/food-web/src/routes/recipes/-components/RecipeList/RecipeList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/routes/recipes/-components/RecipeList/RecipeList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/resources/RecipeResource.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/resources/RecipeResource.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/services/RecipeService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/services/RecipeService.kt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -41,7 +51,7 @@
     "Kotlin.MatvaretabellenparserKt (1).executor": "Run",
     "Kotlin.MatvaretabellenparserKt.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Quarkus.recipe-service.executor": "Run",
+    "Quarkus.recipe-service.executor": "Debug",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -234,16 +244,6 @@
           <url>file://$PROJECT_DIR$/recipe-service/src/test/kotlin/no/sondre/RecipeResourceTest.kt</url>
           <line>95</line>
           <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/resources/RecipeResource.kt</url>
-          <line>22</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/services/RecipeService.kt</url>
-          <line>15</line>
-          <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/recipe-service/src/test/kotlin/no/sondre/repository/SQLRecipeTest.kt</url>

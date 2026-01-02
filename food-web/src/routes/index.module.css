@@ -206,6 +206,64 @@
     padding: 0 2rem;
 }
 
+/* Filter Bar */
+.filterBar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1.5rem;
+}
+
+.draftToggle {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem;
+    background: var(--card);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+}
+
+.filterLabel {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-light);
+    transition: color 0.3s;
+}
+
+.filterLabelActive {
+    color: var(--primary);
+}
+
+.filterSwitch {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    background: var(--primary);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filterSwitchDraft {
+    background: var(--text-light);
+}
+
+.filterSlider {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.filterSwitchDraft .filterSlider {
+    transform: translateX(20px);
+}
+
 .sectionTitle {
     font-family: 'Lora', serif;
     font-size: 2rem;

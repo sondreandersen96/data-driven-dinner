@@ -106,7 +106,8 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
       youtube: recipe?.youtube ?? "",
       description: recipe?.description ?? "",
       ingredientsSections: recipe?.ingredientsSections ?? {} as Record<string, RecipeIngredient[]>,
-      portions: recipe?.portions ?? null as number | null
+      portions: recipe?.portions ?? null as number | null,
+      draft: recipe?.draft ?? true
     },
     onSubmit: ({value}) => {
       mutation.mutate(
@@ -116,7 +117,8 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
           youtube: value.youtube,
           ingredientsSections: value.ingredientsSections,
           description: value.description,
-          portions: value.portions
+          portions: value.portions,
+          draft: value.draft
         },
       )
       resetIngredientInput();
@@ -197,6 +199,29 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
                   value={field.state.value ?? ""}
                   onChange={(e) => field.handleChange(e.target.value === "" ? null : Number(e.target.value))}
                 />
+              </div>
+            )}
+          />
+
+          <form.Field
+            name="draft"
+            children={(field) => (
+              <div className={styles.formGroup}>
+                <label className={styles.formLabel}>Status</label>
+                <div className={styles.statusToggle}>
+                  <span className={`${styles.statusLabel} ${field.state.value ? styles.statusLabelActive : ''}`}>
+                    Utkast
+                  </span>
+                  <div
+                    className={`${styles.toggleSwitch} ${!field.state.value ? styles.toggleSwitchPublished : ''}`}
+                    onClick={() => field.handleChange(!field.state.value)}
+                  >
+                    <div className={styles.toggleSlider} />
+                  </div>
+                  <span className={`${styles.statusLabel} ${!field.state.value ? styles.statusLabelActive : ''}`}>
+                    Publisert
+                  </span>
+                </div>
               </div>
             )}
           />

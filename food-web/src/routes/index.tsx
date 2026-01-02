@@ -11,6 +11,7 @@ export const Route = createFileRoute('/')({
 function Recipes() {
   const [searchQuery, setSearchQuery] = useState('')
   const [isAiMode, setIsAiMode] = useState(false)
+  const [showDrafts, setShowDrafts] = useState(false)
 
   return (
     <>
@@ -58,7 +59,23 @@ function Recipes() {
       </section>
 
       <div className={styles.contentWrapper}>
-        <RecipeList searchQuery={searchQuery} isAiSearch={isAiMode} />
+        <div className={styles.filterBar}>
+          <div className={styles.draftToggle}>
+            <span className={`${styles.filterLabel} ${!showDrafts ? styles.filterLabelActive : ''}`}>
+              Publiserte
+            </span>
+            <div
+              className={`${styles.filterSwitch} ${showDrafts ? styles.filterSwitchDraft : ''}`}
+              onClick={() => setShowDrafts(!showDrafts)}
+            >
+              <div className={styles.filterSlider} />
+            </div>
+            <span className={`${styles.filterLabel} ${showDrafts ? styles.filterLabelActive : ''}`}>
+              Utkast
+            </span>
+          </div>
+        </div>
+        <RecipeList searchQuery={searchQuery} isAiSearch={isAiMode} showDrafts={showDrafts} />
       </div>
     </>
   )

@@ -511,6 +511,55 @@
   box-shadow: 0 4px 12px rgba(45, 106, 79, 0.3);
 }
 
+/* Status Toggle */
+.statusToggle {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.statusLabel {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-light);
+  transition: color 0.3s;
+}
+
+.statusLabelActive {
+  color: var(--primary);
+}
+
+.toggleSwitch {
+  position: relative;
+  width: 56px;
+  height: 30px;
+  background: var(--border);
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.toggleSwitchPublished {
+  background: var(--primary);
+  box-shadow: 0 4px 15px rgba(45, 106, 79, 0.4);
+}
+
+.toggleSlider {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  background: white;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggleSwitchPublished .toggleSlider {
+  transform: translateX(26px);
+}
+
 @media (max-width: 768px) {
   .modalFooter {
     flex-direction: column;

@@ -8,21 +8,23 @@ import styles from './RecipeList.module.css';
 interface Props {
     searchQuery?: string;
     isAiSearch?: boolean;
+    showDrafts?: boolean;
 }
 
-const RecipeList: FC<Props> = ({ searchQuery = '', isAiSearch = false }) => {
+const RecipeList: FC<Props> = ({ searchQuery = '', isAiSearch = false, showDrafts = false }) => {
 
     const keycloak = useKeycloak()
     const encodedQuery = searchQuery.trim() ? encodeURI(searchQuery) : '';
 
     const {isPending, error, data, isFetching } = useQuery<Recipe[]>({
-        queryKey: ['recipes', searchQuery, isAiSearch],
+        queryKey: ['recipes', searchQuery, isAiSearch, showDrafts],
         queryFn: async (): Promise<Recipe[]> => {
-            let url = 'recipe';
+            const draftParam = `draft=${showDrafts}`;
+            let url = `recipe?${draftParam}`;
             if (encodedQuery) {
                 url = isAiSearch
-                    ? `recipe/ai-search?query=${encodedQuery}`
-                    : `recipe?query=${encodedQuery}`;
+                    ? `recipe/ai-search?query=${encodedQuery}&${draftParam}`
+                    : `recipe?query=${encodedQuery}&${draftParam}`;
             }
             return recipeServiceClient(url, keycloak.token)
         },

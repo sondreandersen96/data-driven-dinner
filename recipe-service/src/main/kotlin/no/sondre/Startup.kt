@@ -24,8 +24,8 @@ class Startup {
 
     private val logger = Logger.getLogger("Startup logger")
 
-    //@Transactional
     fun injectTestData(@Observes event: StartupEvent) {
+        if (recipeResource.list(null, null).isNotEmpty()) return
         logger.info("Injecting some test data")
         val ingredients = listOf(
             Ingredient("Brokkoli"),

@@ -5,4 +5,5 @@ interface Recipe {
   ingredientsSections: Record<string, RecipeIngredient[]>
   description: string
   portions: number | null
+  draft: boolean
 }

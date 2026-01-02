@@ -12,8 +12,8 @@ class RecipeService {
     @Inject
     private lateinit var repo: RecipeRepository
 
-    fun list(query: String = ""): List<Recipe> {
-        return repo.all(query)
+    fun list(query: String, draft: Boolean): List<Recipe> {
+        return repo.all(query).filter { it.draft == draft }
     }
 
     fun load(id: UUID, portions: Int? = Recipe.STANDARD_PORTION_SIZE): Recipe {
