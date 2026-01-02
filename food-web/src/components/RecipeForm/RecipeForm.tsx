@@ -13,16 +13,16 @@ type Props = {
   closeNewRecipeModal: () => void
 }
 
-const DEFAULT_SECTION = "Ingredienser";
+const DEFAULT_SECTION = "Hovedrett";
 
 export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Props) {
+  const [activeSection, setActiveSection] = useState<string | null>(null);
   const [ingredientSearch, setIngredientSearch] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedIngredient, setSelectedIngredient] = useState<Ingredient | null>(null);
   const [amount, setAmount] = useState<number | "">("");
   const [unit, setUnit] = useState("");
   const [ingredientModalOpen, setIngredientModalOpen] = useState(false);
-  const [currentSection, setCurrentSection] = useState(DEFAULT_SECTION);
   const [newSectionName, setNewSectionName] = useState("");
   const [showNewSectionInput, setShowNewSectionInput] = useState(false);
 
@@ -33,11 +33,14 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
     setSelectedIngredient(null);
     setAmount("");
     setUnit("");
+    setIngredientSearch("");
+    setShowDropdown(false);
   };
 
   const addIngredientToSection = (
     currentSections: Record<string, RecipeIngredient[]>,
-    handleChange: (value: Record<string, RecipeIngredient[]>) => void
+    handleChange: (value: Record<string, RecipeIngredient[]>) => void,
+    sectionName: string
   ) => {
     if (amount !== "" && unit && selectedIngredient) {
       const newIngredient: RecipeIngredient = {
@@ -46,10 +49,10 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
         ingredient: selectedIngredient
       };
       const updatedSections = { ...currentSections };
-      if (!updatedSections[currentSection]) {
-        updatedSections[currentSection] = [];
+      if (!updatedSections[sectionName]) {
+        updatedSections[sectionName] = [];
       }
-      updatedSections[currentSection] = [...updatedSections[currentSection], newIngredient];
+      updatedSections[sectionName] = [...updatedSections[sectionName], newIngredient];
       handleChange(updatedSections);
       resetIngredientInput();
     }
@@ -69,14 +72,28 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
     handleChange(updatedSections);
   };
 
+  const removeSection = (
+    currentSections: Record<string, RecipeIngredient[]>,
+    handleChange: (value: Record<string, RecipeIngredient[]>) => void,
+    sectionName: string
+  ) => {
+    const updatedSections = { ...currentSections };
+    delete updatedSections[sectionName];
+    handleChange(updatedSections);
+    if (activeSection === sectionName) {
+      setActiveSection(null);
+    }
+  };
+
   const addNewSection = (
     currentSections: Record<string, RecipeIngredient[]>,
     handleChange: (value: Record<string, RecipeIngredient[]>) => void
   ) => {
-    if (newSectionName.trim() && !currentSections[newSectionName.trim()]) {
-      const updatedSections = { ...currentSections, [newSectionName.trim()]: [] };
+    const name = newSectionName.trim() || DEFAULT_SECTION;
+    if (!currentSections[name]) {
+      const updatedSections = { ...currentSections, [name]: [] };
       handleChange(updatedSections);
-      setCurrentSection(newSectionName.trim());
+      setActiveSection(name);
       setNewSectionName("");
       setShowNewSectionInput(false);
     }
@@ -102,10 +119,10 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
           portions: value.portions
         },
       )
-      setIngredientSearch("");
-      setShowDropdown(false);
       resetIngredientInput();
-      setCurrentSection(DEFAULT_SECTION);
+      setActiveSection(null);
+      setShowNewSectionInput(false);
+      setNewSectionName("");
       closeNewRecipeModal()
     }
   })
@@ -192,188 +209,206 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
                 ingredients.map(ri => ri.ingredient.id)
               );
 
-              return (
-                <div className={styles.formGroup}>
-                  <label className={styles.formLabel}>Ingredienser</label>
-
-                  {/* Section selector */}
-                  <div className={styles.sectionSelector}>
-                    <select
-                      className={styles.sectionSelect}
-                      value={currentSection}
-                      onChange={(e) => setCurrentSection(e.target.value)}
-                    >
-                      {sections.length === 0 && (
-                        <option value={DEFAULT_SECTION}>{DEFAULT_SECTION}</option>
-                      )}
-                      {sections.map(([sectionName]) => (
-                        <option key={sectionName} value={sectionName}>{sectionName}</option>
-                      ))}
-                    </select>
-                    <button
-                      type="button"
-                      className={styles.addSectionBtn}
-                      onClick={() => setShowNewSectionInput(true)}
-                    >
-                      + Ny seksjon
-                    </button>
-                  </div>
-
-                  {/* New section input */}
-                  {showNewSectionInput && (
-                    <div className={styles.newSectionRow}>
+              const renderIngredientInput = (sectionName: string) => (
+                <div className={styles.addIngredientArea}>
+                  {!selectedIngredient ? (
+                    <div className={styles.ingredientSearchContainer}>
                       <input
                         type="text"
-                        className={styles.formInput}
-                        placeholder="F.eks. Saus, Tilbehør..."
-                        value={newSectionName}
-                        onChange={(e) => setNewSectionName(e.target.value)}
+                        placeholder="Søk etter ingrediens..."
+                        value={ingredientSearch}
+                        onChange={(e) => setIngredientSearch(e.target.value)}
+                        onFocus={() => setShowDropdown(true)}
+                        className={styles.searchInput}
                       />
+                      {showDropdown && (
+                        <div className={styles.dropdown}>
+                          {searchResults
+                            .filter((ingredient) => !allIngredientIds.includes(ingredient.id))
+                            .map((ingredient) => (
+                              <div
+                                key={ingredient.id}
+                                className={styles.dropdownItem}
+                                onClick={() => {
+                                  setSelectedIngredient(ingredient);
+                                  setIngredientSearch("");
+                                  setShowDropdown(false);
+                                }}
+                              >
+                                {ingredient.name}
+                              </div>
+                            ))}
+                          {searchResults.filter((ingredient) => !allIngredientIds.includes(ingredient.id)).length === 0 && (
+                            <div className={styles.noResults}>
+                              <span>Ingen ingredienser funnet</span>
+                              <button
+                                type="button"
+                                onClick={() => setIngredientModalOpen(true)}
+                                className={styles.createNewButton}
+                              >
+                                Opprett ny
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className={styles.selectedIngredientRow}>
+                      <span className={styles.selectedName}>{selectedIngredient.name}</span>
+                      <input
+                        type="number"
+                        placeholder="Mengde"
+                        value={amount}
+                        onChange={(e) => setAmount(e.target.value === "" ? "" : Number(e.target.value))}
+                        className={styles.amountInput}
+                      />
+                      <select
+                        value={unit}
+                        onChange={(e) => setUnit(e.target.value)}
+                        className={styles.unitInput}
+                      >
+                        <option value="">Enhet</option>
+                        <option value="g">g</option>
+                        <option value="kg">kg</option>
+                        <option value="dl">dl</option>
+                        <option value="l">l</option>
+                        <option value="ts">ts</option>
+                        <option value="ss">ss</option>
+                        <option value="stk">stk</option>
+                      </select>
                       <button
                         type="button"
-                        className={styles.addSectionConfirmBtn}
-                        disabled={!newSectionName.trim()}
-                        onClick={() => addNewSection(field.state.value, field.handleChange)}
+                        className={styles.addIngredientBtn}
+                        disabled={amount === "" || !unit}
+                        onClick={() => addIngredientToSection(field.state.value, field.handleChange, sectionName)}
                       >
                         Legg til
                       </button>
                       <button
                         type="button"
-                        className={styles.cancelBtn}
-                        onClick={() => {
-                          setShowNewSectionInput(false);
-                          setNewSectionName("");
-                        }}
+                        className={styles.cancelIngredientBtn}
+                        onClick={resetIngredientInput}
                       >
                         Avbryt
                       </button>
                     </div>
                   )}
+                </div>
+              );
 
-                  {/* Display existing ingredients by section */}
-                  {sections.map(([sectionName, ingredients]) => (
-                    ingredients.length > 0 && (
-                      <div key={sectionName} className={styles.ingredientSectionBlock}>
-                        {sections.length > 1 && (
-                          <h4 className={styles.ingredientSectionTitle}>{sectionName}</h4>
-                        )}
-                        <ul className={styles.ingredientList}>
-                          {ingredients.map((recipeIngredient, index) => (
-                            <li
-                              key={recipeIngredient.ingredient.id ?? index}
-                              className={styles.ingredientListItem}
-                            >
-                              <span>
-                                {recipeIngredient.amount} {recipeIngredient.unit} {recipeIngredient.ingredient.name}
-                              </span>
-                              <button
-                                type="button"
-                                onClick={() => removeIngredientFromSection(
-                                  field.state.value,
-                                  field.handleChange,
-                                  sectionName,
-                                  index
-                                )}
-                                className={styles.removeButton}
-                              >
-                                &times;
-                              </button>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )
-                  ))}
+              return (
+                <div className={styles.formGroup}>
+                  <label className={styles.formLabel}>Ingredienser</label>
 
-                  {/* Add ingredient to current section */}
-                  <div className={styles.ingredientSearchContainer}>
-                    {!selectedIngredient ? (
-                      <>
-                        <input
-                          type="text"
-                          placeholder={`Søk etter ingrediens til "${currentSection}"...`}
-                          value={ingredientSearch}
-                          onChange={(e) => setIngredientSearch(e.target.value)}
-                          onFocus={() => setShowDropdown(true)}
-                        />
-                        {showDropdown && (
-                          <div className={styles.dropdown}>
-                            {searchResults
-                              .filter((ingredient) => !allIngredientIds.includes(ingredient.id))
-                              .map((ingredient) => (
-                                <div
-                                  key={ingredient.id}
-                                  className={styles.dropdownItem}
-                                  onClick={() => {
-                                    setSelectedIngredient(ingredient);
-                                    setIngredientSearch("");
-                                    setShowDropdown(false);
-                                  }}
-                                >
-                                  {ingredient.name}
-                                </div>
-                              ))}
-                            {searchResults.filter((ingredient) => !allIngredientIds.includes(ingredient.id)).length === 0 && (
-                              <div className={styles.noResults}>
-                                <span>Ingen ingredienser funnet</span>
-                                <button
-                                  type="button"
-                                  onClick={() => setIngredientModalOpen(true)}
-                                  className={styles.createNewButton}
-                                >
-                                  Opprett ny
-                                </button>
-                              </div>
-                            )}
-                          </div>
-                        )}
-                        {showDropdown && (
+                  <div className={styles.sectionsContainer}>
+                    {/* Existing sections as cards */}
+                    {sections.map(([sectionName, ingredients]) => (
+                      <div
+                        key={sectionName}
+                        className={`${styles.sectionCard} ${activeSection === sectionName ? styles.sectionCardActive : ''}`}
+                      >
+                        <div className={styles.sectionCardHeader}>
+                          <h4 className={styles.sectionCardTitle}>{sectionName}</h4>
                           <button
                             type="button"
-                            onClick={() => setShowDropdown(false)}
-                            className={styles.closeDropdownButton}
+                            className={styles.removeSectionBtn}
+                            onClick={() => removeSection(field.state.value, field.handleChange, sectionName)}
+                            title="Fjern seksjon"
                           >
-                            Lukk
+                            &times;
+                          </button>
+                        </div>
+
+                        {ingredients.length > 0 && (
+                          <ul className={styles.ingredientList}>
+                            {ingredients.map((recipeIngredient, index) => (
+                              <li
+                                key={recipeIngredient.ingredient.id ?? index}
+                                className={styles.ingredientListItem}
+                              >
+                                <span className={styles.ingredientText}>
+                                  <span className={styles.ingredientAmount}>
+                                    {recipeIngredient.amount} {recipeIngredient.unit}
+                                  </span>
+                                  {recipeIngredient.ingredient.name}
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() => removeIngredientFromSection(
+                                    field.state.value,
+                                    field.handleChange,
+                                    sectionName,
+                                    index
+                                  )}
+                                  className={styles.removeButton}
+                                >
+                                  &times;
+                                </button>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+
+                        {activeSection === sectionName ? (
+                          renderIngredientInput(sectionName)
+                        ) : (
+                          <button
+                            type="button"
+                            className={styles.activateSectionBtn}
+                            onClick={() => {
+                              setActiveSection(sectionName);
+                              resetIngredientInput();
+                            }}
+                          >
+                            + Legg til ingrediens
                           </button>
                         )}
-                      </>
-                    ) : (
-                      <div className={styles.selectedIngredientRow}>
-                        <span><strong>{selectedIngredient.name}</strong></span>
-                        <input
-                          type="number"
-                          placeholder="Mengde"
-                          value={amount}
-                          onChange={(e) => setAmount(e.target.value === "" ? "" : Number(e.target.value))}
-                          className={styles.amountInput}
-                        />
-                        <select
-                          value={unit}
-                          onChange={(e) => setUnit(e.target.value)}
-                          className={styles.unitInput}
-                        >
-                          <option value="">Velg enhet</option>
-                          <option value="g">gram</option>
-                          <option value="dl">dl</option>
-                          <option value="l">l</option>
-                          <option value="ts">ts</option>
-                          <option value="ss">ss</option>
-                          <option value="stk">stk</option>
-                        </select>
-                        <button
-                          type="button"
-                          disabled={amount === "" || !unit}
-                          onClick={() => addIngredientToSection(field.state.value, field.handleChange)}
-                        >
-                          Legg til
-                        </button>
-                        <button
-                          type="button"
-                          onClick={resetIngredientInput}
-                        >
-                          Avbryt
-                        </button>
                       </div>
+                    ))}
+
+                    {/* Add new section */}
+                    {showNewSectionInput ? (
+                      <div className={styles.newSectionCard}>
+                        <input
+                          type="text"
+                          className={styles.newSectionInput}
+                          placeholder="Navn på seksjon (f.eks. Saus, Tilbehør)"
+                          value={newSectionName}
+                          onChange={(e) => setNewSectionName(e.target.value)}
+                          autoFocus
+                        />
+                        <p className={styles.newSectionHint}>
+                          La feltet stå tomt for å bruke "{DEFAULT_SECTION}"
+                        </p>
+                        <div className={styles.newSectionActions}>
+                          <button
+                            type="button"
+                            className={styles.addSectionConfirmBtn}
+                            onClick={() => addNewSection(field.state.value, field.handleChange)}
+                          >
+                            Opprett seksjon
+                          </button>
+                          <button
+                            type="button"
+                            className={styles.cancelBtn}
+                            onClick={() => {
+                              setShowNewSectionInput(false);
+                              setNewSectionName("");
+                            }}
+                          >
+                            Avbryt
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        className={styles.addSectionBtn}
+                        onClick={() => setShowNewSectionInput(true)}
+                      >
+                        + {sections.length === 0 ? "Legg til ingredienser" : "Legg til ny seksjon"}
+                      </button>
                     )}
                   </div>
                 </div>
