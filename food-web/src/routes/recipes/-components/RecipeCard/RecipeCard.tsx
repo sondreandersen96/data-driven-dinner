@@ -13,7 +13,15 @@ const RecipeCard: FC<Props> = ({recipe}) => {
             className={styles.card}
             to={`/recipes/${recipe.id}`}
         >
-            <div className={styles.image} />
+            {recipe.thumbnailUrl ? (
+                <img
+                    src={recipe.thumbnailUrl}
+                    alt={recipe.name || 'Oppskrift'}
+                    className={styles.image}
+                />
+            ) : (
+                <div className={styles.imagePlaceholder} />
+            )}
             <div className={styles.body}>
                 <h3 className={styles.title}>{recipe.name}</h3>
                 {recipe.description && (

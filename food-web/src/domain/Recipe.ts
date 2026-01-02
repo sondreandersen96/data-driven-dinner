@@ -6,4 +6,5 @@ interface Recipe {
   description: string
   portions: number | null
   draft: boolean
+  thumbnailUrl: string | null
 }

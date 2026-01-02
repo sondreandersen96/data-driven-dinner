@@ -3,7 +3,7 @@ import styles from "./EmbeddedYoutube.module.css";
 
 const renderYoutube = (link: string) => {
     const youtubePostFix = link.split("=").at(-1)
-    const embeddedLink = `https://www.youtube-nocookie.com/embed/${youtubePostFix}`
+    const embeddedLink = `https://www.youtube.com/embed/${youtubePostFix}`
     return (
         <div className={styles.videoWrapper}>
             <iframe
