@@ -41,7 +41,7 @@ const RecipeList: FC<Props> = ({ searchQuery = '', isAiSearch = false, showDraft
                     <RecipeCard key={r.id} recipe={r}/>
                 ))
             ) : (
-                (data.length === 0) ? <div className={styles.empty}>Ingen ingredienser funnet</div> : <></>
+                (data.length === 0) ? <div className={styles.empty}>Ingen oppskrifter funnet</div> : <></>
             )}
         </div>
     )

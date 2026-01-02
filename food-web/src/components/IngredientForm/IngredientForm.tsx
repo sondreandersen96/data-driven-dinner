@@ -22,9 +22,15 @@ export const IngredientForm = ({isOpen, ingredient, mutation, closeModal}: Props
         id: value.id ?? null,
         name: value.name
       })
+      form.reset()
       closeModal()
     }
   })
+
+  const handleClose = () => {
+    form.reset()
+    closeModal()
+  }
 
   if (!isOpen) return null
 
@@ -37,7 +43,7 @@ export const IngredientForm = ({isOpen, ingredient, mutation, closeModal}: Props
           </h2>
           <button
             className={styles.modalClose}
-            onClick={closeModal}
+            onClick={handleClose}
             type="button"
           >
             &times;
@@ -66,7 +72,7 @@ export const IngredientForm = ({isOpen, ingredient, mutation, closeModal}: Props
           <button
             type="button"
             className={styles.btnCancel}
-            onClick={closeModal}
+            onClick={handleClose}
           >
             Avbryt
           </button>

@@ -25,6 +25,8 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
   const [ingredientModalOpen, setIngredientModalOpen] = useState(false);
   const [newSectionName, setNewSectionName] = useState("");
   const [showNewSectionInput, setShowNewSectionInput] = useState(false);
+  const [editingSectionName, setEditingSectionName] = useState<string | null>(null);
+  const [editedSectionName, setEditedSectionName] = useState("");
 
   const { data: searchResults = [] } = useIngredientSearch(ingredientSearch, showDropdown);
   const ingredientMutation = useCreateIngredient(() => setIngredientModalOpen(false));
@@ -99,6 +101,32 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
     }
   };
 
+  const renameSection = (
+    currentSections: Record<string, RecipeIngredient[]>,
+    handleChange: (value: Record<string, RecipeIngredient[]>) => void,
+    oldName: string,
+    newName: string
+  ) => {
+    const trimmedName = newName.trim();
+    if (trimmedName && trimmedName !== oldName && !currentSections[trimmedName]) {
+      const entries = Object.entries(currentSections);
+      const updatedSections: Record<string, RecipeIngredient[]> = {};
+      for (const [key, value] of entries) {
+        if (key === oldName) {
+          updatedSections[trimmedName] = value;
+        } else {
+          updatedSections[key] = value;
+        }
+      }
+      handleChange(updatedSections);
+      if (activeSection === oldName) {
+        setActiveSection(trimmedName);
+      }
+    }
+    setEditingSectionName(null);
+    setEditedSectionName("");
+  };
+
   const form = useForm({
     defaultValues: {
       id: recipe?.id ?? null,
@@ -125,6 +153,8 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
       setActiveSection(null);
       setShowNewSectionInput(false);
       setNewSectionName("");
+      setEditingSectionName(null);
+      setEditedSectionName("");
       closeNewRecipeModal()
     }
   })
@@ -249,7 +279,6 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
                       {showDropdown && (
                         <div className={styles.dropdown}>
                           {searchResults
-                            .filter((ingredient) => !allIngredientIds.includes(ingredient.id))
                             .map((ingredient) => (
                               <div
                                 key={ingredient.id}
@@ -334,7 +363,35 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
                         className={`${styles.sectionCard} ${activeSection === sectionName ? styles.sectionCardActive : ''}`}
                       >
                         <div className={styles.sectionCardHeader}>
-                          <h4 className={styles.sectionCardTitle}>{sectionName}</h4>
+                          {editingSectionName === sectionName ? (
+                            <input
+                              type="text"
+                              className={styles.sectionNameInput}
+                              value={editedSectionName}
+                              onChange={(e) => setEditedSectionName(e.target.value)}
+                              onBlur={() => renameSection(field.state.value, field.handleChange, sectionName, editedSectionName)}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                  renameSection(field.state.value, field.handleChange, sectionName, editedSectionName);
+                                } else if (e.key === 'Escape') {
+                                  setEditingSectionName(null);
+                                  setEditedSectionName("");
+                                }
+                              }}
+                              autoFocus
+                            />
+                          ) : (
+                            <h4
+                              className={styles.sectionCardTitle}
+                              onClick={() => {
+                                setEditingSectionName(sectionName);
+                                setEditedSectionName(sectionName);
+                              }}
+                              title="Klikk for å endre navn"
+                            >
+                              {sectionName}
+                            </h4>
+                          )}
                           <button
                             type="button"
                             className={styles.removeSectionBtn}
