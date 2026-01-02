@@ -2,6 +2,8 @@ import { useMutation } from "@tanstack/react-query";
 import { recipeServiceClientNoContent } from "@/api/recipeServiceClient.ts";
 import { useKeycloak } from "@/keycloakProvider.tsx";
 import { useNavigate } from "@tanstack/react-router";
+// @ts-ignore
+import styles from "./DeleteRecipePopup.module.css";
 
 interface Props {
   isOpen: boolean
@@ -31,11 +33,33 @@ export const DeleteRecipePopup = ({recipeId, isOpen, close}: Props) => {
   });
 
   return (
-    <div className={"modal-overlay"}>
-      <div className={"modal-content"}>
-        Are you sure you want to delete this recipe?
-        <button onClick={() => deleteRecipe.mutate()}>Ja, denne var ikke så god</button>
-        <button onClick={close}>Avbryt</button>
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <div className={styles.modalHeader}>
+          <h2 className={styles.modalTitle}>Slett oppskrift</h2>
+          <button
+            className={styles.modalClose}
+            onClick={close}
+            type="button"
+          >
+            &times;
+          </button>
+        </div>
+
+        <div className={styles.modalBody}>
+          <p className={styles.warningText}>
+            Er du sikker på at du vil slette denne oppskriften? Denne handlingen kan ikke angres.
+          </p>
+        </div>
+
+        <div className={styles.modalFooter}>
+          <button className={styles.btnCancel} onClick={close}>
+            Avbryt
+          </button>
+          <button className={styles.btnDelete} onClick={() => deleteRecipe.mutate()}>
+            Ja, slett oppskriften
+          </button>
+        </div>
       </div>
     </div>
   )
