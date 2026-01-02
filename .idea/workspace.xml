@@ -5,20 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6dbc5505-19ad-48e2-86a1-c6da5f137368" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/recipe-service/src/main/resources/db/migration/V1.0.2__IngredientSection.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/recipe-service/src/test/kotlin/no/sondre/repository/SQLRecipeTest.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/Startup.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/Startup.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/domain/Ingredient.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/domain/Ingredient.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/domain/Recipe.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/domain/Recipe.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/domain/RecipeIngredient.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/domain/RecipeIngredient.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/repository/RecipeIngredientRepository.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/repository/RecipeRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/repository/RecipeRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recipe-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recipe-service/src/test/kotlin/no/sondre/RecipeResourceTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/recipe-service/src/test/kotlin/no/sondre/RecipeResourceTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/food-web/src/components/RecipeForm/RecipeForm.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/components/RecipeForm/RecipeForm.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/food-web/src/components/RecipeForm/RecipeForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/components/RecipeForm/RecipeForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/food-web/src/domain/Recipe.ts" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/domain/Recipe.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/food-web/src/routes/recipes/$recipeId/index.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/routes/recipes/$recipeId/index.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/food-web/src/routes/recipes/$recipeId/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/food-web/src/routes/recipes/$recipeId/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,7 +79,7 @@
       <recent name="no.sondre.repository" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.sondre in recipe-service">
+  <component name="RunManager" selected="Quarkus.recipe-service">
     <configuration name="RecipeResourceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="recipe-service" />
       <extension name="coverage">
@@ -292,6 +284,11 @@
           <url>file://$PROJECT_DIR$/recipe-service/src/main/kotlin/no/sondre/repository/RecipeRepository.kt</url>
           <line>90</line>
           <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/recipe-service/src/test/kotlin/no/sondre/repository/SQLRecipeTest.kt</url>
+          <line>36</line>
+          <option name="timeStamp" value="14" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

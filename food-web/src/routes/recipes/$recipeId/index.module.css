@@ -133,6 +133,25 @@
     border-color: var(--primary);
 }
 
+/* Ingredient Sections */
+.ingredientSection {
+    margin-bottom: 1.5rem;
+}
+
+.ingredientSection:last-child {
+    margin-bottom: 0;
+}
+
+.ingredientSectionTitle {
+    font-family: 'Lora', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--primary);
+}
+
 /* Ingredient List */
 .ingredientList {
     list-style: none;

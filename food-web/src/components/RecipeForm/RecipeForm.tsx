@@ -13,6 +13,8 @@ type Props = {
   closeNewRecipeModal: () => void
 }
 
+const DEFAULT_SECTION = "Ingredienser";
+
 export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Props) {
   const [ingredientSearch, setIngredientSearch] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
@@ -20,6 +22,9 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
   const [amount, setAmount] = useState<number | "">("");
   const [unit, setUnit] = useState("");
   const [ingredientModalOpen, setIngredientModalOpen] = useState(false);
+  const [currentSection, setCurrentSection] = useState(DEFAULT_SECTION);
+  const [newSectionName, setNewSectionName] = useState("");
+  const [showNewSectionInput, setShowNewSectionInput] = useState(false);
 
   const { data: searchResults = [] } = useIngredientSearch(ingredientSearch, showDropdown);
   const ingredientMutation = useCreateIngredient(() => setIngredientModalOpen(false));
@@ -30,9 +35,9 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
     setUnit("");
   };
 
-  const addIngredient = (
-    currentIngredients: RecipeIngredient[],
-    handleChange: (value: RecipeIngredient[]) => void
+  const addIngredientToSection = (
+    currentSections: Record<string, RecipeIngredient[]>,
+    handleChange: (value: Record<string, RecipeIngredient[]>) => void
   ) => {
     if (amount !== "" && unit && selectedIngredient) {
       const newIngredient: RecipeIngredient = {
@@ -40,8 +45,40 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
         unit,
         ingredient: selectedIngredient
       };
-      handleChange([...currentIngredients, newIngredient]);
+      const updatedSections = { ...currentSections };
+      if (!updatedSections[currentSection]) {
+        updatedSections[currentSection] = [];
+      }
+      updatedSections[currentSection] = [...updatedSections[currentSection], newIngredient];
+      handleChange(updatedSections);
       resetIngredientInput();
+    }
+  };
+
+  const removeIngredientFromSection = (
+    currentSections: Record<string, RecipeIngredient[]>,
+    handleChange: (value: Record<string, RecipeIngredient[]>) => void,
+    sectionName: string,
+    index: number
+  ) => {
+    const updatedSections = { ...currentSections };
+    updatedSections[sectionName] = updatedSections[sectionName].filter((_, i) => i !== index);
+    if (updatedSections[sectionName].length === 0) {
+      delete updatedSections[sectionName];
+    }
+    handleChange(updatedSections);
+  };
+
+  const addNewSection = (
+    currentSections: Record<string, RecipeIngredient[]>,
+    handleChange: (value: Record<string, RecipeIngredient[]>) => void
+  ) => {
+    if (newSectionName.trim() && !currentSections[newSectionName.trim()]) {
+      const updatedSections = { ...currentSections, [newSectionName.trim()]: [] };
+      handleChange(updatedSections);
+      setCurrentSection(newSectionName.trim());
+      setNewSectionName("");
+      setShowNewSectionInput(false);
     }
   };
 
@@ -51,7 +88,7 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
       name: recipe?.name ?? "",
       youtube: recipe?.youtube ?? "",
       description: recipe?.description ?? "",
-      ingredients: recipe?.ingredients ?? [] as RecipeIngredient[],
+      ingredientsSections: recipe?.ingredientsSections ?? {} as Record<string, RecipeIngredient[]>,
       portions: recipe?.portions ?? null as number | null
     },
     onSubmit: ({value}) => {
@@ -60,7 +97,7 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
           id: value.id ?? null,
           name: value.name,
           youtube: value.youtube,
-          ingredients: value.ingredients,
+          ingredientsSections: value.ingredientsSections,
           description: value.description,
           portions: value.portions
         },
@@ -68,6 +105,7 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
       setIngredientSearch("");
       setShowDropdown(false);
       resetIngredientInput();
+      setCurrentSection(DEFAULT_SECTION);
       closeNewRecipeModal()
     }
   })
@@ -147,128 +185,200 @@ export function RecipeForm({recipe, mutation, isOpen, closeNewRecipeModal}: Prop
           />
 
           <form.Field
-            name="ingredients"
-            children={(field) => (
-              <div className={styles.formGroup}>
-                <label className={styles.formLabel}>Ingredienser</label>
+            name="ingredientsSections"
+            children={(field) => {
+              const sections = Object.entries(field.state.value);
+              const allIngredientIds = sections.flatMap(([, ingredients]) =>
+                ingredients.map(ri => ri.ingredient.id)
+              );
 
-                {field.state.value.length > 0 && (
-                  <ul className={styles.ingredientList}>
-                    {field.state.value.map((recipeIngredient, index) => (
-                      <li
-                        key={recipeIngredient.ingredient.id ?? index}
-                        className={styles.ingredientListItem}
-                      >
-                        <span>
-                          {recipeIngredient.amount} {recipeIngredient.unit} {recipeIngredient.ingredient.name}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            field.handleChange(
-                              field.state.value.filter((_, i) => i !== index)
-                            );
-                          }}
-                          className={styles.removeButton}
-                        >
-                          &times;
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                )}
+              return (
+                <div className={styles.formGroup}>
+                  <label className={styles.formLabel}>Ingredienser</label>
 
-                <div className={styles.ingredientSearchContainer}>
-                  {!selectedIngredient ? (
-                    <>
+                  {/* Section selector */}
+                  <div className={styles.sectionSelector}>
+                    <select
+                      className={styles.sectionSelect}
+                      value={currentSection}
+                      onChange={(e) => setCurrentSection(e.target.value)}
+                    >
+                      {sections.length === 0 && (
+                        <option value={DEFAULT_SECTION}>{DEFAULT_SECTION}</option>
+                      )}
+                      {sections.map(([sectionName]) => (
+                        <option key={sectionName} value={sectionName}>{sectionName}</option>
+                      ))}
+                    </select>
+                    <button
+                      type="button"
+                      className={styles.addSectionBtn}
+                      onClick={() => setShowNewSectionInput(true)}
+                    >
+                      + Ny seksjon
+                    </button>
+                  </div>
+
+                  {/* New section input */}
+                  {showNewSectionInput && (
+                    <div className={styles.newSectionRow}>
                       <input
                         type="text"
-                        placeholder="Søk etter ingrediens..."
-                        value={ingredientSearch}
-                        onChange={(e) => setIngredientSearch(e.target.value)}
-                        onFocus={() => setShowDropdown(true)}
+                        className={styles.formInput}
+                        placeholder="F.eks. Saus, Tilbehør..."
+                        value={newSectionName}
+                        onChange={(e) => setNewSectionName(e.target.value)}
                       />
-                      {showDropdown && (
-                        <div className={styles.dropdown}>
-                          {searchResults
-                            .filter((ingredient) => !field.state.value.some((ri) => ri.ingredient.id === ingredient.id))
-                            .map((ingredient) => (
-                              <div
-                                key={ingredient.id}
-                                className={styles.dropdownItem}
-                                onClick={() => {
-                                  setSelectedIngredient(ingredient);
-                                  setIngredientSearch("");
-                                  setShowDropdown(false);
-                                }}
-                              >
-                                {ingredient.name}
-                              </div>
-                            ))}
-                          {searchResults.filter((ingredient) => !field.state.value.some((ri) => ri.ingredient.id === ingredient.id)).length === 0 && (
-                            <div className={styles.noResults}>
-                              <span>Ingen ingredienser funnet</span>
-                              <button
-                                type="button"
-                                onClick={() => setIngredientModalOpen(true)}
-                                className={styles.createNewButton}
-                              >
-                                Opprett ny
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                      )}
-                      {showDropdown && (
-                        <button
-                          type="button"
-                          onClick={() => setShowDropdown(false)}
-                          className={styles.closeDropdownButton}
-                        >
-                          Lukk
-                        </button>
-                      )}
-                    </>
-                  ) : (
-                    <div className={styles.selectedIngredientRow}>
-                      <span><strong>{selectedIngredient.name}</strong></span>
-                      <input
-                        type="number"
-                        placeholder="Mengde"
-                        value={amount}
-                        onChange={(e) => setAmount(e.target.value === "" ? "" : Number(e.target.value))}
-                        className={styles.amountInput}
-                      />
-                      <select
-                        value={unit}
-                        onChange={(e) => setUnit(e.target.value)}
-                        className={styles.unitInput}
-                      >
-                        <option value="">Velg enhet</option>
-                        <option value="g">gram</option>
-                        <option value="dl">dl</option>
-                        <option value="l">l</option>
-                        <option value="ts">ts</option>
-                        <option value="ss">ss</option>
-                      </select>
                       <button
                         type="button"
-                        disabled={amount === "" || !unit}
-                        onClick={() => addIngredient(field.state.value, field.handleChange)}
+                        className={styles.addSectionConfirmBtn}
+                        disabled={!newSectionName.trim()}
+                        onClick={() => addNewSection(field.state.value, field.handleChange)}
                       >
                         Legg til
                       </button>
                       <button
                         type="button"
-                        onClick={resetIngredientInput}
+                        className={styles.cancelBtn}
+                        onClick={() => {
+                          setShowNewSectionInput(false);
+                          setNewSectionName("");
+                        }}
                       >
                         Avbryt
                       </button>
                     </div>
                   )}
+
+                  {/* Display existing ingredients by section */}
+                  {sections.map(([sectionName, ingredients]) => (
+                    ingredients.length > 0 && (
+                      <div key={sectionName} className={styles.ingredientSectionBlock}>
+                        {sections.length > 1 && (
+                          <h4 className={styles.ingredientSectionTitle}>{sectionName}</h4>
+                        )}
+                        <ul className={styles.ingredientList}>
+                          {ingredients.map((recipeIngredient, index) => (
+                            <li
+                              key={recipeIngredient.ingredient.id ?? index}
+                              className={styles.ingredientListItem}
+                            >
+                              <span>
+                                {recipeIngredient.amount} {recipeIngredient.unit} {recipeIngredient.ingredient.name}
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => removeIngredientFromSection(
+                                  field.state.value,
+                                  field.handleChange,
+                                  sectionName,
+                                  index
+                                )}
+                                className={styles.removeButton}
+                              >
+                                &times;
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )
+                  ))}
+
+                  {/* Add ingredient to current section */}
+                  <div className={styles.ingredientSearchContainer}>
+                    {!selectedIngredient ? (
+                      <>
+                        <input
+                          type="text"
+                          placeholder={`Søk etter ingrediens til "${currentSection}"...`}
+                          value={ingredientSearch}
+                          onChange={(e) => setIngredientSearch(e.target.value)}
+                          onFocus={() => setShowDropdown(true)}
+                        />
+                        {showDropdown && (
+                          <div className={styles.dropdown}>
+                            {searchResults
+                              .filter((ingredient) => !allIngredientIds.includes(ingredient.id))
+                              .map((ingredient) => (
+                                <div
+                                  key={ingredient.id}
+                                  className={styles.dropdownItem}
+                                  onClick={() => {
+                                    setSelectedIngredient(ingredient);
+                                    setIngredientSearch("");
+                                    setShowDropdown(false);
+                                  }}
+                                >
+                                  {ingredient.name}
+                                </div>
+                              ))}
+                            {searchResults.filter((ingredient) => !allIngredientIds.includes(ingredient.id)).length === 0 && (
+                              <div className={styles.noResults}>
+                                <span>Ingen ingredienser funnet</span>
+                                <button
+                                  type="button"
+                                  onClick={() => setIngredientModalOpen(true)}
+                                  className={styles.createNewButton}
+                                >
+                                  Opprett ny
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                        {showDropdown && (
+                          <button
+                            type="button"
+                            onClick={() => setShowDropdown(false)}
+                            className={styles.closeDropdownButton}
+                          >
+                            Lukk
+                          </button>
+                        )}
+                      </>
+                    ) : (
+                      <div className={styles.selectedIngredientRow}>
+                        <span><strong>{selectedIngredient.name}</strong></span>
+                        <input
+                          type="number"
+                          placeholder="Mengde"
+                          value={amount}
+                          onChange={(e) => setAmount(e.target.value === "" ? "" : Number(e.target.value))}
+                          className={styles.amountInput}
+                        />
+                        <select
+                          value={unit}
+                          onChange={(e) => setUnit(e.target.value)}
+                          className={styles.unitInput}
+                        >
+                          <option value="">Velg enhet</option>
+                          <option value="g">gram</option>
+                          <option value="dl">dl</option>
+                          <option value="l">l</option>
+                          <option value="ts">ts</option>
+                          <option value="ss">ss</option>
+                          <option value="stk">stk</option>
+                        </select>
+                        <button
+                          type="button"
+                          disabled={amount === "" || !unit}
+                          onClick={() => addIngredientToSection(field.state.value, field.handleChange)}
+                        >
+                          Legg til
+                        </button>
+                        <button
+                          type="button"
+                          onClick={resetIngredientInput}
+                        >
+                          Avbryt
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            )}
+              );
+            }}
           />
 
           <form.Field

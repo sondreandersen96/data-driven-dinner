@@ -87,6 +87,112 @@
   min-height: 150px;
 }
 
+/* Section Selector */
+.sectionSelector {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.sectionSelect {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: 'Sora', sans-serif;
+  font-size: 0.95rem;
+  background: white;
+  cursor: pointer;
+}
+
+.sectionSelect:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.addSectionBtn {
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  font-family: 'Sora', sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.addSectionBtn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: rgba(45, 106, 79, 0.05);
+}
+
+.newSectionRow {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+
+.newSectionRow .formInput {
+  flex: 1;
+}
+
+.addSectionConfirmBtn {
+  padding: 0.75rem 1rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Sora', sans-serif;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.addSectionConfirmBtn:hover:not(:disabled) {
+  background: var(--secondary);
+}
+
+.addSectionConfirmBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cancelBtn {
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: 'Sora', sans-serif;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.cancelBtn:hover {
+  background: var(--background);
+}
+
+/* Ingredient Section Block */
+.ingredientSectionBlock {
+  margin-bottom: 1rem;
+}
+
+.ingredientSectionTitle {
+  font-family: 'Lora', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 2px solid var(--primary);
+}
+
 /* Ingredient List */
 .ingredientList {
   list-style: none;

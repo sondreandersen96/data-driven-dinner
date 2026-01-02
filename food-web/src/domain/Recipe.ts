@@ -2,7 +2,7 @@ interface Recipe {
   id: string | null
   name: string | null
   youtube: string | null
-  ingredients: RecipeIngredient[]
+  ingredientsSections: Record<string, RecipeIngredient[]>
   description: string
   portions: number | null
 }

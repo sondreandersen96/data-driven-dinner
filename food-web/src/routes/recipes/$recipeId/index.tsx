@@ -74,6 +74,9 @@ function RecipeContent({ recipeId, portions, setPortions }: RecipeContentProps) 
     }
 
     const currentPortions = portions ?? data.portions ?? 4;
+    const sectionEntries = Object.entries(data.ingredientsSections);
+    const totalIngredients = sectionEntries.reduce((sum, [, ingredients]) => sum + ingredients.length, 0);
+    const hasIngredients = totalIngredients > 0;
 
     return (
         <>
@@ -88,9 +91,9 @@ function RecipeContent({ recipeId, portions, setPortions }: RecipeContentProps) 
                             {data.portions} porsjoner
                         </span>
                     )}
-                    {data.ingredients.length > 0 && (
+                    {hasIngredients && (
                         <span className={styles.metaItem}>
-                            {data.ingredients.length} ingredienser
+                            {totalIngredients} ingredienser
                         </span>
                     )}
                 </div>
@@ -106,7 +109,7 @@ function RecipeContent({ recipeId, portions, setPortions }: RecipeContentProps) 
             {/* Content Grid */}
             <div className={styles.contentGrid}>
                 {/* Ingredients */}
-                {data.ingredients.length > 0 && (
+                {hasIngredients && (
                     <div className={styles.ingredientsCard}>
                         <h2 className={styles.sectionTitle}>Ingredienser</h2>
 
@@ -139,18 +142,25 @@ function RecipeContent({ recipeId, portions, setPortions }: RecipeContentProps) 
                             </div>
                         )}
 
-                        <ul className={styles.ingredientList}>
-                            {data.ingredients.map((ri, index) => (
-                                <li key={ri.ingredient.id ?? index} className={styles.ingredientItem}>
-                                    <span className={styles.ingredientAmount}>
-                                        {ri.amount} {ri.unit}
-                                    </span>
-                                    <span className={styles.ingredientName}>
-                                        {ri.ingredient.name}
-                                    </span>
-                                </li>
-                            ))}
-                        </ul>
+                        {sectionEntries.map(([sectionName, ingredients]) => (
+                            <div key={sectionName} className={styles.ingredientSection}>
+                                {sectionEntries.length > 1 && (
+                                    <h3 className={styles.ingredientSectionTitle}>{sectionName}</h3>
+                                )}
+                                <ul className={styles.ingredientList}>
+                                    {ingredients.map((ri, index) => (
+                                        <li key={ri.ingredient.id ?? index} className={styles.ingredientItem}>
+                                            <span className={styles.ingredientAmount}>
+                                                {ri.amount} {ri.unit}
+                                            </span>
+                                            <span className={styles.ingredientName}>
+                                                {ri.ingredient.name}
+                                            </span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))}
                     </div>
                 )}
 
