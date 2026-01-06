@@ -9,7 +9,7 @@ data class Recipe(
     var draft: Boolean = false
 ) : Domain() {
 
-    // Looks unused, but will be serialized and is used by frontend
+    // Will be serialized and is used by frontend
     val thumbnailUrl: String get() {
         return if (youtube != null && youtube!!.isNotBlank()) {
             "https://img.youtube.com/vi/$youtube/maxresdefault.jpg"
