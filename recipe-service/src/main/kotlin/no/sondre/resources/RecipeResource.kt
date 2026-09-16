@@ -1,11 +1,10 @@
 package no.sondre.resources
 
-import io.quarkus.logging.Log
 import io.quarkus.security.identity.SecurityIdentity
 import jakarta.inject.Inject
 import jakarta.ws.rs.*
-import no.sondre.services.RecipeService
 import no.sondre.domain.Recipe
+import no.sondre.services.RecipeService
 import java.util.*
 
 @Path("recipe")
@@ -45,4 +44,5 @@ class RecipeResource {
     fun delete(@PathParam("id") id: UUID) {
         service.delete(id)
     }
+
 }

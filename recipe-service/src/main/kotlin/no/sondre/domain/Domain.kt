@@ -3,12 +3,24 @@ package no.sondre.domain
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.ws.rs.BadRequestException
 import jakarta.ws.rs.InternalServerErrorException
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import java.util.*
 
 @NoArg
 abstract class Domain {
 
     var id: UUID? = null
+
+    companion object {
+        private val objectMapper = ObjectMapper()
+        val TIMEZONE = ZoneId.of("Europe/Oslo")
+
+        fun now(): ZonedDateTime {
+            return ZonedDateTime.now(TIMEZONE)
+        }
+    }
 
     open fun initNew() {
         assertNoId()
@@ -43,10 +55,6 @@ abstract class Domain {
 
     fun withId(id: UUID) {
         if (!hasId) this.id = id
-    }
-
-    companion object {
-        private val objectMapper = ObjectMapper()
     }
 
     fun toJsonString(): String {

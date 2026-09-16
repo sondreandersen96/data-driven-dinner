@@ -51,6 +51,7 @@ data class Recipe(
 
     fun prepareUpdate() {
         adjustPortion(STANDARD_PORTION_SIZE)
+        extractYoutubeId()
     }
 
     fun allRecipeIngredients(): List<RecipeIngredient> {

@@ -48,14 +48,8 @@ class SQLRecipe(
         }
 
         fun serializeIngredientsSections(ingredientsSections: MutableMap<String, List<RecipeIngredient>>): String {
-            val map = ingredientsSections.mapValues { (_, ingredients) ->
-                ingredients.map { re ->
-                    mapOf(
-                        "amount" to re.amount,
-                        "unit" to re.unit,
-                        "ingredient" to re.ingredient.idSafe()
-                    )
-                }
+            val map = ingredientsSections.mapValues { (_, recipeIngredients) ->
+                recipeIngredients.serialize()
             }
             return om.writeValueAsString(map)
         }
